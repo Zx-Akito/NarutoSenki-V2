@@ -67,6 +67,18 @@ do {    \
 //USING_NS_CC;
 static EAGLView *view;
 
+static void SyncCocosFrameFromNSView(NSView *nsView)
+{
+	if (!nsView)
+		return;
+	NSRect b = [nsView bounds];
+	cocos2d::CCEGLView *eglView = cocos2d::CCEGLView::sharedOpenGLView();
+	if (eglView)
+	{
+		eglView->handleScreenResize((float)b.size.width, (float)b.size.height);
+	}
+}
+
 @implementation EAGLView
 
 @synthesize eventDelegate = eventDelegate_, isFullScreen = isFullScreen_, frameZoomFactor=frameZoomFactor_;
@@ -308,8 +320,11 @@ static EAGLView *view;
         superViewGLView_ = [[openGLview superview] retain];
 
 
-        // Get screen size
-        NSRect displayRect = [[NSScreen mainScreen] frame];
+        // Cover the screen that hosts the game window (correct monitor + aspect sync).
+        NSScreen *screen = [[openGLview window] screen];
+        if (!screen)
+            screen = [NSScreen mainScreen];
+        NSRect displayRect = [screen frame];
 
         // Create a screen-sized window on the display you want to take over
         fullScreenWindow_ = [[CCWindow alloc] initWithFrame:displayRect fullscreen:YES];
@@ -327,6 +342,8 @@ static EAGLView *view;
         [fullScreenWindow_ makeKeyAndOrderFront:self];
 		[fullScreenWindow_ makeMainWindow];
 		//[fullScreenWindow_ setNextResponder:superViewGLView_];
+
+        SyncCocosFrameFromNSView(openGLview);
 
     } else {
 
@@ -346,10 +363,15 @@ static EAGLView *view;
         // Show the window
         [windowGLView_ makeKeyAndOrderFront:self];
 		[windowGLView_ makeMainWindow];
+
+        SyncCocosFrameFromNSView(openGLview);
     }
 	
 	// issue #1189
-	[windowGLView_ makeFirstResponder:openGLview];
+	if (fullscreen)
+		[fullScreenWindow_ makeFirstResponder:openGLview];
+	else
+		[windowGLView_ makeFirstResponder:openGLview];
 
     isFullScreen_ = fullscreen;
 

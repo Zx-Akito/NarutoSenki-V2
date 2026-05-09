@@ -26,6 +26,7 @@ bool _isFullScreen = false;
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 extern "C" bool MacWsIsConnected();
+extern "C" void MacWsSend(const char *message);
 #endif
 
 bool GameLayer::shouldBlockNetworkBattleInputEcho() const
@@ -355,10 +356,13 @@ void GameLayer::initTileMap()
 	addChild(currentMap, kMapOrder);
 }
 
-void GameLayer::initGard()
+void GameLayer::initGard(int guardianVariant, bool notifyNetworkPeers)
 {
+	if (_hasSpawnedGuardian)
+		return;
+
 	setRand();
-	int index = random(2);
+	const int index = (guardianVariant >= 0) ? (guardianVariant % 2) : random(2);
 	auto guardianName = index == 0 ? GuardianEnum::Roshi : GuardianEnum::Han;
 	auto guardianGroup = playerGroup == Group::Konoha ? Group::Akatsuki : Group::Konoha;
 	auto guardian = Provider::create(guardianName, Role::Com, guardianGroup);
@@ -389,6 +393,17 @@ void GameLayer::initGard()
 	_hudLayer->addMapIcon();
 
 	_hasSpawnedGuardian = true;
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (notifyNetworkPeers && MacWsIsConnected())
+	{
+		char buf[96];
+		snprintf(buf, sizeof(buf), "{\"type\":\"guardian_spawn\",\"idx\":%d}", index);
+		MacWsSend(buf);
+	}
+#else
+	(void)notifyNetworkPeers;
+#endif
 }
 
 void GameLayer::initHeros()
@@ -716,11 +731,19 @@ void GameLayer::syncOnlineBattleStatsToPeer(bool force)
 	const uint32_t maxHp = currentPlayer->getMaxHP();
 	const uint32_t kills = currentPlayer->getKillNum();
 	const uint32_t deaths = currentPlayer->_deadNum;
+	int kono = 0;
+	int aka = 0;
+	if (_hudLayer && _hudLayer->KonoLabel && _hudLayer->AkaLabel)
+	{
+		kono = to_int(_hudLayer->KonoLabel->getString());
+		aka = to_int(_hudLayer->AkaLabel->getString());
+	}
 
-	char buf[224];
+	char buf[320];
 	std::snprintf(buf, sizeof(buf),
-				  "{\"type\":\"battle_stat\",\"hp\":%u,\"maxHp\":%u,\"kills\":%u,\"deaths\":%u,\"ts\":%ld}",
-				  hp, maxHp, kills, deaths, (long)std::time(nullptr));
+				  "{\"type\":\"battle_stat\",\"hp\":%u,\"maxHp\":%u,\"kills\":%u,\"deaths\":%u,"
+				  "\"kono\":%d,\"aka\":%d,\"ts\":%ld}",
+				  hp, maxHp, kills, deaths, kono, aka, (long)std::time(nullptr));
 	MacWsSend(buf);
 #else
 	(void)force;

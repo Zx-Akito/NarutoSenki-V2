@@ -111,7 +111,8 @@ public:
 	void initHeros();
 	void initFlogs();
 	void initTower();
-	void initGard();
+	/** @param guardianVariant Roshi vs Han: 0 or 1; -1 picks randomly (deterministic when synced online). */
+	void initGard(int guardianVariant = -1, bool notifyNetworkPeers = true);
 	void initEffects();
 
 	void updateViewPoint(float dt);

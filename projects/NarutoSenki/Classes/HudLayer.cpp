@@ -3,6 +3,11 @@
 #include "HudLayer.h"
 #include "MyUtils/CCShake.h"
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+extern "C" bool MacWsIsConnected();
+void NetLatencyPingSend();
+#endif
+
 MiniIcon::MiniIcon()
 {
 }
@@ -126,6 +131,7 @@ HudLayer::HudLayer()
 
 	bcdLabel1 = nullptr;
 	bcdLabel2 = nullptr;
+	pingLabel = nullptr;
 }
 
 void HudLayer::onEnter()
@@ -139,6 +145,7 @@ void HudLayer::onEnter()
 
 void HudLayer::onExit()
 {
+	unschedule(schedule_selector(HudLayer::tickOnlinePingLatency));
 	Layer::onExit();
 	if (getGameLayer()->_isExiting)
 	{
@@ -252,6 +259,21 @@ void HudLayer::initHeroInterface()
 	pauseNenu = Menu::create(menu_button, nullptr);
 	pauseNenu->setPosition(Vec2(winWidth, winHeight));
 	addChild(pauseNenu);
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (MacWsIsConnected())
+	{
+		const float mmw = menu_button->getContentSize().width;
+		pingLabel = CCLabelBMFont::create("-- ms", Fonts::Default);
+		pingLabel->setScale(0.22f);
+		pingLabel->setAnchorPoint(Vec2(1.f, 1.f));
+		// Beside minimap_bg icon (pause/minimap button), not the tactical miniLayer.
+		pingLabel->setPosition(Vec2(winWidth - mmw - 8.f, winHeight - 6.f));
+		addChild(pingLabel, 5002);
+		tickOnlinePingLatency(0.f);
+		schedule(schedule_selector(HudLayer::tickOnlinePingLatency), 2.0f);
+	}
+#endif
 
 	Sprite *killIcon = Sprite::createWithSpriteFrameName("kill_icon.png");
 	killIcon->setAnchorPoint(Vec2(0, 1));
@@ -533,6 +555,7 @@ void HudLayer::initHeroInterface()
 	}
 
 	addChild(miniLayer, 500);
+
 	// Call after all addChild functions
 	// thats can make ActionButton::setLock -> setMask work
 	updateSpecialSkillButtons();
@@ -555,6 +578,24 @@ void HudLayer::addMapIcon()
 			mi->setCharId(player->getCharId());
 		}
 	}
+}
+
+void HudLayer::setOnlinePingMs(int ms)
+{
+	if (!pingLabel)
+		return;
+	pingLabel->setString(format("{} ms", ms).c_str());
+}
+
+void HudLayer::tickOnlinePingLatency(float dt)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	(void)dt;
+	if (MacWsIsConnected())
+		NetLatencyPingSend();
+#else
+	(void)dt;
+#endif
 }
 
 void HudLayer::updateGears()

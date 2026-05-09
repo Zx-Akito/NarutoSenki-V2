@@ -11,8 +11,9 @@
 // - Player input sync, match_end, and match_ui (pause/gear overlay sync for online).
 // - input_event "tick" is a 20 Hz logical slot (50ms) for ordering; joy_update is coalesced to <=20/s.
 // - knock_snap: opponent's authoritative world position right after taking light melee knockback.
-// - battle_stat: peer's HP + kill/death counts (receiver maps peer kills -> local dead count, peer deaths -> local kill count).
+// - battle_stat: peer HP + kill/death HUD + team totals kono/aka; receiver applies mirror HP and calls dead() at 0.
 // - hero_snap/knock_snap: receiver rejects tiny deltas to avoid jitter; threshold tuned below for MAC builds.
+// - latency_ping / latency_pong: RTT sample for HUD ping ms (server echoes to sender only).
 // - Other world-state packets are ignored to preserve stability.
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
@@ -55,6 +56,9 @@ static float s_pendingJoyWireX = 0.f;
 static float s_pendingJoyWireY = 0.f;
 static bool s_pendingJoyWire = false;
 static bool s_didSendJoyWire = false;
+
+static bool s_latencyPingPending = false;
+static std::chrono::steady_clock::time_point s_latencyPingSentAt{};
 
 static void advanceWsNetworkTick20Hz()
 {
@@ -168,6 +172,18 @@ static bool jsonBoolField(const char *payload, const char *field, bool &out)
 	return false;
 }
 
+/** Skip summons/clones/guardians when resolving the opponent *main* hero for WS (battle_stat + input). */
+static bool isEligiblePrimaryEnemyHero(CharacterBase *hero)
+{
+	if (!hero)
+		return false;
+	if (hero->isClone() || hero->isSummon() || hero->isTower() || hero->isFlog() || hero->isBullet())
+		return false;
+	if (hero->isGuardian())
+		return false;
+	return hero->isPlayer() || hero->isCom();
+}
+
 static CharacterBase *getRemoteControlTarget(GameLayer *layer)
 {
 	if (!layer)
@@ -183,6 +199,8 @@ static CharacterBase *getRemoteControlTarget(GameLayer *layer)
 		if (hero->getGroup() == layer->playerGroup)
 			continue;
 		if (hero->getState() == State::DEAD)
+			continue;
+		if (!isEligiblePrimaryEnemyHero(hero))
 			continue;
 		if (!fallback)
 			fallback = hero;
@@ -208,6 +226,8 @@ static CharacterBase *getRemoteHeroMirror(GameLayer *layer)
 		if (hero == layer->currentPlayer)
 			continue;
 		if (hero->getGroup() == layer->playerGroup)
+			continue;
+		if (!isEligiblePrimaryEnemyHero(hero))
 			continue;
 		if (remoteHeroName && strlen(remoteHeroName) > 0 && hero->getName() == remoteHeroName)
 			return hero;
@@ -243,9 +263,14 @@ static void applyPeerBattleStat(GameLayer *layer, const char *payload)
 			uint32_t uhp = (uint32_t)hp;
 			if (uhp > cap)
 				uhp = cap;
-			mirror->setHPValue(uhp, true);
+			// Network-only mirror: do not route through loseHP() (local slayer / kill rewards).
+			mirror->applyPeerMirrorHpFromNetwork(uhp);
 		}
 	}
+
+	int peerKono = 0;
+	int peerAka = 0;
+	const bool hasTeamScores = jsonIntField(payload, "kono", peerKono) && jsonIntField(payload, "aka", peerAka);
 
 	if (auto *hud = layer->getHudLayer())
 	{
@@ -253,6 +278,13 @@ static void applyPeerBattleStat(GameLayer *layer, const char *payload)
 			hud->killLabel->setString(to_cstr(std::max(0, peerDeaths)));
 		if (hud->deadLabel)
 			hud->deadLabel->setString(to_cstr(std::max(0, peerKills)));
+		if (hasTeamScores)
+		{
+			if (hud->KonoLabel)
+				hud->KonoLabel->setString(to_cstr(std::max(0, peerKono)));
+			if (hud->AkaLabel)
+				hud->AkaLabel->setString(to_cstr(std::max(0, peerAka)));
+		}
 	}
 }
 
@@ -437,6 +469,18 @@ static void sendNetworkMatchUIIfActive(const char *which, bool open)
 	MacWsSend(message.c_str());
 }
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+/** Exported for HudLayer RTT display — defined once in this TU (GameLayer.cpp). */
+void NetLatencyPingSend()
+{
+	if (!MacWsIsConnected())
+		return;
+	s_latencyPingSentAt = std::chrono::steady_clock::now();
+	s_latencyPingPending = true;
+	MacWsSend("{\"type\":\"latency_ping\",\"seq\":1}");
+}
+#endif
+
 static void applyRemoteMatchUI(GameLayer *layer, const char *which, bool open)
 {
 	if (!which || !layer || !layer->_isStarted || layer->_isExiting)
@@ -495,6 +539,23 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 		return;
 	if (strcmp(eventName, "message") != 0)
 		return;
+	if (strstr(payload, "\"type\":\"latency_pong\"") != nullptr)
+	{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+		if (s_latencyPingPending)
+		{
+			s_latencyPingPending = false;
+			const auto now = std::chrono::steady_clock::now();
+			const auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+				now - s_latencyPingSentAt).count();
+			const long long clamped =
+				std::max<long long>(0LL, std::min<long long>(9999LL, (long long)ms));
+			if (_gLayer && _gLayer->getHudLayer())
+				_gLayer->getHudLayer()->setOnlinePingMs((int)clamped);
+		}
+#endif
+		return;
+	}
 	if (strstr(payload, "\"type\":\"opponent_left\"") != nullptr)
 	{
 		if (_gLayer && _gLayer->_isStarted && !_gLayer->_isExiting)
@@ -595,6 +656,17 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 		_gLayer->reorderChild(remote, -(int)poxY);
 		return;
 	}
+	if (strstr(payload, "\"type\":\"guardian_spawn\"") != nullptr)
+	{
+		if (_gLayer && _gLayer->_isStarted && !_gLayer->_isExiting && _gLayer->_isHardCoreGame &&
+			!_gLayer->_hasSpawnedGuardian)
+		{
+			int idx = -1;
+			if (jsonIntField(payload, "idx", idx))
+				_gLayer->initGard(idx, false);
+		}
+		return;
+	}
 	if (strstr(payload, "\"type\":\"battle_stat\"") != nullptr)
 	{
 		if (_gLayer && _gLayer->_isStarted && !_gLayer->_isExiting)
@@ -621,12 +693,14 @@ static void resetNetworkInputStateOnEnter()
 	s_lastSentJoyRelease = true;
 	s_lastSentJoyX = 0.0f;
 	s_lastSentJoyY = 0.0f;
+	s_latencyPingPending = false;
 }
 
 static void resetNetworkInputStateOnExit()
 {
 	SetNativeWsEventCallback(nullptr);
 	s_pendingRemoteInputs.clear();
+	s_latencyPingPending = false;
 }
 #else
 static void sendNetworkInputEvent(const string &, const string & = "{}") {}

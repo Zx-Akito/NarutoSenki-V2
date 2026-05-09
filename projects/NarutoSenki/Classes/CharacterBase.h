@@ -504,6 +504,8 @@ public:
 		if (isUpdateHpBar)
 			updateHpBar();
 	}
+	/** WS battle_stat: mirror peer HP; at 0 call dead() (not loseHP — no local kill economy). */
+	void applyPeerMirrorHpFromNetwork(uint32_t uhp);
 	void setMaxHPValue(uint32_t var, bool isUpdateHpBar = true) {
 		setMaxHP(var);
 		if (isUpdateHpBar)

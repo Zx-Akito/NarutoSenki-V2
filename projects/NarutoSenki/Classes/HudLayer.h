@@ -77,6 +77,7 @@ public:
 	CCLabelBMFont *AkaLabel;
 
 	CCLabelBMFont *gameClock;
+	CCLabelBMFont *pingLabel;
 	Menu *pauseNenu;
 	Menu *gearMenu;
 
@@ -129,6 +130,8 @@ public:
 	bool _isAllButtonLocked;
 
 	void addMapIcon();
+	void setOnlinePingMs(int ms);
+	void tickOnlinePingLatency(float dt);
 
 	void costCKR(uint32_t value, bool isCKR2);
 	void setCoin(const char *value);

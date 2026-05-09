@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cstdio>
 #include <ctime>
+#include "HPBar.h"
 #include "Core/Provider.hpp"
 #include "HudLayer.h"
 #include "GameLayer.h"
@@ -2192,11 +2193,6 @@ void CharacterBase::setRestore2(float dt)
 
 		if (isZone)
 			setHPValue(getHP() > 1000 ? getHP() - 1000 : 100);
-
-		if (_state == State::IDLE && getHpPercent() < 1)
-		{
-			increaseHpAndUpdateUI(300);
-		}
 	}
 }
 
@@ -5536,4 +5532,16 @@ void CharacterBase::updateHpBar()
 {
 	if (_hpBar)
 		_hpBar->loseHP(getHpPercent());
+}
+
+void CharacterBase::applyPeerMirrorHpFromNetwork(uint32_t uhp)
+{
+	setHPValue(uhp, false);
+	if (uhp == 0 && _state != State::DEAD && enableDead)
+	{
+		dead();
+		return;
+	}
+	if (_hpBar)
+		_hpBar->syncVisualPercent(getHpPercent());
 }

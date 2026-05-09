@@ -10,10 +10,10 @@ const TEAM_SIZE = 1;
 const NETWORK_MODE = "1v1";
 const HERO_POOL = [
   "Naruto", "Sasuke", "Sakura", "Kakashi", "Shikamaru", "Choji", "Ino",
-  "Asuma", "Kiba", "Hinata", "Shino", "Lee", "Neji", "Tenten", "Gaara",
-  "Temari", "Kankuro", "Sai", "Yamato", "Deidara", "Hidan", "Kisame",
+  "Asuma", "Kiba", "Hinata", "Shino", "Lee", "Neji", "Gaara",
+  "Tenten", "Kankuro", "Sai", "Deidara", "Hidan", "Kisame",
   "Itachi", "Pain", "Konan", "Tobi", "Karin", "Suigetsu", "Jugo",
-  "Tobirama", "Hiruzen", "Minato"
+  "Tobirama", "Hiruzen", "Minato", "Kakuzu"
 ];
 
 // ─── FIX #1: Queue pakai array, bukan single variable (race condition fix) ────
@@ -21,7 +21,8 @@ let matchmakingQueue = [];
 
 // ─── FIX #2: Heartbeat & Rate Limit config ────────────────────────────────────
 const HEARTBEAT_INTERVAL_MS = 15_000;   // cek koneksi tiap 15 detik
-const QUEUE_TIMEOUT_MS      = 30_000;   // kick dari queue setelah 30 detik
+/** Setelah sekian lama tanpa lawan manusia → pasangkan lawan bot (tetap di queue sampai itu). */
+const QUEUE_BOT_MATCH_MS = 60_000;
 const RATE_LIMIT_MAX        = 120;      // max pesan per detik per player
 const RATE_LIMIT_WINDOW_MS  = 1_000;
 
@@ -49,6 +50,7 @@ function cleanupMatch(ws) {
   ws.matchStarted = false;
   ws.selectLocked = false;
   ws.selectHero   = "";
+  ws.vsBot = false;
 
   if (other && other.opponent === ws) {
     other.opponent  = null;
@@ -96,12 +98,7 @@ function tryMatchmake(ws) {
     return;
   }
 
-  // FIX #2: Queue timeout — kick player jika terlalu lama menunggu
-  ws.queueTimeout = setTimeout(() => {
-    leaveQueue(ws);
-    safeSend(ws, { type: "queue_timeout", ts: Date.now() });
-    console.log(`[ws-server] p${ws.playerId} timed out from queue`);
-  }, QUEUE_TIMEOUT_MS);
+  ws.queueTimeout = setTimeout(() => tryBotMatch(ws), QUEUE_BOT_MATCH_MS);
 
   matchmakingQueue.push(ws);
 
@@ -116,6 +113,39 @@ function tryMatchmake(ws) {
   } else {
     safeSend(ws, { type: "queue_waiting", ts: Date.now() });
   }
+}
+
+/** Satu pemain di queue terlalu lama → match vs bot (tanpa socket lawan). */
+function tryBotMatch(ws) {
+  if (!matchmakingQueue.includes(ws)) return;
+  leaveQueue(ws);
+  if (ws.matchId) return;
+  startBotMatch(ws);
+}
+
+function startBotMatch(ws) {
+  const matchId = `M${nextMatchId++}`;
+  const mapId = 1;
+
+  ws.team = 0;
+  ws.matchId = matchId;
+  ws.mapId = mapId;
+  ws.opponent = null;
+  ws.vsBot = true;
+  ws.selectLocked = false;
+  ws.selectHero = "";
+  ws.matchStarted = false;
+
+  safeSend(ws, {
+    type: "match_found",
+    mode: NETWORK_MODE,
+    matchId,
+    opponentId: 0,
+    opponentIsBot: true,
+    ts: Date.now(),
+  });
+
+  console.log(`[ws-server] bot match offered: ${matchId} | p${ws.playerId}(Konoha vs bot)`);
 }
 
 function startMatch(other, ws) {
@@ -251,6 +281,43 @@ wss.on("connection", (ws) => {
     if (message.type === "select_lock") {
       ws.selectHero   = message.hero || "";
       ws.selectLocked = true;
+
+      if (ws.vsBot && !ws.opponent) {
+        const botHero =
+          HERO_POOL[Math.floor(Math.random() * HERO_POOL.length)] || "Sasuke";
+        const startDelayMs = 1500;
+        const seed = Math.floor(Math.random() * 2147483647);
+        const { teamA, teamB } = buildMatchTeams(
+          ws.selectHero,
+          botHero,
+          TEAM_SIZE
+        );
+
+        ws.matchStarted = true;
+
+        safeSend(ws, { type: "both_locked", ts: Date.now() });
+        safeSend(ws, {
+          type: "match_start",
+          mode: NETWORK_MODE,
+          teamSize: TEAM_SIZE,
+          delayMs: startDelayMs,
+          seed,
+          mapId: ws.mapId || 1,
+          team: ws.team ?? 0,
+          yourHero: ws.selectHero || "",
+          enemyHero: botHero,
+          yourTeamCsv: teamA.join(","),
+          enemyTeamCsv: teamB.join(","),
+          opponentIsBot: true,
+          ts: Date.now(),
+        });
+
+        console.log(
+          `[ws-server] match_start (bot) ${ws.matchId} | p${ws.playerId} hero=${ws.selectHero} bot=${botHero}`
+        );
+        return;
+      }
+
       relayToOpponent(ws, {
         type: "select_lock",
         hero: message.hero || "",

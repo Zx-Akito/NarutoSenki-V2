@@ -10,6 +10,7 @@ function NetworkLobbyLayer:ctor()
     self.isConnecting = false
     self.isInQueue = false
     self.matchId = nil
+    self._queueWaitElapsed = 0
     self:init()
     _G.__networkLobbyLayer = self
 end
@@ -100,13 +101,15 @@ function NetworkLobbyLayer:init()
     self:addChild(self.statusLabel, 5)
 
     self.messageLabel = ui.newTTFLabelWithShadow({
-        text = 'Server: -',
+        text = 'Click start to start a match',
         size = 14,
         x = display.cx,
         y = display.cy - 2,
         align = ui.TEXT_ALIGN_CENTER
     })
     self:addChild(self.messageLabel, 5)
+
+    self:scheduleUpdateWithPriorityLua(handler(self, NetworkLobbyLayer.update), 0)
 
     local connectBtn = ui.newImageMenuItem({
         image = '#start_btn.png',
@@ -136,13 +139,12 @@ function NetworkLobbyLayer:setStatus(text)
     end
 end
 
-function NetworkLobbyLayer:setMessage(text)
-    local raw = tostring(text or '-')
-    local maxLen = 72
-    if string.len(raw) > maxLen then
-        raw = string.sub(raw, 1, maxLen) .. '...'
-    end
-    local value = 'Server: ' .. raw
+--- Baris kedua lobby: waktu tunggu (bukan payload JSON mentah dari server).
+function NetworkLobbyLayer:setWaitSubtitle(seconds)
+    local sec = math.max(0, math.floor(seconds or 0))
+    local m = math.floor(sec / 60)
+    local s = sec % 60
+    local value = string.format('Waiting for enemy: %d:%02d', m, s)
     if self.messageLabel and self.messageLabel.label then
         self.messageLabel.label:setString(value)
     end
@@ -187,9 +189,18 @@ function NetworkLobbyLayer:onDisconnectPressed()
     wsDisconnect()
     self.isConnecting = false
     self.isConnected = false
+    self._queueWaitElapsed = 0
     _G.__networkMatchId = nil
     _G.__networkLobbyLayer = nil
     backToStartMenu()
+end
+
+function NetworkLobbyLayer:update(dt)
+    if not self.isConnected or not self.isInQueue or self.matchId then
+        return
+    end
+    self._queueWaitElapsed = self._queueWaitElapsed + dt
+    self:setWaitSubtitle(self._queueWaitElapsed)
 end
 
 local function extractJsonStringField(payload, fieldName)
@@ -197,16 +208,27 @@ local function extractJsonStringField(payload, fieldName)
     return string.match(payload or '', pattern)
 end
 
+-- Pola Lua tidak mendukung (true|false); '|' adalah karakter literal.
+local function extractJsonBoolField(payload, fieldName)
+    local head = '"' .. fieldName .. '"%s*:%s*'
+    local v = string.match(payload or '', head .. '(true)')
+    if v == 'true' then return true end
+    v = string.match(payload or '', head .. '(false)')
+    if v == 'false' then return false end
+    return nil
+end
+
 function NetworkLobbyLayer:handleWebSocketEvent(eventName, payload)
     if eventName == 'open' then
         self.isConnecting = false
         self.isConnected = true
         self.isInQueue = true
+        self._queueWaitElapsed = 0
+        self:setWaitSubtitle(0)
         self:setStatus('Queueing...')
         wsSend('{"type":"ping"}')
         wsSend('{"type":"queue_join"}')
     elseif eventName == 'message' then
-        self:setMessage(payload or '-')
         local messageType = extractJsonStringField(payload, 'type')
         if messageType == 'queue_waiting' then
             self.matchId = nil
@@ -215,12 +237,13 @@ function NetworkLobbyLayer:handleWebSocketEvent(eventName, payload)
             self.matchId = extractJsonStringField(payload, 'matchId')
             self.isInQueue = false
             _G.__networkMatchId = self.matchId
+            _G.__networkVsBot = extractJsonBoolField(payload, 'opponentIsBot') == true
             self:setStatus('Match found: ' .. tostring(self.matchId or '?'))
             _G.__networkLobbyLayer = nil
             enterSelectLayer(GameMode.Classic, false)
         elseif messageType == 'opponent_left' then
             self:setStatus('Opponent left')
-            self:setMessage('Match cancelled')
+            self:setWaitSubtitle(0)
             wsDisconnect()
             self.isConnecting = false
             self.isConnected = false
@@ -237,15 +260,18 @@ function NetworkLobbyLayer:handleWebSocketEvent(eventName, payload)
         self.isConnected = false
         self.isInQueue = false
         self.matchId = nil
+        self._queueWaitElapsed = 0
         _G.__networkMatchId = nil
         self:setStatus('Disconnected')
+        self:setWaitSubtitle(0)
     elseif eventName == 'error' then
         self.isConnecting = false
         self.isConnected = false
         self.isInQueue = false
         self.matchId = nil
+        self._queueWaitElapsed = 0
         _G.__networkMatchId = nil
         self:setStatus('Error')
-        self:setMessage(payload or '-')
+        self:setWaitSubtitle(0)
     end
 end

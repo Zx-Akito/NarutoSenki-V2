@@ -24,6 +24,7 @@ static std::string s_networkYourHeroName;
 static std::string s_networkEnemyHeroName;
 static std::string s_networkYourTeamCsv;
 static std::string s_networkEnemyTeamCsv;
+static bool s_networkOpponentIsBot = false;
 
 extern "C" void SetNativeWsEventCallback(NativeWsEventCallback callback)
 {
@@ -58,6 +59,11 @@ extern "C" const char *GetNetworkYourTeamCsv()
 extern "C" const char *GetNetworkEnemyTeamCsv()
 {
 	return s_networkEnemyTeamCsv.c_str();
+}
+
+extern "C" bool GetNetworkOpponentIsBot()
+{
+	return s_networkOpponentIsBot;
 }
 
 namespace
@@ -159,6 +165,7 @@ static int luaWsSetMatchConfig(lua_State *L)
 	s_networkEnemyHeroName = enemyHero ? enemyHero : "";
 	s_networkYourTeamCsv = yourTeamCsv ? yourTeamCsv : "";
 	s_networkEnemyTeamCsv = enemyTeamCsv ? enemyTeamCsv : "";
+	s_networkOpponentIsBot = lua_gettop(L) >= 7 && lua_toboolean(L, 7);
 	return 0;
 }
 
@@ -170,6 +177,7 @@ static int luaWsClearMatchConfig(lua_State *L)
 	s_networkEnemyHeroName.clear();
 	s_networkYourTeamCsv.clear();
 	s_networkEnemyTeamCsv.clear();
+	s_networkOpponentIsBot = false;
 	return 0;
 }
 

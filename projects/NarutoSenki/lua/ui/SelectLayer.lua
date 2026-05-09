@@ -36,6 +36,8 @@ function SelectLayer:init()
     self._playerSelect = nil
     self.selectHero = nil
     self.isNetworkMode = _G.__networkMatchId ~= nil
+    self._networkVsBot = self.isNetworkMode and (_G.__networkVsBot == true)
+    _G.__networkVsBot = nil
     self._remoteHero = nil
     self._remoteLocked = false
     self._networkInfoLabel = nil
@@ -535,6 +537,16 @@ local function extractJsonNumberField(payload, fieldName)
     return tonumber(value)
 end
 
+-- Catatan: pola Lua tidak punya alternasi '|'. Jangan pakai (true|false).
+local function extractJsonBoolField(payload, fieldName)
+    local head = '"' .. fieldName .. '"%s*:%s*'
+    local v = string.match(payload or '', head .. '(true)')
+    if v == 'true' then return true end
+    v = string.match(payload or '', head .. '(false)')
+    if v == 'false' then return false end
+    return nil
+end
+
 function SelectLayer:updateNetworkInfoLabel()
     if not self._networkInfoLabel then return end
 
@@ -622,7 +634,9 @@ function SelectLayer:update(dt)
     self._countdownSeconds = self._countdownSeconds - 1
     self:updateNetworkInfoLabel()
 
-    if self._countdownSeconds <= 0 and not self._localLocked then
+    -- Lawan bot: auto-pilih hero acak saat sisa waktu <= 10 detik (PVP tetap di detik 0).
+    local pickDeadline = self._networkVsBot and 10 or 0
+    if self._countdownSeconds <= pickDeadline and not self._localLocked then
         self:autoPickRandomHero()
         self:updateNetworkInfoLabel()
     end
@@ -650,7 +664,10 @@ function SelectLayer:handleWebSocketEvent(eventName, payload)
     elseif messageType == 'both_locked' then
         -- Wait for `match_start` packet so both clients start together.
     elseif messageType == 'match_start' then
-        if not self._localLocked or not self._remoteLocked then return end
+        local vsBot = extractJsonBoolField(payload, 'opponentIsBot') == true
+        if not vsBot and (not self._localLocked or not self._remoteLocked) then
+            return
+        end
         local delayMs = extractJsonNumberField(payload, 'delayMs') or 1500
         self._networkStartDelay = delayMs / 1000
         self._networkStartElapsed = 0
@@ -662,13 +679,16 @@ function SelectLayer:handleWebSocketEvent(eventName, payload)
         local yourTeamCsv = extractJsonStringField(payload, 'yourTeamCsv')
         local enemyTeamCsv = extractJsonStringField(payload, 'enemyTeamCsv')
         wsSetMatchConfig(mapId, team, yourHero or '', enemyHero or '',
-                         yourTeamCsv or '', enemyTeamCsv or '')
+                         yourTeamCsv or '', enemyTeamCsv or '', vsBot)
         -- keep UI state in sync with authoritative server config
         if yourHero and yourHero ~= '' then
             self.selectHero = yourHero
         end
         if enemyHero and enemyHero ~= '' then
             self._remoteHero = enemyHero
+        end
+        if vsBot then
+            self._remoteLocked = true
         end
         self:updateNetworkInfoLabel()
         local seed = extractJsonNumberField(payload, 'seed')
@@ -701,6 +721,7 @@ function backToStartMenu()
     _G.mode = nil
     _G.__networkSelectLayer = nil
     _G.__networkMatchId = nil
+    _G.__networkVsBot = nil
     wsClearMatchConfig()
     audio.playSound('Audio/Menu/cancel.ogg')
     local menuScene = CCScene:create()

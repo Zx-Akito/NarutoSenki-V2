@@ -53,6 +53,7 @@ extern "C" bool MacWsIsConnected();
 extern "C" void MacWsSend(const char *message);
 extern "C" int GetNetworkForcedTeam();
 #endif
+extern "C" bool GetNetworkOpponentIsBot();
 
 bool GameLayer::shouldBlockNetworkBattleInputEcho() const
 {
@@ -191,7 +192,8 @@ void BattleRuntimeSystem::onGameStart(GameLayer *layer, bool skipInitFlogs, floa
 		if (hero->isCom())
 		{
 			const char *remoteHeroName = GetNetworkEnemyHeroName();
-			if (remoteHeroName && strlen(remoteHeroName) > 0 && hero->getName() == remoteHeroName)
+			if (!GetNetworkOpponentIsBot() && remoteHeroName && strlen(remoteHeroName) > 0 &&
+				hero->getName() == remoteHeroName)
 			{
 				hero->unschedule(schedule_selector(CharacterBase::setAI));
 				hero->_isAI = false;

@@ -33,6 +33,7 @@ bool MacWsIsConnected();
 int GetNetworkForcedMapId();
 int GetNetworkForcedTeam();
 const char *GetNetworkEnemyHeroName();
+bool GetNetworkOpponentIsBot();
 }
 
 // Skip teleport when already within N px (was 15; tighter fixes walk/skill drift with small rubber-band risk).
@@ -208,6 +209,8 @@ static bool isEligiblePrimaryEnemyHero(CharacterBase *hero)
 static CharacterBase *getRemoteControlTarget(GameLayer *layer)
 {
 	if (!layer)
+		return nullptr;
+	if (GetNetworkOpponentIsBot())
 		return nullptr;
 	const char *remoteHeroName = GetNetworkEnemyHeroName();
 	CharacterBase *fallback = nullptr;

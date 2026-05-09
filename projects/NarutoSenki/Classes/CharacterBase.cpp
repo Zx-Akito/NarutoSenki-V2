@@ -18,6 +18,7 @@ namespace
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 extern "C" bool MacWsIsConnected();
 extern "C" const char *GetNetworkEnemyHeroName();
+extern "C" bool GetNetworkOpponentIsBot();
 #endif
 
 /** Online opponent is spawned as Role::Com locally; reuse player tower-blocking so they cannot walk through towers on the watcher client. */
@@ -33,6 +34,8 @@ static bool characterUsesPlayerTowerBlockingWhenWalking(CharacterBase *self)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 	GameLayer *layer = getGameLayer();
 	if (!layer || !layer->_isStarted || !MacWsIsConnected())
+		return false;
+	if (GetNetworkOpponentIsBot())
 		return false;
 	if (self->getGroup() == layer->playerGroup)
 		return false;
@@ -54,6 +57,8 @@ static bool isNetworkWsEnemyHeroMirror(CharacterBase *self)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 	GameLayer *layer = getGameLayer();
 	if (!layer || !layer->_isStarted || !MacWsIsConnected())
+		return false;
+	if (GetNetworkOpponentIsBot())
 		return false;
 	if (self->getGroup() == layer->playerGroup)
 		return false;

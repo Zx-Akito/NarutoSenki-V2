@@ -58,6 +58,13 @@ inline GameLayer *getGameLayer()
 	return _gLayer;
 }
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+/** True while applying summon_death from the peer so CharacterBase::dead() does not echo back. */
+bool gameLayerIsApplyingPeerSummonDeathFromNetwork();
+/** True while applying tower_destroy from the peer so CharacterBase::dead() does not echo WS again. */
+bool gameLayerIsApplyingPeerTowerDestroyFromNetwork();
+#endif
+
 class GameLayer : public Layer
 {
 	using OnHUDInitializedCallback = std::function<void()>;
@@ -83,6 +90,8 @@ public:
 
 	bool _isAttackButtonRelease;
 	bool _hasSpawnedGuardian;
+	/** Roshi/Han pick from last initGard (for WS tower_destroy / guardian sync). */
+	int _guardianPickIdx;
 	// int _guardianNum;
 	vector<Flog *> _KonohaFlogArray;
 	vector<Flog *> _AkatsukiFlogArray;
@@ -116,8 +125,9 @@ public:
 	/** Online follower (Akatsuki): apply authoritative frog pose/HP CSV from Konoha (see flog_snap). */
 	void applyPeerFlogSnapFromNetwork(const std::string &dcsv);
 	void initTower();
-	/** @param guardianVariant Roshi vs Han: 0 or 1; -1 picks randomly (deterministic when synced online). */
-	void initGard(int guardianVariant = -1, bool notifyNetworkPeers = true);
+	/** @param guardianVariant Roshi vs Han: 0 or 1; -1 picks randomly (deterministic when synced online).
+	 * @param anchorTowerName When set (KonohaCenter / AkatsukiCenter), spawn uses world placement for that base — same on both peers (fixes online flip). */
+	void initGard(int guardianVariant = -1, bool notifyNetworkPeers = true, const std::string *anchorTowerName = nullptr);
 	void initEffects();
 
 	void updateViewPoint(float dt);

@@ -6,6 +6,7 @@
 #include "Core/Provider.hpp"
 #include "HudLayer.h"
 #include "GameLayer.h"
+#include "Enums/TowerEnum.h"
 #include "GameMode/GameModeImpl.h"
 #include "MyUtils/CCShake.h"
 #include "Systems/CommandSystem.hpp"
@@ -4656,6 +4657,48 @@ void CharacterBase::knockDown()
 void CharacterBase::dead()
 {
 	getGameModeHandler()->onCharacterDead(this);
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (gameLayerOnlineBattleActive() && !gameLayerIsApplyingPeerSummonDeathFromNetwork() && _master &&
+		(isClone() || isSummon()))
+	{
+		const bool masterIsPlayer = _master->isPlayer();
+		char buf[384];
+		std::snprintf(buf, sizeof(buf),
+					  "{\"type\":\"summon_death\",\"master\":\"%s\",\"unit\":\"%s\",\"master_is_player\":%s,\"ts\":%ld}",
+					  _master->getName().c_str(),
+					  getName().c_str(),
+					  masterIsPlayer ? "true" : "false",
+					  (long)std::time(nullptr));
+		MacWsSend(buf);
+	}
+	if (gameLayerOnlineBattleActive() && !gameLayerIsApplyingPeerSummonDeathFromNetwork() &&
+		!gameLayerIsApplyingPeerTowerDestroyFromNetwork() && isTower())
+	{
+		GameLayer *layer = getGameLayer();
+		if (layer)
+		{
+			int gdxVal = -1;
+			if (layer->_isHardCoreGame)
+			{
+				const std::string &tn = getName();
+				if (tn == TowerEnum::AkatsukiCenter || tn == TowerEnum::KonohaCenter)
+				{
+					if (layer->_hasSpawnedGuardian && layer->_guardianPickIdx >= 0)
+						gdxVal = layer->_guardianPickIdx;
+					else
+						gdxVal = (getCharId() + layer->mapId) % 2;
+				}
+			}
+			char buf[320];
+			std::snprintf(buf, sizeof(buf),
+						  "{\"type\":\"tower_destroy\",\"charId\":%d,\"mapId\":%d,\"tower\":\"%s\",\"gdx\":%d,\"ts\":%ld}",
+						  getCharId(), layer->mapId, getName().c_str(), gdxVal, (long)std::time(nullptr));
+			MacWsSend(buf);
+		}
+	}
+#endif
+
 	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, "acceptAttack");
 
 	_isHitOne = false;

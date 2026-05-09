@@ -11,14 +11,19 @@
 // - Player input sync, match_end, and match_ui (pause/gear overlay sync for online).
 // - input_event "tick" is a 20 Hz logical slot (50ms) for ordering; joy_update is coalesced to <=20/s.
 // - knock_snap: opponent's authoritative world position right after taking light melee knockback.
-// - battle_stat: peer HP + kill/death HUD + team totals kono/aka; receiver applies mirror HP and calls dead() at 0.
+// - battle_stat: peer HP + kill/death/flog + HUD team totals; receiver updates mirror hero stats + HP (dead() at 0).
 // - hero_snap/knock_snap: receiver rejects tiny deltas to avoid jitter; threshold tuned below for MAC builds.
 // - latency_ping / latency_pong: RTT sample for HUD ping ms (server echoes to sender only).
 // - flog_wave: Konoha spawns; Akatsuki mirrors that wave.
 // - flog_snap: Konoha ~10Hz CSV per frog: wave,slot,x,y,hp,state,flip — follower applies pose + animations (AI off).
+// - summon_death: clone/summon died locally — peer kills the mirrored unit under the opponent's hero (e.g. Akamaru).
+// - tower_destroy: tower reached 0 HP locally — peer removes same tower by charId (map spawn index) so minimap/base match.
 // - Other world-state packets are ignored to preserve stability.
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#include "Core/Tower/Tower.hpp"
+#include "Enums/TowerEnum.h"
+
 extern "C"
 {
 void SetNativeWsEventCallback(void (*callback)(const char *eventName, const char *payload));
@@ -62,6 +67,19 @@ static bool s_didSendJoyWire = false;
 
 static bool s_latencyPingPending = false;
 static std::chrono::steady_clock::time_point s_latencyPingSentAt{};
+
+static bool s_applyingPeerSummonDeath = false;
+static bool s_applyingPeerTowerDestroy = false;
+
+bool gameLayerIsApplyingPeerSummonDeathFromNetwork()
+{
+	return s_applyingPeerSummonDeath;
+}
+
+bool gameLayerIsApplyingPeerTowerDestroyFromNetwork()
+{
+	return s_applyingPeerTowerDestroy;
+}
 
 static void advanceWsNetworkTick20Hz()
 {
@@ -240,6 +258,104 @@ static CharacterBase *getRemoteHeroMirror(GameLayer *layer)
 	return fallback;
 }
 
+static void applyPeerTowerDestroy(GameLayer *layer, const char *payload)
+{
+	if (!layer || !payload || !layer->_isStarted || layer->_isExiting)
+		return;
+
+	int charId = 0;
+	int mapId = 0;
+	if (!jsonIntField(payload, "charId", charId) || charId <= 0)
+		return;
+	if (!jsonIntField(payload, "mapId", mapId) || mapId != layer->mapId)
+		return;
+
+	string towerFromWire;
+	jsonStringField(payload, "tower", towerFromWire);
+
+	int gdx = -1;
+	jsonIntField(payload, "gdx", gdx);
+
+	Tower *target = nullptr;
+	for (auto *tower : layer->_TowerArray)
+	{
+		if (!tower || tower->getState() == State::DEAD)
+			continue;
+		if (tower->getCharId() != charId)
+			continue;
+		target = tower;
+		break;
+	}
+	if (!target)
+		return;
+
+	string towerName = towerFromWire.empty() ? target->getName() : towerFromWire;
+	const bool isCenter =
+		towerName == TowerEnum::KonohaCenter || towerName == TowerEnum::AkatsukiCenter;
+
+	if (layer->_isHardCoreGame && !layer->_hasSpawnedGuardian && isCenter)
+	{
+		const int pick = (gdx >= 0) ? gdx : ((charId + layer->mapId) % 2);
+		layer->initGard(pick, false, &towerName);
+	}
+
+	s_applyingPeerTowerDestroy = true;
+	target->dead();
+	s_applyingPeerTowerDestroy = false;
+}
+
+static void applyPeerSummonDeath(GameLayer *layer, const char *payload)
+{
+	if (!layer || !payload || !layer->_isStarted || layer->_isExiting)
+		return;
+
+	string masterName;
+	string unitName;
+	if (!jsonStringField(payload, "master", masterName) || masterName.empty())
+		return;
+	if (!jsonStringField(payload, "unit", unitName) || unitName.empty())
+		return;
+
+	bool masterWasPlayerOnSender = false;
+	jsonBoolField(payload, "master_is_player", masterWasPlayerOnSender);
+
+	for (auto *hero : layer->_CharacterArray)
+	{
+		if (!hero)
+			continue;
+		if (hero->getName() != masterName)
+			continue;
+		if (masterWasPlayerOnSender)
+		{
+			if (hero->getGroup() == layer->playerGroup)
+				continue;
+		}
+		else
+		{
+			if (hero->getGroup() != layer->playerGroup)
+				continue;
+		}
+
+		CharacterBase *toKill = nullptr;
+		for (auto *mo : hero->getMonsterArray())
+		{
+			if (!mo || mo->getState() == State::DEAD)
+				continue;
+			if (mo->getName() != unitName)
+				continue;
+			toKill = mo;
+			break;
+		}
+		if (toKill)
+		{
+			s_applyingPeerSummonDeath = true;
+			toKill->dead();
+			s_applyingPeerSummonDeath = false;
+		}
+		return;
+	}
+}
+
 static void applyPeerBattleStat(GameLayer *layer, const char *payload)
 {
 	if (!layer || !payload || !layer->_isStarted || layer->_isExiting)
@@ -248,18 +364,25 @@ static void applyPeerBattleStat(GameLayer *layer, const char *payload)
 	int hp = 0;
 	int peerKills = 0;
 	int peerDeaths = 0;
+	int peerFlog = 0;
 	if (!jsonIntField(payload, "hp", hp))
 		return;
 	if (!jsonIntField(payload, "kills", peerKills))
 		return;
 	if (!jsonIntField(payload, "deaths", peerDeaths))
 		return;
+	const bool hasFlog = jsonIntField(payload, "flog", peerFlog);
 
 	if (hp < 0)
 		hp = 0;
 
 	if (auto *mirror = getRemoteHeroMirror(layer))
 	{
+		mirror->setKillNum((uint32_t)std::max(0, peerKills));
+		mirror->_deadNum = (uint32_t)std::max(0, peerDeaths);
+		if (hasFlog)
+			mirror->_flogNum = (uint32_t)std::max(0, peerFlog);
+
 		if (mirror->getState() != State::DEAD)
 		{
 			uint32_t cap = mirror->getMaxHP();
@@ -450,11 +573,31 @@ static void sendNetworkMatchEnd(bool isWin, const char *reason = "game_over")
 {
 	if (!MacWsIsConnected())
 		return;
-	auto message = string("{\"type\":\"match_end\",\"isWin\":") +
-				   (isWin ? "true" : "false") +
-				   ",\"reason\":\"" + (reason ? string(reason) : string("game_over")) + "\"" +
-				   ",\"ts\":" + to_string((int)time(nullptr)) + "}";
-	MacWsSend(message.c_str());
+
+	const char *reasonTag = "game_over";
+	if (reason && strstr(reason, "surrender"))
+		reasonTag = "surrender";
+
+	unsigned pk = 0;
+	unsigned pd = 0;
+	unsigned pf = 0;
+	unsigned pn = 0;
+	unsigned ps = 0;
+	if (_gLayer && _gLayer->currentPlayer)
+	{
+		pk = _gLayer->currentPlayer->getKillNum();
+		pd = _gLayer->currentPlayer->_deadNum;
+		pf = _gLayer->currentPlayer->_flogNum;
+		pn = (unsigned)_gLayer->_minute;
+		ps = (unsigned)_gLayer->_second;
+	}
+
+	char buf[384];
+	std::snprintf(buf, sizeof(buf),
+				  "{\"type\":\"match_end\",\"isWin\":%s,\"reason\":\"%s\","
+				  "\"pk\":%u,\"pd\":%u,\"pf\":%u,\"pn\":%u,\"ps\":%u,\"ts\":%ld}",
+				  isWin ? "true" : "false", reasonTag, pk, pd, pf, pn, ps, (long)time(nullptr));
+	MacWsSend(buf);
 }
 
 static bool s_suppressNetworkMatchUI = false;
@@ -575,6 +718,33 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 		{
 			bool isWin = false;
 			jsonBoolField(payload, "isWin", isWin);
+
+			int pk = -1;
+			int pd = -1;
+			int pf = -1;
+			int pn = -1;
+			int ps = -1;
+			const bool hasPk = jsonIntField(payload, "pk", pk);
+			const bool hasPd = jsonIntField(payload, "pd", pd);
+			const bool hasPf = jsonIntField(payload, "pf", pf);
+			const bool hasPn = jsonIntField(payload, "pn", pn);
+			const bool hasPs = jsonIntField(payload, "ps", ps);
+
+			if (hasPk && hasPd && hasPf && pk >= 0 && pd >= 0 && pf >= 0)
+			{
+				if (auto *mirror = getRemoteHeroMirror(_gLayer))
+				{
+					mirror->setKillNum((uint32_t)pk);
+					mirror->_deadNum = (uint32_t)pd;
+					mirror->_flogNum = (uint32_t)pf;
+				}
+			}
+			if (hasPn && hasPs && pn >= 0 && ps >= 0)
+			{
+				_gLayer->_minute = (uint32_t)pn;
+				_gLayer->_second = (uint32_t)ps;
+			}
+
 			s_isApplyingRemoteMatchEnd = true;
 			_gLayer->onGameOver(isWin);
 			s_isApplyingRemoteMatchEnd = false;
@@ -665,8 +835,15 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 			!_gLayer->_hasSpawnedGuardian)
 		{
 			int idx = -1;
+			string towerOpt;
+			const bool hasTower = jsonStringField(payload, "tower", towerOpt) && !towerOpt.empty();
 			if (jsonIntField(payload, "idx", idx))
-				_gLayer->initGard(idx, false);
+			{
+				if (hasTower)
+					_gLayer->initGard(idx, false, &towerOpt);
+				else
+					_gLayer->initGard(idx, false);
+			}
 		}
 		return;
 	}
@@ -690,6 +867,18 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 				seqInt = 0;
 			_gLayer->applyPeerFlogWaveFromNetwork((uint32_t)std::max(0, seqInt));
 		}
+		return;
+	}
+	if (strstr(payload, "\"type\":\"tower_destroy\"") != nullptr)
+	{
+		if (_gLayer && _gLayer->_isStarted && !_gLayer->_isExiting)
+			applyPeerTowerDestroy(_gLayer, payload);
+		return;
+	}
+	if (strstr(payload, "\"type\":\"summon_death\"") != nullptr)
+	{
+		if (_gLayer && _gLayer->_isStarted && !_gLayer->_isExiting)
+			applyPeerSummonDeath(_gLayer, payload);
 		return;
 	}
 	if (strstr(payload, "\"type\":\"battle_stat\"") != nullptr)
@@ -726,6 +915,8 @@ static void resetNetworkInputStateOnExit()
 	SetNativeWsEventCallback(nullptr);
 	s_pendingRemoteInputs.clear();
 	s_latencyPingPending = false;
+	s_applyingPeerSummonDeath = false;
+	s_applyingPeerTowerDestroy = false;
 }
 #else
 static void sendNetworkInputEvent(const string &, const string & = "{}") {}

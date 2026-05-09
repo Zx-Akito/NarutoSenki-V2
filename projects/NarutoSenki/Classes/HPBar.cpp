@@ -1,9 +1,9 @@
 #include "Core/Hero.hpp"
 #include "HudLayer.h"
+#include <string>
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 extern "C" bool MacWsIsConnected();
-extern "C" int GetNetworkForcedTeam();
 #endif
 
 bool HPBar::init(const char *szImage)
@@ -59,7 +59,8 @@ void HPBar::loseHP(float percent)
 		{
 			if (not getGameLayer()->_hasSpawnedGuardian && percent <= 0.8)
 			{
-				getGameLayer()->initGard();
+				const std::string anchorTowerName = _delegate->getName();
+				getGameLayer()->initGard(-1, true, &anchorTowerName);
 			}
 		}
 
@@ -83,13 +84,7 @@ void HPBar::loseHP(float percent)
 
 		if (_delegate->isFlog())
 		{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-			const bool skipOnlineFollowerLaneRewards =
-				MacWsIsConnected() && GetNetworkForcedTeam() != 0;
-#else
-			const bool skipOnlineFollowerLaneRewards = false;
-#endif
-			if (_slayer && !skipOnlineFollowerLaneRewards)
+			if (_slayer)
 			{
 				if (_slayer->getSecMaster() &&
 					_slayer->getName() != SkillEnum::KageHand &&
@@ -393,6 +388,27 @@ void HPBar::loseHP(float percent)
 					else
 						currentSlayer = _slayer;
 				}
+			}
+
+			// Minion (lane frog) last-hit: credit the roster hero on the same team so kill counts + online battle_stat match.
+			if (currentSlayer && currentSlayer->isFlog())
+			{
+				const Group frogSide = currentSlayer->getGroup();
+				CharacterBase *creditTo = nullptr;
+				for (auto *h : getGameLayer()->_CharacterArray)
+				{
+					if (!h || !h->isPlayerOrCom())
+						continue;
+					if (h->isClone() || h->isSummon() || h->isKugutsu() || h->isGuardian())
+						continue;
+					if (h->getGroup() == frogSide)
+					{
+						creditTo = h;
+						break;
+					}
+				}
+				if (creditTo)
+					currentSlayer = creditTo;
 			}
 
 			if (currentSlayer)

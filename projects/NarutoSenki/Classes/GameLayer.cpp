@@ -16,6 +16,7 @@
 #include "Systems/BattleRuntimeSystem.hpp"
 #include "Systems/SpawnSystem.hpp"
 #include "Systems/SessionState.hpp"
+#include "Enums/TowerEnum.h"
 
 // GameLayer.cpp
 // - Owns core battle lifecycle and gameplay flow.
@@ -272,6 +273,7 @@ GameLayer::GameLayer()
 	_isShacking = false;
 	_isSurrender = false;
 	_hasSpawnedGuardian = false;
+	_guardianPickIdx = -1;
 
 	_isStarted = false;
 	_isExiting = false;
@@ -394,27 +396,56 @@ void GameLayer::initTileMap()
 	addChild(currentMap, kMapOrder);
 }
 
-void GameLayer::initGard(int guardianVariant, bool notifyNetworkPeers)
+void GameLayer::initGard(int guardianVariant, bool notifyNetworkPeers, const std::string *anchorTowerName)
 {
 	if (_hasSpawnedGuardian)
 		return;
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	/** Hardcore guardians (Roshi/Han) are disabled for WS matches — avoids sync issues and keeps lanes simpler. */
+	if (MacWsIsConnected())
+		return;
+#endif
+
 	setRand();
 	const int index = (guardianVariant >= 0) ? (guardianVariant % 2) : random(2);
 	auto guardianName = index == 0 ? GuardianEnum::Roshi : GuardianEnum::Han;
-	auto guardianGroup = playerGroup == Group::Konoha ? Group::Akatsuki : Group::Konoha;
-	auto guardian = Provider::create(guardianName, Role::Com, guardianGroup);
 
-	if (playerGroup == Group::Konoha)
+	Group guardianGroup = Group::Konoha;
+	Vec2 spawnPos(272, 80);
+
+	if (anchorTowerName && !anchorTowerName->empty())
 	{
-		guardian->setPosition(Vec2(2800, 80));
-		guardian->setSpawnPoint(Vec2(2800, 80));
+		if (*anchorTowerName == TowerEnum::AkatsukiCenter)
+		{
+			guardianGroup = Group::Akatsuki;
+			spawnPos = Vec2(2800, 80);
+		}
+		else if (*anchorTowerName == TowerEnum::KonohaCenter)
+		{
+			guardianGroup = Group::Konoha;
+			spawnPos = Vec2(272, 80);
+		}
+		else
+		{
+			return;
+		}
 	}
 	else
 	{
-		guardian->setPosition(Vec2(272, 80));
-		guardian->setSpawnPoint(Vec2(272, 80));
+		guardianGroup = playerGroup == Group::Konoha ? Group::Akatsuki : Group::Konoha;
+		if (playerGroup == Group::Konoha)
+			spawnPos = Vec2(2800, 80);
+		else
+			spawnPos = Vec2(272, 80);
 	}
+
+	_guardianPickIdx = index;
+
+	auto guardian = Provider::create(guardianName, Role::Com, guardianGroup);
+
+	guardian->setPosition(spawnPos);
+	guardian->setSpawnPoint(spawnPos);
 
 	addChild(guardian, -guardian->getPositionY());
 	guardian->setLV(6);
@@ -435,8 +466,12 @@ void GameLayer::initGard(int guardianVariant, bool notifyNetworkPeers)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 	if (notifyNetworkPeers && MacWsIsConnected())
 	{
-		char buf[96];
-		snprintf(buf, sizeof(buf), "{\"type\":\"guardian_spawn\",\"idx\":%d}", index);
+		char buf[224];
+		if (anchorTowerName && !anchorTowerName->empty())
+			snprintf(buf, sizeof(buf), "{\"type\":\"guardian_spawn\",\"idx\":%d,\"tower\":\"%s\"}", index,
+					 anchorTowerName->c_str());
+		else
+			snprintf(buf, sizeof(buf), "{\"type\":\"guardian_spawn\",\"idx\":%d}", index);
 		MacWsSend(buf);
 	}
 #else
@@ -679,8 +714,24 @@ void GameLayer::applyPeerFlogSnapFromNetwork(const std::string &dcsv)
 		Flog *flog = findFlogByNetworkSlot(this, (uint32_t)w, s);
 		if (!flog)
 			continue;
-		flog->setPosition(Vec2(x, y));
-		reorderChild(flog, -(int)flog->getPositionY());
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+		if (MacWsIsConnected() && GetNetworkForcedTeam() != 0)
+		{
+			const Vec2 tgt(x, y);
+			flog->_followNetTargetPos = tgt;
+			flog->_followNetSmoothActive = (hp > 0);
+			const float dx = tgt.x - flog->getPositionX();
+			const float dy = tgt.y - flog->getPositionY();
+			if (dx * dx + dy * dy > 360000.f)
+				flog->setPosition(tgt);
+			reorderChild(flog, -(int)flog->getPositionY());
+		}
+		else
+#endif
+		{
+			flog->setPosition(Vec2(x, y));
+			reorderChild(flog, -(int)flog->getPositionY());
+		}
 		flog->setHPValue((uint32_t)hp, false);
 		if (flog->_hpBar)
 			flog->_hpBar->syncVisualPercent(flog->getHpPercent());
@@ -883,6 +934,7 @@ void GameLayer::syncOnlineBattleStatsToPeer(bool force)
 	const uint32_t maxHp = currentPlayer->getMaxHP();
 	const uint32_t kills = currentPlayer->getKillNum();
 	const uint32_t deaths = currentPlayer->_deadNum;
+	const uint32_t flog = currentPlayer->_flogNum;
 	int kono = 0;
 	int aka = 0;
 	if (_hudLayer && _hudLayer->KonoLabel && _hudLayer->AkaLabel)
@@ -891,11 +943,11 @@ void GameLayer::syncOnlineBattleStatsToPeer(bool force)
 		aka = to_int(_hudLayer->AkaLabel->getString());
 	}
 
-	char buf[320];
+	char buf[360];
 	std::snprintf(buf, sizeof(buf),
-				  "{\"type\":\"battle_stat\",\"hp\":%u,\"maxHp\":%u,\"kills\":%u,\"deaths\":%u,"
+				  "{\"type\":\"battle_stat\",\"hp\":%u,\"maxHp\":%u,\"kills\":%u,\"deaths\":%u,\"flog\":%u,"
 				  "\"kono\":%d,\"aka\":%d,\"ts\":%ld}",
-				  hp, maxHp, kills, deaths, kono, aka, (long)std::time(nullptr));
+				  hp, maxHp, kills, deaths, flog, kono, aka, (long)std::time(nullptr));
 	MacWsSend(buf);
 #else
 	(void)force;
@@ -1199,6 +1251,12 @@ void GameLayer::onGameOver(bool isWin)
 {
 	if (_hasGameOverTriggered)
 		return;
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (MacWsIsConnected())
+		syncOnlineBattleStatsToPeer(true);
+#endif
+
 	_hasGameOverTriggered = true;
 	_isStarted = false;
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)

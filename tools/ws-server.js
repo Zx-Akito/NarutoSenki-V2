@@ -372,13 +372,52 @@ wss.on("connection", (ws) => {
       return;
     }
 
+    /** Summon/clone (e.g. Kiba Akamaru) died on one client — peer removes mirror so both sides match. */
+    if (message.type === "summon_death") {
+      const master = typeof message.master === "string" ? message.master : "";
+      const unit = typeof message.unit === "string" ? message.unit : "";
+      if (!master || !unit) return;
+      relayToOpponent(ws, {
+        type: "summon_death",
+        master,
+        unit,
+        master_is_player: !!message.master_is_player,
+        from: ws.playerId,
+        ts: Date.now(),
+      });
+      return;
+    }
+
+    if (message.type === "tower_destroy") {
+      const charId = Math.floor(Number(message.charId));
+      const mapId = Math.floor(Number(message.mapId));
+      if (!Number.isFinite(charId) || charId <= 0) return;
+      if (!Number.isFinite(mapId)) return;
+      const tower =
+        typeof message.tower === "string" && message.tower.length > 0 ? message.tower : "";
+      const gdx = Math.floor(Number(message.gdx));
+      relayToOpponent(ws, {
+        type: "tower_destroy",
+        charId,
+        mapId,
+        tower,
+        gdx: Number.isFinite(gdx) ? gdx : -1,
+        from: ws.playerId,
+        ts: Date.now(),
+      });
+      return;
+    }
+
     /** Hardcore guardian Roshi/Han — must relay; unmatched types fall through to echo (sender only). */
     if (message.type === "guardian_spawn") {
       const n = Math.floor(Number(message.idx));
       if (!Number.isFinite(n)) return;
+      const tower =
+        typeof message.tower === "string" && message.tower.length > 0 ? message.tower : "";
       relayToOpponent(ws, {
         type: "guardian_spawn",
         idx: ((n % 2) + 2) % 2,
+        tower,
         from: ws.playerId,
         ts: Date.now(),
       });
@@ -387,13 +426,24 @@ wss.on("connection", (ws) => {
 
     if (message.type === "match_end") {
       const localIsWin = !!message.isWin;
-      relayToOpponent(ws, {
+      const pk = Math.floor(Number(message.pk));
+      const pd = Math.floor(Number(message.pd));
+      const pf = Math.floor(Number(message.pf));
+      const pn = Math.floor(Number(message.pn));
+      const ps = Math.floor(Number(message.ps));
+      const payload = {
         type: "match_end",
         isWin: !localIsWin,
         reason: message.reason || "remote_end",
         from: ws.playerId,
         ts: Date.now(),
-      });
+      };
+      if (Number.isFinite(pk) && pk >= 0) payload.pk = pk;
+      if (Number.isFinite(pd) && pd >= 0) payload.pd = pd;
+      if (Number.isFinite(pf) && pf >= 0) payload.pf = pf;
+      if (Number.isFinite(pn) && pn >= 0) payload.pn = pn;
+      if (Number.isFinite(ps) && ps >= 0) payload.ps = ps;
+      relayToOpponent(ws, payload);
       // FIX #4: Bersihkan state match setelah selesai
       cleanupMatch(ws);
       return;

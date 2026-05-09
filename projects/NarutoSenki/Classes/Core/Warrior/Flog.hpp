@@ -1,6 +1,9 @@
 #pragma once
 #include "CharacterBase.h"
 #include "HPBar.h"
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#include <cmath>
+#endif
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 extern "C"
@@ -21,6 +24,12 @@ public:
 	uint8_t _netSlot = 255;
 	/** Last authority state applied on follower (Akatsuki) for mirror visuals. */
 	State _lastMirrorAuthState = State::IDLE;
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	/** Follower client: smooth toward network snap target instead of teleporting every ~100ms (reduces stutter). */
+	Vec2 _followNetTargetPos{};
+	bool _followNetSmoothActive = false;
+#endif
 
 	/** Online follower: facing + walk/attack animations from Konoha snapshots (local AI is off). */
 	void syncFollowerMirrorVisual(State authState, bool flipped)
@@ -187,6 +196,38 @@ public:
 		_hpBar->setPositionY(getHeight());
 		_hpBar->setDelegate(this);
 		addChild(_hpBar);
+	}
+
+	void update(float dt) override
+	{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+		if (MacWsIsConnected() && GetNetworkForcedTeam() != 0 && _followNetSmoothActive &&
+			getState() != State::DEAD)
+		{
+			const Vec2 cur = getPosition();
+			const Vec2 &tgt = _followNetTargetPos;
+			const float dx = tgt.x - cur.x;
+			const float dy = tgt.y - cur.y;
+			const float dsq = dx * dx + dy * dy;
+			if (dsq > 360000.f)
+			{
+				setPosition(tgt);
+			}
+			else if (dsq > 3.f)
+			{
+				const float dist = sqrtf(dsq);
+				const float maxStep = 920.f * dt;
+				const float step = dist > maxStep ? maxStep : dist;
+				const float inv = 1.f / dist;
+				setPosition(Vec2(cur.x + dx * inv * step, cur.y + dy * inv * step));
+			}
+			else
+				setPosition(tgt);
+			if (auto *par = getParent())
+				par->reorderChild(this, -(int)getPositionY());
+		}
+#endif
+		CharacterBase::update(dt);
 	}
 
 protected:

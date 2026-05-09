@@ -121,14 +121,6 @@ void GameOver::listResult()
 	float resultScore = 0;
 	uint32_t killDead = currPlayer->getKillNum() - currPlayer->_deadNum;
 
-	// Verify that the game time is valid
-	if (_totalSecond != getGameLayer()->getTotalTime())
-	{
-		SimpleAudioEngine::sharedEngine()->stopBackgroundMusic(true);
-		Director::sharedDirector()->end();
-		return;
-	}
-
 	if (getGameLayer()->_isHardCoreGame)
 	{
 		if (_totalSecond > 900)
@@ -142,13 +134,6 @@ void GameOver::listResult()
 			resultScore = ((killDead / (_totalSecond / 60.0f)) / 4) * 100;
 		else
 			resultScore = ((killDead - ((_totalSecond / 60.0f - 10) * 4)) / 40) * 100;
-	}
-
-	if (_totalSecond < 1 * 60 + 5 && _isWin)
-	{
-		SimpleAudioEngine::sharedEngine()->stopBackgroundMusic(true);
-		Director::sharedDirector()->end();
-		return;
 	}
 
 	int i = 0;
@@ -257,14 +242,6 @@ void GameOver::listResult()
 
 	if (Cheats < kMaxCheats)
 	{
-		// Verify that the game total kills is valid
-		if ((akatsukiKill + konohaKill) != getGameLayer()->getTotalKills())
-		{
-			SimpleAudioEngine::sharedEngine()->stopBackgroundMusic(true);
-			Director::sharedDirector()->end();
-			return;
-		}
-
 		uint32_t realKillNum = currPlayer->getKillNum();
 
 		string tempReward = getGameLayer()->_isHardCoreGame ? "FDDD\24" : "ONNN\24";

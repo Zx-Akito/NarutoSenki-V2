@@ -4,7 +4,8 @@
 class PauseLayer : public Layer
 {
 public:
-	bool init(RenderTexture *snapshoot);
+	/** snapshot = frozen frame behind menu; omit when overlayLiveBackdrop (e.g. online match keeps battle animating beneath). */
+	bool init(RenderTexture *snapshoot, bool overlayLiveBackdrop = false);
 
 	Menu *pauseMenu = nullptr;
 	Menu *soundMenu = nullptr;
@@ -14,7 +15,7 @@ public:
 	MenuItem *voice_btn = nullptr;
 	MenuItem *pre_btn = nullptr;
 
-	static PauseLayer *create(RenderTexture *snapshoot);
+	static PauseLayer *create(RenderTexture *snapshoot, bool overlayLiveBackdrop = false);
 
 private:
 	void onResume(Ref *sender);

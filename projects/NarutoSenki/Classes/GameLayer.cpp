@@ -1,4 +1,7 @@
 #include "Defines.h"
+#include <chrono>
+#include <cstdio>
+#include <ctime>
 #include "CharacterBase.h"
 #include "GameLayer.h"
 #include "BGLayer.h"
@@ -20,6 +23,50 @@ GameLayer *_gLayer = nullptr;
 bool _isFullScreen = false;
 
 #include "GameLayerNetworkInput.inl"
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+extern "C" bool MacWsIsConnected();
+#endif
+
+bool GameLayer::shouldBlockNetworkBattleInputEcho() const
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	return _isStarted && MacWsIsConnected() && (_isPause || _isGear);
+#else
+	return false;
+#endif
+}
+
+void GameLayer::sendNetworkOwnedHeroPositionSnapIfNeeded(const Vec2 &worldPos, bool afterTowerClamp)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	extern void MacWsSend(const char *message);
+	if (!afterTowerClamp || !MacWsIsConnected() || !_isStarted || _isExiting)
+		return;
+	using namespace std::chrono;
+	static steady_clock::time_point s_lastSentAt = steady_clock::now();
+	static Vec2 s_lastSentPos(0, 0);
+	static bool s_haveLastSentPos = false;
+	const auto now = steady_clock::now();
+	const auto msSince = duration_cast<milliseconds>(now - s_lastSentAt).count();
+	const float ddx = worldPos.x - s_lastSentPos.x;
+	const float ddy = worldPos.y - s_lastSentPos.y;
+	const float drift2 = ddx * ddx + ddy * ddy;
+	if (msSince < 50 && drift2 < 400.f && s_haveLastSentPos)
+		return;
+	char heroSnapBuf[192];
+	std::snprintf(heroSnapBuf, sizeof(heroSnapBuf),
+				  "{\"type\":\"hero_snap\",\"x\":%.2f,\"y\":%.2f,\"ts\":%ld}",
+				  (double)worldPos.x, (double)worldPos.y, (long)time(nullptr));
+	MacWsSend(heroSnapBuf);
+	s_lastSentPos = worldPos;
+	s_haveLastSentPos = true;
+	s_lastSentAt = now;
+#else
+	(void)worldPos;
+	(void)afterTowerClamp;
+#endif
+}
 
 void BattleRuntimeSystem::onGameStart(GameLayer *layer, bool skipInitFlogs, float flogSpawnDuration) const
 {
@@ -708,19 +755,32 @@ void GameLayer::onPause()
 
 	sendNetworkMatchUIIfActive("pause", true);
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (_isStarted && MacWsIsConnected())
+	{
+		sendNetworkJoyReleaseEvent();
+		if (currentPlayer && currentPlayer->getState() == State::WALK)
+			currentPlayer->idle();
+	}
+#endif
+
 	_isPause = true;
 	const bool isNetworkOverlay = _isStarted && MacWsIsConnected();
-	RenderTexture *snapshoot = RenderTexture::create(winSize.width, winSize.height);
 	Scene *f = Director::sharedDirector()->getRunningScene();
-	Ref *pObject = f->getChildren()->objectAtIndex(0);
-	BGLayer *bg = (BGLayer *)pObject;
-	snapshoot->begin();
-	bg->visit();
+	RenderTexture *snapshoot = nullptr;
+	if (!isNetworkOverlay)
+	{
+		snapshoot = RenderTexture::create(winSize.width, winSize.height);
+		Ref *pObject = f->getChildren()->objectAtIndex(0);
+		BGLayer *bg = (BGLayer *)pObject;
+		snapshoot->begin();
+		bg->visit();
 
-	visit();
-	snapshoot->end();
+		visit();
+		snapshoot->end();
+	}
 
-	PauseLayer *layer = PauseLayer::create(snapshoot);
+	PauseLayer *layer = PauseLayer::create(snapshoot, isNetworkOverlay);
 	_pauseLayer = layer;
 	if (isNetworkOverlay)
 	{
@@ -769,20 +829,33 @@ void GameLayer::onGear()
 
 	sendNetworkMatchUIIfActive("gear", true);
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (_isStarted && MacWsIsConnected())
+	{
+		sendNetworkJoyReleaseEvent();
+		if (currentPlayer && currentPlayer->getState() == State::WALK)
+			currentPlayer->idle();
+	}
+#endif
+
 	_isGear = true;
 	const bool isNetworkOverlay = _isStarted && MacWsIsConnected();
 
-	RenderTexture *snapshoot = RenderTexture::create(winSize.width, winSize.height);
 	Scene *f = Director::sharedDirector()->getRunningScene();
-	Ref *pObject = f->getChildren()->objectAtIndex(0);
-	BGLayer *bg = (BGLayer *)pObject;
-	snapshoot->begin();
-	bg->visit();
+	RenderTexture *snapshoot = nullptr;
+	if (!isNetworkOverlay)
+	{
+		snapshoot = RenderTexture::create(winSize.width, winSize.height);
+		Ref *pObject = f->getChildren()->objectAtIndex(0);
+		BGLayer *bg = (BGLayer *)pObject;
+		snapshoot->begin();
+		bg->visit();
 
-	visit();
-	snapshoot->end();
+		visit();
+		snapshoot->end();
+	}
 
-	GearLayer *layer = GearLayer::create(snapshoot);
+	GearLayer *layer = GearLayer::create(snapshoot, isNetworkOverlay);
 	_gearLayer = layer;
 	layer->updatePlayerGear();
 	if (isNetworkOverlay)

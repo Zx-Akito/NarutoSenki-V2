@@ -1,4 +1,5 @@
 #include "CharacterBase.h"
+#include <cmath>
 #include "Core/Provider.hpp"
 #include "HudLayer.h"
 #include "GameLayer.h"
@@ -40,8 +41,63 @@ static bool characterUsesPlayerTowerBlockingWhenWalking(CharacterBase *self)
 #endif
 }
 
-/** When replaying remote walk, sliding by anchor/velocity can disagree and tunnel through the tower AABB; shove to the nearest outside point instead. */
-static Vec2 resolvePointOutsideTowerCollisionBox(const Vec2 &p, const CCRect &rect)
+/** True for the mirrored enemy hero in online 1v1 (spawned as Com on the watcher). Walk must follow the owner: cannot cancel NATTACK by movement. */
+static bool isNetworkWsEnemyHeroMirror(CharacterBase *self)
+{
+	if (!self || !self->isCom() || self->isPlayer())
+		return false;
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	GameLayer *layer = getGameLayer();
+	if (!layer || !layer->_isStarted || !MacWsIsConnected())
+		return false;
+	if (self->getGroup() == layer->playerGroup)
+		return false;
+	const char *remoteHero = GetNetworkEnemyHeroName();
+	if (!remoteHero || remoteHero[0] == '\0')
+		return false;
+	return self->getName() == remoteHero;
+#else
+	return false;
+#endif
+}
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+static bool gameLayerOnlineBattleActive()
+{
+	auto *layer = getGameLayer();
+	return layer && layer->_isStarted && MacWsIsConnected();
+}
+#else
+static bool gameLayerOnlineBattleActive()
+{
+	return false;
+}
+#endif
+
+/** Pick vertical slide direction for tower skim; motion-based tie-break improves 1-frame agreement between peers replaying the same inputs. */
+static bool towerWalkChooseVerticalSlideDir(CharacterBase *self, float anchorYpoint, const Vec2 &desiredPos)
+{
+	const Vec2 from = self->getPosition();
+	const Vec2 delta = desiredPos - from;
+	const float ax = fabsf(delta.x);
+	const float ay = fabsf(delta.y);
+	const float idleEpsSq = 1e-8f;
+
+	if (delta.x * delta.x + delta.y * delta.y <= idleEpsSq)
+		return self->getPositionY() > anchorYpoint;
+
+	if (ay > ax + 1e-4f)
+		return delta.y >= 0.0f;
+
+	if (ax > ay + 1e-4f)
+		return (from.y + desiredPos.y) * 0.5f > anchorYpoint;
+
+	// Comparable horizontal/vertical blend: midpoint Y is stabler than from.y alone.
+	return (from.y + desiredPos.y) * 0.5f > anchorYpoint;
+}
+
+static Vec2 pushPointOutsideTowerRect(const Vec2 &p, const CCRect &rect, float margin)
 {
 	if (!rect.containsPoint(CCPointMake(p.x, p.y)))
 		return p;
@@ -50,19 +106,109 @@ static Vec2 resolvePointOutsideTowerCollisionBox(const Vec2 &p, const CCRect &re
 	const float maxX = rect.getMaxX();
 	const float minY = rect.getMinY();
 	const float maxY = rect.getMaxY();
-	const float dLeft = p.x - minX;
-	const float dRight = maxX - p.x;
-	const float dBottom = p.y - minY;
-	const float dTop = maxY - p.y;
-	const float eps = 2.0f;
+	const float dl = p.x - minX;
+	const float dr = maxX - p.x;
+	const float db = p.y - minY;
+	const float dt = maxY - p.y;
 
-	if (dLeft <= dRight && dLeft <= dBottom && dLeft <= dTop)
-		return Vec2(minX - eps, p.y);
-	if (dRight <= dBottom && dRight <= dTop)
-		return Vec2(maxX + eps, p.y);
-	if (dBottom <= dTop)
-		return Vec2(p.x, minY - eps);
-	return Vec2(p.x, maxY + eps);
+	Vec2 q = p;
+	const float shortest = MIN(dl, MIN(dr, MIN(db, dt)));
+	if (fabsf(shortest - dl) < 1e-4f)
+		q.x = minX - margin;
+	else if (fabsf(shortest - dr) < 1e-4f)
+		q.x = maxX + margin;
+	else if (fabsf(shortest - db) < 1e-4f)
+		q.y = minY - margin;
+	else
+		q.y = maxY + margin;
+	return q;
+}
+
+/** From outside to outside but passing through tower: first outside point before interior; or pull endpoint out if landing inside rect. */
+static Vec2 constrainTowerMoveAgainstRect(const Vec2 &from, const Vec2 &to, const CCRect &rect, float epsAlong)
+{
+	auto insidePt = [&](const Vec2 &p) -> bool {
+		return rect.containsPoint(CCPointMake(p.x, p.y));
+	};
+
+	if (insidePt(from))
+	{
+		const Vec2 pushed = pushPointOutsideTowerRect(from, rect, epsAlong);
+		if ((pushed.x - from.x) * (pushed.x - from.x) + (pushed.y - from.y) * (pushed.y - from.y) < 1e-6f)
+			return to;
+		return constrainTowerMoveAgainstRect(pushed, to, rect, epsAlong);
+	}
+
+	float hiBound = 1.f;
+	if (!insidePt(to))
+	{
+		float firstIn = -1.f;
+		constexpr int coarseSteps = 48;
+		for (int step = 1; step <= coarseSteps; ++step)
+		{
+			const float alpha = float(step) / float(coarseSteps);
+			const Vec2 p(from.x + (to.x - from.x) * alpha, from.y + (to.y - from.y) * alpha);
+			if (insidePt(p))
+			{
+				firstIn = alpha;
+				break;
+			}
+		}
+		if (firstIn < 0.f)
+			return to;
+		hiBound = firstIn;
+	}
+
+	float loSafe = 0.f;
+	float hiUnsafe = hiBound;
+	for (int i = 0; i < 22 && (hiUnsafe - loSafe > 5e-5f); ++i)
+	{
+		const float mid = (loSafe + hiUnsafe) * 0.5f;
+		const Vec2 p(from.x + (to.x - from.x) * mid, from.y + (to.y - from.y) * mid);
+		if (insidePt(p))
+			hiUnsafe = mid;
+		else
+			loSafe = mid;
+	}
+
+	Vec2 hit(from.x + (to.x - from.x) * loSafe, from.y + (to.y - from.y) * loSafe);
+	const float dx = to.x - from.x;
+	const float dy = to.y - from.y;
+	const float len = hypotf(dx, dy);
+	if (len > 1e-5f)
+	{
+		hit.x -= (dx / len) * epsAlong;
+		hit.y -= (dy / len) * epsAlong;
+	}
+	return hit;
+}
+
+static Vec2 onlineResolveTowerWalkDestination(const Vec2 &from, const Vec2 &to, GameLayer *layer)
+{
+	if (!layer)
+		return to;
+	constexpr int kSubsteps = 8;
+	constexpr float kEpsAlong = 2.5f;
+	Vec2 prev = from;
+	const Vec2 delta(to.x - from.x, to.y - from.y);
+	for (int s = 1; s <= kSubsteps; ++s)
+	{
+		Vec2 segEnd(from.x + delta.x * (float(s) / float(kSubsteps)),
+					from.y + delta.y * (float(s) / float(kSubsteps)));
+		for (auto *tower : layer->_TowerArray)
+		{
+			if (!tower)
+				continue;
+			const int metaWidth = 96;
+			const int metaHeight = 128;
+			const int metaX = (int)tower->getPositionX() - metaWidth / 2;
+			const int metaY = (int)tower->getPositionY() - metaHeight / 2;
+			const CCRect rect((float)metaX, (float)(metaY + 32), (float)metaWidth, (float)(metaHeight - 64));
+			segEnd = constrainTowerMoveAgainstRect(prev, segEnd, rect, kEpsAlong);
+		}
+		prev = segEnd;
+	}
+	return prev;
 }
 } // namespace
 
@@ -378,41 +524,66 @@ void CharacterBase::update(float dt)
 
 	if (_state == State::WALK)
 	{
-		_desiredPosition = getPosition() + (_velocity * dt);
+		const Vec2 walkStartPos = getPosition();
+		_desiredPosition = walkStartPos + (_velocity * dt);
+		bool shouldSnapTowerClamp = false;
 
 		if (characterUsesPlayerTowerBlockingWhenWalking(this))
 		{
-			// save the stop Area
-			for (auto tower : getGameLayer()->_TowerArray)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+			const bool useOnlineTowerClamp = gameLayerOnlineBattleActive();
+
+			if (useOnlineTowerClamp)
 			{
-				if (tower)
+				const Vec2 naiveDesired = _desiredPosition;
+				_desiredPosition = onlineResolveTowerWalkDestination(walkStartPos, naiveDesired, getGameLayer());
+
+				const float rdx = _desiredPosition.x - naiveDesired.x;
+				const float rdy = _desiredPosition.y - naiveDesired.y;
+				if (rdx * rdx + rdy * rdy > 4.f)
+					_affectedByTower = true;
+				const float corr2 = rdx * rdx + rdy * rdy;
+				shouldSnapTowerClamp = corr2 > 0.25f;
+				if (dt > 1e-5f && corr2 > 1e-4f)
 				{
-					int metaWidth = 96;
-					int metaHeight = 128;
-					int metaX = tower->getPositionX() - metaWidth / 2;
-					int metaY = tower->getPositionY() - metaHeight / 2;
-					CCRect rect = CCRect(metaX, metaY + 32, metaWidth, metaHeight - 64);
-
-					if (rect.containsPoint(_desiredPosition))
+					const float vx = (_desiredPosition.x - walkStartPos.x) / dt;
+					const float vy = (_desiredPosition.y - walkStartPos.y) / dt;
+					_velocity = Vec2(vx, vy);
+				}
+			}
+			else
+#endif
+			{
+				for (auto tower : getGameLayer()->_TowerArray)
+				{
+					if (tower)
 					{
-						_affectedByTower = true;
+						int metaWidth = 96;
+						int metaHeight = 128;
+						int metaX = tower->getPositionX() - metaWidth / 2;
+						int metaY = tower->getPositionY() - metaHeight / 2;
+						CCRect rect = CCRect(metaX, metaY + 32, metaWidth, metaHeight - 64);
 
-						const bool networkWalkProxy =
-							characterUsesPlayerTowerBlockingWhenWalking(this) && isCom();
-						if (networkWalkProxy)
+						if (rect.containsPoint(_desiredPosition))
 						{
-							// Do not reuse player slide (anchor/velocity); it can disagree across
-							// peers and either flip direction or tunnel. Pin to nearest box exterior.
-							_desiredPosition = resolvePointOutsideTowerCollisionBox(_desiredPosition, rect);
-						}
-						else
-						{
+							_affectedByTower = true;
+
+							const bool networkWalkProxy =
+								characterUsesPlayerTowerBlockingWhenWalking(this) && isCom();
 							float anchorYpoint = metaY + metaHeight / 2;
-							if (getPositionY() > anchorYpoint)
+							bool slidePositiveY;
+							if (networkWalkProxy ||
+								(gameLayerOnlineBattleActive() && isPlayer()))
+								slidePositiveY =
+									towerWalkChooseVerticalSlideDir(this, anchorYpoint, _desiredPosition);
+							else
+								slidePositiveY = (walkStartPos.y > anchorYpoint);
+
+							if (slidePositiveY)
 								_velocity = Vec2(0, 1 * _walkSpeed * kSpeedBase);
 							else
 								_velocity = Vec2(0, -1 * _walkSpeed * kSpeedBase);
-							_desiredPosition = getPosition() + (_velocity * dt);
+							_desiredPosition = walkStartPos + (_velocity * dt);
 						}
 					}
 				}
@@ -433,6 +604,10 @@ void CharacterBase::update(float dt)
 		float poxY = MIN(getGameLayer()->currentMap->getTileSize().height * 5.5, MAX(0, _desiredPosition.y));
 
 		setPosition(Vec2(posX, poxY));
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+		if (shouldSnapTowerClamp && isPlayer() && getGameLayer())
+			getGameLayer()->sendNetworkOwnedHeroPositionSnapIfNeeded(getPosition(), true);
+#endif
 		getGameLayer()->reorderChild(this, -getPositionY());
 		if (isPlayerOrCom())
 		{
@@ -4023,7 +4198,8 @@ void CharacterBase::idle()
 
 void CharacterBase::walk(Vec2 direction)
 {
-	if (_state == State::IDLE || _state == State::WALK || (_state == State::NATTACK && isNotPlayer()))
+	if (_state == State::IDLE || _state == State::WALK ||
+		(_state == State::NATTACK && isNotPlayer() && !isNetworkWsEnemyHeroMirror(this)))
 	{
 		isHurtingTower = false;
 

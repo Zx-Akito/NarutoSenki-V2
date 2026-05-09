@@ -45,6 +45,8 @@ void GameLayer::JoyStickUpdate(Vec2 direction)
 {
 	if (!ougisChar)
 	{
+		if (shouldBlockNetworkBattleInputEcho())
+			return;
 		currentPlayer->walk(direction);
 		sendNetworkJoyUpdateEvent(direction.x, direction.y);
 	}
@@ -52,6 +54,8 @@ void GameLayer::JoyStickUpdate(Vec2 direction)
 
 void GameLayer::attackButtonClick(ABType type)
 {
+	if (shouldBlockNetworkBattleInputEcho())
+		return;
 	if (type == NAttack)
 	{
 		_isAttackButtonRelease = false;
@@ -71,6 +75,8 @@ void GameLayer::attackButtonClick(ABType type)
 
 void GameLayer::gearButtonClick(GearType type)
 {
+	if (shouldBlockNetworkBattleInputEcho())
+		return;
 	currentPlayer->useGear(type);
 	sendNetworkInputEvent("gear_click",
 						 format("{{\"type\":{}}}", (int)type));
@@ -78,6 +84,8 @@ void GameLayer::gearButtonClick(GearType type)
 
 void GameLayer::attackButtonRelease()
 {
+	if (shouldBlockNetworkBattleInputEcho())
+		return;
 	_isAttackButtonRelease = true;
 	sendNetworkInputEvent("attack_release");
 }
@@ -138,7 +146,7 @@ void GameLayer::attackButtonRelease()
 		}                                                                           \
 		if (horizontal != 0 || vertical != 0)                                       \
 		{                                                                           \
-			if (!_gLayer->ougisChar)                                                \
+			if (!_gLayer->ougisChar && !_gLayer->shouldBlockNetworkBattleInputEcho()) \
 				_gLayer->currentPlayer->walk(Vec2(horizontal, vertical));           \
 		}                                                                           \
 		else if (_gLayer->currentPlayer->getState() == State::WALK)                 \
@@ -219,10 +227,7 @@ void GameLayer::keyEventHandle(GLFWwindow *window, int key, int scancode, int ke
 		if (_gLayer->_enableGear && _gLayer->_isStarted && keyState && !_gLayer->_isPause)
 		{
 			if (_gLayer->_isGear)
-			{
-				Director::sharedDirector()->popScene();
-				_gLayer->_isGear = false;
-			}
+				_gLayer->dismissGearOverlay();
 			else
 			{
 				_gLayer->onGear();
@@ -238,10 +243,7 @@ void GameLayer::keyEventHandle(GLFWwindow *window, int key, int scancode, int ke
 				_gLayer->resumeFromPause();
 			}
 			else if (_gLayer->_isGear)
-			{
-				Director::sharedDirector()->popScene();
-				_gLayer->_isGear = false;
-			}
+				_gLayer->dismissGearOverlay();
 			else
 			{
 				_gLayer->onPause();
@@ -322,7 +324,7 @@ static bool s_macKeyState[256] = {};
 		}                                                                           \
 		if (horizontal != 0 || vertical != 0)                                       \
 		{                                                                           \
-			if (!_gLayer->ougisChar)                                                \
+			if (!_gLayer->ougisChar && !_gLayer->shouldBlockNetworkBattleInputEcho()) \
 			{                                                                       \
 				_gLayer->currentPlayer->walk(Vec2(horizontal, vertical));           \
 				sendNetworkJoyUpdateEvent((float)horizontal, (float)vertical);      \
@@ -352,8 +354,11 @@ void GameLayer::keyEventHandle(int key, int keyState)
 	case KEY_A: MOVE_MAC(0, 0, keyState, 0, KEY_A, keyState);
 	case KEY_D: MOVE_MAC(0, 0, 0, keyState, KEY_D, keyState);
 	case KEY_J:
-		if (keyState) _gLayer->_hudLayer->nAttackButton->click();
-		else { _gLayer->_isAttackButtonRelease = true; sendNetworkInputEvent("attack_release"); }
+		if (!_gLayer->shouldBlockNetworkBattleInputEcho())
+		{
+			if (keyState) _gLayer->_hudLayer->nAttackButton->click();
+			else { _gLayer->_isAttackButtonRelease = true; sendNetworkInputEvent("attack_release"); }
+		}
 		break;
 	case KEY_L: if (keyState) _gLayer->_hudLayer->item1Button->click(); break;
 	case KEY_H: if (keyState) _gLayer->_hudLayer->skill5Button->click(); break;
@@ -376,15 +381,15 @@ void GameLayer::keyEventHandle(int key, int keyState)
 	case KEY_SPACE:
 		if (_gLayer->_enableGear && _gLayer->_isStarted && keyState && !_gLayer->_isPause)
 		{
-			if (_gLayer->_isGear) { Director::sharedDirector()->popScene(); _gLayer->_isGear = false; }
-			else { _gLayer->onGear(); }
+			if (_gLayer->_isGear) _gLayer->dismissGearOverlay();
+			else _gLayer->onGear();
 		}
 		break;
 	case KEY_ESCAPE: case KEY_ENTER:
 		if (keyState && _gLayer->_isStarted)
 		{
 			if (_gLayer->_isPause) { _gLayer->resumeFromPause(); }
-			else if (_gLayer->_isGear) { Director::sharedDirector()->popScene(); _gLayer->_isGear = false; }
+			else if (_gLayer->_isGear) _gLayer->dismissGearOverlay();
 			else { _gLayer->onPause(); }
 		}
 		break;

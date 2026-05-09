@@ -127,6 +127,11 @@ public:
 	void onGear();
 	/** Pop gear shop scene; used locally and when mirroring remote close in network play. */
 	void dismissGearOverlay();
+	/** Online in-match pause/gear menu: suppress replication so stray touches/keys don't confuse the opponent. */
+	bool shouldBlockNetworkBattleInputEcho() const;
+	/** After online tower collision clamp, send world position so both sides match pillar edges. */
+	void sendNetworkOwnedHeroPositionSnapIfNeeded(const Vec2 &worldPos, bool afterTowerClamp);
+
 	void playGameOpeningAnimation(float dt);
 	void onGameStart(float dt);
 	void onGameOver(bool isWin);

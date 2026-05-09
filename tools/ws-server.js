@@ -42,10 +42,8 @@ function breakMatch(ws, reason = "opponent_left") {
   }
 
   safeSend(other, { type: reason, ts: Date.now() });
-  // Force disconnect opponent when one player leaves match lobby.
-  if (other.readyState === WebSocket.OPEN) {
-    other.close(1000, "opponent_left");
-  }
+  // Do not force-close `other`: surviving client needs the inbound message during battle,
+  // and will call wsDisconnect from the game after handling opponent_left / match end.
 }
 
 function relayToOpponent(ws, payload) {
@@ -246,6 +244,20 @@ wss.on("connection", (ws) => {
         action: message.action || "",
         payload: message.payload || {},
         tick: Number.isFinite(message.tick) ? message.tick : 0,
+        from: ws.playerId,
+        ts: Date.now(),
+      });
+      return;
+    }
+
+    if (message.type === "hero_snap") {
+      const x = Number(message.x);
+      const y = Number(message.y);
+      if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+      relayToOpponent(ws, {
+        type: "hero_snap",
+        x,
+        y,
         from: ws.playerId,
         ts: Date.now(),
       });

@@ -233,17 +233,25 @@ GearLayer::~GearLayer()
 	getGameLayer()->_isGear = false;
 }
 
-bool GearLayer::init(RenderTexture *snapshoot)
+bool GearLayer::init(RenderTexture *snapshoot, bool overlayLiveBackdrop)
 {
 	RETURN_FALSE_IF(!Layer::init());
 
-	SimpleAudioEngine::sharedEngine()->stopAllEffects();
+	if (!overlayLiveBackdrop)
+	{
+		SimpleAudioEngine::sharedEngine()->stopAllEffects();
+	}
 
-	Texture2D *bgTexture = snapshoot->getSprite()->getTexture();
-	Sprite *bg = Sprite::createWithTexture(bgTexture);
-	bg->setAnchorPoint(Vec2(0, 0));
-	bg->setFlipY(true);
-	addChild(bg, 0);
+	if (!overlayLiveBackdrop)
+	{
+		if (!snapshoot || !snapshoot->getSprite())
+			return false;
+		Texture2D *bgTexture = snapshoot->getSprite()->getTexture();
+		Sprite *bg = Sprite::createWithTexture(bgTexture);
+		bg->setAnchorPoint(Vec2(0, 0));
+		bg->setFlipY(true);
+		addChild(bg, 0);
+	}
 
 	Layer *blend = LayerColor::create(ccc4(0, 0, 0, 150), winSize.width, winSize.height);
 	addChild(blend, 1);
@@ -409,10 +417,10 @@ void GearLayer::updateGearList()
 	}
 }
 
-GearLayer *GearLayer::create(RenderTexture *snapshoot)
+GearLayer *GearLayer::create(RenderTexture *snapshoot, bool overlayLiveBackdrop)
 {
 	GearLayer *grl = new GearLayer();
-	if (grl && grl->init(snapshoot))
+	if (grl && grl->init(snapshoot, overlayLiveBackdrop))
 	{
 		grl->autorelease();
 		return grl;

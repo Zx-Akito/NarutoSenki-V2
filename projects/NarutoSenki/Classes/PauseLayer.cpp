@@ -1,11 +1,12 @@
 #include "PauseLayer.h"
 #include "GameLayer.h"
+#include "SimpleAudioEngine.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 extern "C" bool MacWsIsConnected();
 #endif
 
-bool PauseLayer::init(RenderTexture *snapshoot)
+bool PauseLayer::init(RenderTexture *snapshoot, bool overlayLiveBackdrop)
 {
 	if (!Layer::init())
 		return false;
@@ -22,11 +23,16 @@ bool PauseLayer::init(RenderTexture *snapshoot)
 		SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
 	}
 
-	Texture2D *bgTexture = snapshoot->getSprite()->getTexture();
-	Sprite *bg = Sprite::createWithTexture(bgTexture);
-	bg->setAnchorPoint(Vec2(0, 0));
-	bg->setFlipY(true);
-	addChild(bg, 0);
+	if (!overlayLiveBackdrop)
+	{
+		if (!snapshoot || !snapshoot->getSprite())
+			return false;
+		Texture2D *bgTexture = snapshoot->getSprite()->getTexture();
+		Sprite *bg = Sprite::createWithTexture(bgTexture);
+		bg->setAnchorPoint(Vec2(0, 0));
+		bg->setFlipY(true);
+		addChild(bg, 0);
+	}
 
 	Layer *blend = LayerColor::create(ccc4(0, 0, 0, 150), winSize.width, winSize.height);
 	addChild(blend, 1);
@@ -92,29 +98,41 @@ bool PauseLayer::init(RenderTexture *snapshoot)
 
 void PauseLayer::onBGM(Ref *sender)
 {
+	SimpleAudioEngine *audio = SimpleAudioEngine::sharedEngine();
 	if (UserDefault::sharedUserDefault()->getBoolForKey("isBGM") == true)
 	{
 		UserDefault::sharedUserDefault()->setBoolForKey("isBGM", false);
 		bgm_btn->selected();
+		// Tear down BG player immediately; UserDefault alone leaves AVAudio/OpenAL paths active and can corrupt state on Mac.
+		audio->stopBackgroundMusic(false);
 	}
 	else
 	{
 		UserDefault::sharedUserDefault()->setBoolForKey("isBGM", true);
 		bgm_btn->unselected();
+		audio->setBackgroundMusicVolume(1.0f);
+		// After stopBackgroundMusic(), resumeBackgroundMusic does nothing (paused==NO). Restart BGM promptly if still in battle.
+		if (GameLayer *gl = getGameLayer())
+			if (gl->_isStarted)
+				gl->checkBackgroundMusic(0.f);
 	}
 }
 
 void PauseLayer::onVoice(Ref *sender)
 {
+	SimpleAudioEngine *audio = SimpleAudioEngine::sharedEngine();
 	if (UserDefault::sharedUserDefault()->getBoolForKey("isVoice") == true)
 	{
 		UserDefault::sharedUserDefault()->setBoolForKey("isVoice", false);
 		voice_btn->selected();
+		audio->stopAllEffects();
+		audio->setEffectsVolume(0.0f);
 	}
 	else
 	{
 		UserDefault::sharedUserDefault()->setBoolForKey("isVoice", true);
 		voice_btn->unselected();
+		audio->setEffectsVolume(1.0f);
 	}
 }
 
@@ -170,8 +188,13 @@ void PauseLayer::onBackToMenu(Ref *sender)
 void PauseLayer::onLeft(Ref *sender)
 {
 	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.ogg");
-	getGameLayer()->_isSurrender = true;
-	getGameLayer()->resumeFromPause();
+	GameLayer *g = getGameLayer();
+	if (!g)
+		return;
+	g->_isSurrender = true;
+	// Do not rely on GameLayer::onEnter for this: with an in-scene pause overlay (online),
+	// onEnter does not run again after resume, so surrender would never call onGameOver.
+	g->onGameOver(false);
 }
 
 void PauseLayer::onCancel(Ref *sender)
@@ -182,10 +205,10 @@ void PauseLayer::onCancel(Ref *sender)
 	exitLayer->removeFromParent();
 }
 
-PauseLayer *PauseLayer::create(RenderTexture *snapshoot)
+PauseLayer *PauseLayer::create(RenderTexture *snapshoot, bool overlayLiveBackdrop)
 {
 	PauseLayer *pl = new PauseLayer();
-	if (pl && pl->init(snapshoot))
+	if (pl && pl->init(snapshoot, overlayLiveBackdrop))
 	{
 		pl->autorelease();
 		return pl;

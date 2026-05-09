@@ -72,24 +72,30 @@ NSString * const kCDN_AudioManagerInitialised = @"kCDN_AudioManagerInitialised";
         NSError *error = nil;
         NSString *path = [CDUtilities fullPathFromRelativePath:audioSourceFilePath];
         audioSourcePlayer = [(AVAudioPlayer*)[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path] error:&error];
-        if (error == nil) {
-            [audioSourcePlayer prepareToPlay];
-            audioSourcePlayer.delegate = self;
-            if (delegate && [delegate respondsToSelector:@selector(cdAudioSourceFileDidChange:)]) {
-                //Tell our delegate the file has changed
-                [delegate cdAudioSourceFileDidChange:self];
-            }    
-        } else {
-            CDLOG(@"Denshion::CDLongAudioSource - Error initialising audio player: %@",error);
-        }    
+        if (error != nil || audioSourcePlayer == nil) {
+            CDLOG(@"Denshion::CDLongAudioSource - Error initialising audio player (%@): %@", path ?: audioSourceFilePath, error);
+            [audioSourcePlayer release];
+            audioSourcePlayer = nil;
+            state = kLAS_Init;
+            return;
+        }
+        [audioSourcePlayer prepareToPlay];
+        audioSourcePlayer.delegate = self;
+        if (delegate && [delegate respondsToSelector:@selector(cdAudioSourceFileDidChange:)]) {
+            [delegate cdAudioSourceFileDidChange:self];
+        }
     } else {
         //Same file - just return it to a consistent state
         [self pause];
         [self rewind];
     }
-    audioSourcePlayer.volume = volume;
-    audioSourcePlayer.numberOfLoops = numberOfLoops;
-    state = kLAS_Loaded;
+    if (audioSourcePlayer != nil) {
+        audioSourcePlayer.volume = volume;
+        audioSourcePlayer.numberOfLoops = numberOfLoops;
+        state = kLAS_Loaded;
+    } else {
+        state = kLAS_Init;
+    }
 }    
 
 -(void) play {

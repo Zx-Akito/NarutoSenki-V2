@@ -9,6 +9,7 @@
 // GameLayerNetworkInput.inl
 // - Handles websocket input/event bridge for in-match networking.
 // - Player input sync, match_end, and match_ui (pause/gear overlay sync for online).
+// - input_event "tick" is a 20 Hz logical slot (50ms) for ordering; joy_update is coalesced to <=20/s.
 // - Other world-state packets are ignored to preserve stability.
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
@@ -16,6 +17,7 @@ extern "C"
 {
 void SetNativeWsEventCallback(void (*callback)(const char *eventName, const char *payload));
 void MacWsSend(const char *message);
+void MacWsDisconnect();
 bool MacWsIsConnected();
 int GetNetworkForcedMapId();
 const char *GetNetworkEnemyHeroName();
@@ -28,7 +30,6 @@ struct NetInputPacket
 	string payload;
 };
 
-static uint32_t s_localInputTick = 0;
 static uint32_t s_remoteMaxTick = 0;
 static vector<NetInputPacket> s_pendingRemoteInputs;
 static std::chrono::steady_clock::time_point s_lastRemoteInputReceivedAt = std::chrono::steady_clock::now();
@@ -36,6 +37,67 @@ static bool s_lastSentJoyRelease = true;
 static float s_lastSentJoyX = 0.0f;
 static float s_lastSentJoyY = 0.0f;
 static bool s_isApplyingRemoteMatchEnd = false;
+
+static constexpr int kWsInputTicksPerSecond = 20;
+static constexpr int kWsInputTickIntervalMs = 1000 / kWsInputTicksPerSecond;
+
+static uint32_t s_wsNetLogicalTick = 0;
+static std::chrono::steady_clock::time_point s_wsNetTickEpoch{};
+static bool s_wsNetTickEpochInit = false;
+
+static std::chrono::steady_clock::time_point s_lastJoyWireSend{};
+static float s_pendingJoyWireX = 0.f;
+static float s_pendingJoyWireY = 0.f;
+static bool s_pendingJoyWire = false;
+static bool s_didSendJoyWire = false;
+
+static void advanceWsNetworkTick20Hz()
+{
+	const auto now = std::chrono::steady_clock::now();
+	if (!s_wsNetTickEpochInit)
+	{
+		s_wsNetTickEpoch = now;
+		s_wsNetTickEpochInit = true;
+		s_wsNetLogicalTick = 1u;
+		return;
+	}
+	const auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - s_wsNetTickEpoch).count();
+	const uint32_t slot = 1u + (uint32_t)std::max<int64_t>(0, (int64_t)ms / (int64_t)kWsInputTickIntervalMs);
+	if (slot > s_wsNetLogicalTick)
+		s_wsNetLogicalTick = slot;
+}
+
+static void marshalAndSendInputEvent(const string &action, const string &payload)
+{
+	auto message =
+		string("{\"type\":\"input_event\",\"action\":\"") + action + "\",\"payload\":" + payload +
+		",\"tick\":" + to_string(s_wsNetLogicalTick) + ",\"ts\":" + to_string((int)time(nullptr)) + "}";
+	MacWsSend(message.c_str());
+}
+
+static void flushPendingJoyWire(bool force)
+{
+	if (!s_pendingJoyWire)
+		return;
+	if (!MacWsIsConnected())
+		return;
+	if (_gLayer && _gLayer->shouldBlockNetworkBattleInputEcho())
+		return;
+	const auto now = std::chrono::steady_clock::now();
+	const long dt = (long)std::chrono::duration_cast<std::chrono::milliseconds>(now - s_lastJoyWireSend).count();
+	if (!force && s_didSendJoyWire && dt < kWsInputTickIntervalMs)
+		return;
+
+	advanceWsNetworkTick20Hz();
+	marshalAndSendInputEvent("joy_update",
+							 format("{{\"x\":{:.3f},\"y\":{:.3f}}}", s_pendingJoyWireX, s_pendingJoyWireY));
+	s_lastSentJoyRelease = false;
+	s_lastSentJoyX = s_pendingJoyWireX;
+	s_lastSentJoyY = s_pendingJoyWireY;
+	s_lastJoyWireSend = now;
+	s_didSendJoyWire = true;
+	s_pendingJoyWire = false;
+}
 
 static const char *jsonStringField(const char *payload, const char *field, string &out)
 {
@@ -206,6 +268,8 @@ static void processRemoteInputQueue(GameLayer *layer)
 	if (!layer)
 		return;
 
+	flushPendingJoyWire(false);
+
 	// Remote human opponent is represented as COM locally.
 	// Keep it out of AI mode continuously, including right after respawn.
 	if (auto remotePlayer = getRemoteControlTarget(layer))
@@ -267,33 +331,34 @@ static void sendNetworkInputEvent(const string &action, const string &payload = 
 {
 	if (!MacWsIsConnected())
 		return;
-	s_localInputTick++;
-	auto message = string("{\"type\":\"input_event\",\"action\":\"") + action +
-				   "\",\"payload\":" + payload +
-				   ",\"tick\":" + to_string(s_localInputTick) +
-				   ",\"ts\":" + to_string((int)time(nullptr)) + "}";
-	MacWsSend(message.c_str());
+	if (_gLayer && _gLayer->shouldBlockNetworkBattleInputEcho())
+	{
+		if (action != "joy_release")
+			return;
+	}
+	advanceWsNetworkTick20Hz();
+	marshalAndSendInputEvent(action, payload);
 }
 
 static void sendNetworkJoyUpdateEvent(float x, float y)
 {
-	constexpr float kJoyDeltaEpsilon = 0.01f;
-	if (!s_lastSentJoyRelease &&
-		std::fabs(s_lastSentJoyX - x) < kJoyDeltaEpsilon &&
-		std::fabs(s_lastSentJoyY - y) < kJoyDeltaEpsilon)
-	{
+	if (!MacWsIsConnected())
 		return;
-	}
-	s_lastSentJoyRelease = false;
-	s_lastSentJoyX = x;
-	s_lastSentJoyY = y;
-	sendNetworkInputEvent("joy_update", format("{{\"x\":{:.3f},\"y\":{:.3f}}}", x, y));
+	if (_gLayer && _gLayer->shouldBlockNetworkBattleInputEcho())
+		return;
+	// Coalesce to 20 Hz on the wire; keep refreshing pending so a held direction still flushes every 50ms.
+	s_pendingJoyWire = true;
+	s_pendingJoyWireX = x;
+	s_pendingJoyWireY = y;
+	flushPendingJoyWire(false);
 }
 
 static void sendNetworkJoyReleaseEvent()
 {
 	if (s_lastSentJoyRelease)
 		return;
+	if (MacWsIsConnected() && (!_gLayer || !_gLayer->shouldBlockNetworkBattleInputEcho()))
+		flushPendingJoyWire(true);
 	s_lastSentJoyRelease = true;
 	sendNetworkInputEvent("joy_release");
 }
@@ -363,10 +428,35 @@ static void applyRemoteMatchUI(GameLayer *layer, const char *which, bool open)
 
 static void onNativeWsEvent(const char *eventName, const char *payload)
 {
-	if (!eventName || !payload)
+	if (!eventName)
+		return;
+
+	// Lobby/select still handle disconnect in Lua; during battle Lua has no WS delegate.
+	if (strcmp(eventName, "close") == 0 || strcmp(eventName, "error") == 0)
+	{
+		if (_gLayer && _gLayer->_isStarted && !_gLayer->_isExiting)
+		{
+			if (!_gLayer->_hasGameOverTriggered)
+				_gLayer->onGameOver(true);
+			MacWsDisconnect();
+		}
+		return;
+	}
+
+	if (!payload)
 		return;
 	if (strcmp(eventName, "message") != 0)
 		return;
+	if (strstr(payload, "\"type\":\"opponent_left\"") != nullptr)
+	{
+		if (_gLayer && _gLayer->_isStarted && !_gLayer->_isExiting)
+		{
+			if (!_gLayer->_hasGameOverTriggered)
+				_gLayer->onGameOver(true);
+			MacWsDisconnect();
+		}
+		return;
+	}
 	if (strstr(payload, "\"type\":\"match_end\"") != nullptr)
 	{
 		if (_gLayer && _gLayer->_isStarted && !_gLayer->_isExiting)
@@ -392,6 +482,33 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 		}
 		return;
 	}
+	if (strstr(payload, "\"type\":\"hero_snap\"") != nullptr)
+	{
+		if (!_gLayer || !_gLayer->_isStarted || _gLayer->_isExiting || !_gLayer->currentMap)
+			return;
+		float nx = 0.f;
+		float ny = 0.f;
+		if (!jsonFloatField(payload, "x", nx) || !jsonFloatField(payload, "y", ny))
+			return;
+
+		auto *remote = getRemoteControlTarget(_gLayer);
+		if (!remote || remote->getState() != State::WALK)
+			return;
+
+		auto *map = _gLayer->currentMap;
+		const float mw = float(map->getMapSize().width * map->getTileSize().width);
+		float posX = MIN(mw, MAX(0.f, nx));
+		float poxY = MIN(float(map->getTileSize().height * 5.5f), MAX(0.f, ny));
+		const Vec2 next(posX, poxY);
+		const Vec2 cur = remote->getPosition();
+		const float rdx = cur.x - next.x;
+		const float rdy = cur.y - next.y;
+		if (rdx * rdx + rdy * rdy < 225.f)
+			return;
+		remote->setPosition(next);
+		_gLayer->reorderChild(remote, -(int)poxY);
+		return;
+	}
 	if (strstr(payload, "\"type\":\"input_event\"") == nullptr)
 	{
 		return;
@@ -402,7 +519,11 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 static void resetNetworkInputStateOnEnter()
 {
 	SetNativeWsEventCallback(&onNativeWsEvent);
-	s_localInputTick = 0;
+	s_wsNetLogicalTick = 0;
+	s_wsNetTickEpochInit = false;
+	s_lastJoyWireSend = {};
+	s_pendingJoyWire = false;
+	s_didSendJoyWire = false;
 	s_remoteMaxTick = 0;
 	s_pendingRemoteInputs.clear();
 	s_lastRemoteInputReceivedAt = std::chrono::steady_clock::now();

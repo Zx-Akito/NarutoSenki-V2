@@ -16,7 +16,7 @@ public:
 	GearLayer();
 	~GearLayer();
 
-	bool init(RenderTexture *snapshoot);
+	bool init(RenderTexture *snapshoot, bool overlayLiveBackdrop = false);
 
 	Layer *gears_layer = nullptr;
 	Layer *currentGear_layer = nullptr;
@@ -34,7 +34,7 @@ public:
 	void updateGearList();
 	void confirmPurchase();
 
-	static GearLayer *create(RenderTexture *snapshoot);
+	static GearLayer *create(RenderTexture *snapshoot, bool overlayLiveBackdrop = false);
 
 private:
 	void onResume(Ref *sender);

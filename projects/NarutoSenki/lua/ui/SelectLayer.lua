@@ -676,9 +676,7 @@ function SelectLayer:handleWebSocketEvent(eventName, payload)
             math.randomseed(seed)
         end
     elseif messageType == 'opponent_left' then
-        if not self._networkGameStarting then
-            backToStartMenu()
-        end
+        backToStartMenu()
     end
 end
 
@@ -694,6 +692,11 @@ end
 
 function backToStartMenu()
     log('back to main menu')
+
+    if _G.__networkMatchId ~= nil and wsIsConnected() then
+        wsSend('{"type":"queue_leave"}')
+        wsDisconnect()
+    end
 
     _G.mode = nil
     _G.__networkSelectLayer = nil

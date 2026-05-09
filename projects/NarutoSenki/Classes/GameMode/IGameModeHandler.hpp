@@ -247,8 +247,8 @@ protected:
 			playerCount = forcedYourCount;
 			enemyCount = forcedEnemyCount;
 			this->gd.use4v4SpawnLayout = false;
-			// 1v1 network baseline: disable lane minion waves to avoid unsynced AI drift.
-			this->skipInitFlogs = true;
+			// Lane frogs enabled online; wave timing is Konoha-authoritative + WS relay (see GameLayer).
+			this->skipInitFlogs = false;
 			if (!yourTeam.empty())
 				forcedYourHero = yourTeam.front().c_str();
 			if (!enemyTeam.empty())

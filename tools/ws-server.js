@@ -349,6 +349,29 @@ wss.on("connection", (ws) => {
       return;
     }
 
+    /** Lane frog waves — Konoha client is authoritative; relay so Akatsuki mirrors the same spawn cadence. */
+    if (message.type === "flog_wave") {
+      relayToOpponent(ws, {
+        type: "flog_wave",
+        seq: Number(message.seq) || 0,
+        from: ws.playerId,
+        ts: Date.now(),
+      });
+      return;
+    }
+
+    /** Konoha ~10Hz frog pose/HP CSV — follower applies so lane matches authority (no ghost hits). */
+    if (message.type === "flog_snap") {
+      const d = typeof message.d === "string" ? message.d : "";
+      relayToOpponent(ws, {
+        type: "flog_snap",
+        d,
+        from: ws.playerId,
+        ts: Date.now(),
+      });
+      return;
+    }
+
     /** Hardcore guardian Roshi/Han — must relay; unmatched types fall through to echo (sender only). */
     if (message.type === "guardian_spawn") {
       const n = Math.floor(Number(message.idx));

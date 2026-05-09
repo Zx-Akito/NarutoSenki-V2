@@ -2,12 +2,81 @@
 #include "CharacterBase.h"
 #include "HPBar.h"
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+extern "C"
+{
+bool MacWsIsConnected();
+int GetNetworkForcedTeam();
+}
+#endif
+
 class Flog : public CharacterBase
 {
 public:
 	float _mainPosY = 0;
 	float _randomPosX = 0;
 	float _randomPosY = 0;
+	/** Online lane sync: wave index from spawn order + slot within wave (0..2*kFlogCount-1). */
+	uint32_t _netWaveSeq = UINT32_MAX;
+	uint8_t _netSlot = 255;
+	/** Last authority state applied on follower (Akatsuki) for mirror visuals. */
+	State _lastMirrorAuthState = State::IDLE;
+
+	/** Online follower: facing + walk/attack animations from Konoha snapshots (local AI is off). */
+	void syncFollowerMirrorVisual(State authState, bool flipped)
+	{
+		setFlipX(flipped);
+		_isFlipped = flipped;
+		_velocity = Vec2(0, 0);
+		if (authState == State::DEAD)
+			return;
+		const bool transient =
+			(authState == State::NATTACK || authState == State::HURT || authState == State::AIRHURT ||
+			 authState == State::KNOCKDOWN || authState == State::FLOAT);
+		const bool stateChanged = (authState != _lastMirrorAuthState);
+		if (!stateChanged && !transient)
+			return;
+		_lastMirrorAuthState = authState;
+		stopAllActions();
+		switch (authState)
+		{
+		case State::WALK:
+			if (auto *a = getWalkAction())
+				runAction(a);
+			setState(State::WALK);
+			break;
+		case State::NATTACK:
+			if (auto *a = getNAttackAction())
+				runAction(a);
+			setState(State::NATTACK);
+			break;
+		case State::HURT:
+			if (auto *a = getHurtAction())
+				runAction(a);
+			setState(State::HURT);
+			break;
+		case State::AIRHURT:
+			if (auto *a = getAirHurtAction())
+				runAction(a);
+			setState(State::AIRHURT);
+			break;
+		case State::KNOCKDOWN:
+			if (auto *a = getKnockDownAction())
+				runAction(a);
+			setState(State::KNOCKDOWN);
+			break;
+		case State::FLOAT:
+			if (auto *a = getFloatAction())
+				runAction(a);
+			setState(State::FLOAT);
+			break;
+		default:
+			if (auto *a = getIdleAction())
+				runAction(a);
+			setState(State::IDLE);
+			break;
+		}
+	}
 #if COCOS2D_DEBUG
 	string _targetName;
 #endif
@@ -137,6 +206,10 @@ protected:
 
 	void setAI(float dt)
 	{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+		if (MacWsIsConnected() && GetNetworkForcedTeam() != 0)
+			return;
+#endif
 		if (isFreeState())
 		{
 			if (!_randomPosY)

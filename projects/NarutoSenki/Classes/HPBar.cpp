@@ -3,6 +3,7 @@
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 extern "C" bool MacWsIsConnected();
+extern "C" int GetNetworkForcedTeam();
 #endif
 
 bool HPBar::init(const char *szImage)
@@ -82,7 +83,13 @@ void HPBar::loseHP(float percent)
 
 		if (_delegate->isFlog())
 		{
-			if (_slayer)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+			const bool skipOnlineFollowerLaneRewards =
+				MacWsIsConnected() && GetNetworkForcedTeam() != 0;
+#else
+			const bool skipOnlineFollowerLaneRewards = false;
+#endif
+			if (_slayer && !skipOnlineFollowerLaneRewards)
 			{
 				if (_slayer->getSecMaster() &&
 					_slayer->getName() != SkillEnum::KageHand &&

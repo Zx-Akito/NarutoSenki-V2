@@ -14,6 +14,8 @@
 // - battle_stat: peer HP + kill/death HUD + team totals kono/aka; receiver applies mirror HP and calls dead() at 0.
 // - hero_snap/knock_snap: receiver rejects tiny deltas to avoid jitter; threshold tuned below for MAC builds.
 // - latency_ping / latency_pong: RTT sample for HUD ping ms (server echoes to sender only).
+// - flog_wave: Konoha spawns; Akatsuki mirrors that wave.
+// - flog_snap: Konoha ~10Hz CSV per frog: wave,slot,x,y,hp,state,flip — follower applies pose + animations (AI off).
 // - Other world-state packets are ignored to preserve stability.
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
@@ -24,6 +26,7 @@ void MacWsSend(const char *message);
 void MacWsDisconnect();
 bool MacWsIsConnected();
 int GetNetworkForcedMapId();
+int GetNetworkForcedTeam();
 const char *GetNetworkEnemyHeroName();
 }
 
@@ -664,6 +667,28 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 			int idx = -1;
 			if (jsonIntField(payload, "idx", idx))
 				_gLayer->initGard(idx, false);
+		}
+		return;
+	}
+	if (strstr(payload, "\"type\":\"flog_snap\"") != nullptr)
+	{
+		if (_gLayer && _gLayer->_isStarted && !_gLayer->_isExiting)
+		{
+			string dcsv;
+			if (jsonStringField(payload, "d", dcsv))
+				_gLayer->applyPeerFlogSnapFromNetwork(dcsv);
+		}
+		return;
+	}
+	if (strstr(payload, "\"type\":\"flog_wave\"") != nullptr)
+	{
+		if (_gLayer && _gLayer->_isStarted && !_gLayer->_isExiting && MacWsIsConnected() &&
+			GetNetworkForcedTeam() != 0)
+		{
+			int seqInt = 0;
+			if (!jsonIntField(payload, "seq", seqInt))
+				seqInt = 0;
+			_gLayer->applyPeerFlogWaveFromNetwork((uint32_t)std::max(0, seqInt));
 		}
 		return;
 	}

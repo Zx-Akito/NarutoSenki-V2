@@ -4,6 +4,7 @@
 #include "PauseLayer.h"
 #include "Data/UnitData.h"
 #include <memory>
+#include <string>
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 #include "glfw3.h"
@@ -110,6 +111,10 @@ public:
 	void initTileMap();
 	void initHeros();
 	void initFlogs();
+	/** Online follower only: spawn one frog wave when Konoha peer sends flog_wave. */
+	void applyPeerFlogWaveFromNetwork(uint32_t waveSeq);
+	/** Online follower (Akatsuki): apply authoritative frog pose/HP CSV from Konoha (see flog_snap). */
+	void applyPeerFlogSnapFromNetwork(const std::string &dcsv);
 	void initTower();
 	/** @param guardianVariant Roshi vs Han: 0 or 1; -1 picks randomly (deterministic when synced online). */
 	void initGard(int guardianVariant = -1, bool notifyNetworkPeers = true);
@@ -143,6 +148,8 @@ public:
 	void sendNetworkOwnedHeroPositionSnapIfNeeded(const Vec2 &worldPos, HeroSnapKind kind);
 	/** Scheduled ~10 Hz; internal throttling reduces bandwidth while skills are active. */
 	void tickOnlineHeroPositionSnap(float dt);
+	/** Konoha authority: ~10 Hz broadcast frog pose + HP so follower mirrors realtime (no ghost hits). */
+	void tickOnlineFlogSnap(float dt);
 	/** Online: push HP / kill / death stats to peer (throttled unless force). */
 	void syncOnlineBattleStatsToPeer(bool force = false);
 
@@ -225,6 +232,8 @@ private:
 
 	void invokeAllCallbacks();
 
+	void spawnFlogWave(uint32_t waveSeq);
+
 	inline Vec2 getCustomSpawnPoint(HeroData &data);
 
 	bool isHUDInitialized = false;
@@ -234,6 +243,9 @@ private:
 	std::unique_ptr<BattleRuntimeSystem> _battleRuntimeSystem;
 	std::unique_ptr<SpawnSystem> _spawnSystem;
 	std::unique_ptr<SessionState> _sessionState;
+
+	/** Increments each spawned frog wave (offline + online); tags frogs for network CSV sync. */
+	uint32_t _flogWaveSeqCounter = 0;
 };
 
 #define BIND(funcName) std::bind(&funcName, this)

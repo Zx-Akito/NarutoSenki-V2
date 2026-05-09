@@ -2,7 +2,10 @@
 #include <chrono>
 #include <cstdio>
 #include <ctime>
+#include <sstream>
 #include "CharacterBase.h"
+#include "Core/Warrior/Flog.hpp"
+#include "Data/Config.h"
 #include "GameLayer.h"
 #include "BGLayer.h"
 #include "HudLayer.h"
@@ -22,11 +25,32 @@
 GameLayer *_gLayer = nullptr;
 bool _isFullScreen = false;
 
+namespace
+{
+static Flog *findFlogByNetworkSlot(GameLayer *layer, uint32_t wave, unsigned slot)
+{
+	if (!layer || slot >= (unsigned)(2 * kFlogCount))
+		return nullptr;
+	for (auto *p : layer->_KonohaFlogArray)
+	{
+		if (p && p->_netWaveSeq == wave && (unsigned)p->_netSlot == slot)
+			return p;
+	}
+	for (auto *p : layer->_AkatsukiFlogArray)
+	{
+		if (p && p->_netWaveSeq == wave && (unsigned)p->_netSlot == slot)
+			return p;
+	}
+	return nullptr;
+}
+}
+
 #include "GameLayerNetworkInput.inl"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 extern "C" bool MacWsIsConnected();
 extern "C" void MacWsSend(const char *message);
+extern "C" int GetNetworkForcedTeam();
 #endif
 
 bool GameLayer::shouldBlockNetworkBattleInputEcho() const
@@ -134,9 +158,23 @@ void BattleRuntimeSystem::onGameStart(GameLayer *layer, bool skipInitFlogs, floa
 	layer->schedule(schedule_selector(GameLayer::checkBackgroundMusic), 2.0f);
 	if (!skipInitFlogs)
 	{
-		layer->schedule(schedule_selector(GameLayer::addFlog), flogSpawnDuration);
 		layer->initFlogs();
-		layer->addFlog(0);
+		layer->_flogWaveSeqCounter = 0;
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+		const bool onlineWs = MacWsIsConnected();
+		const bool flogAuthority = !onlineWs || GetNetworkForcedTeam() == 0;
+#else
+		const bool flogAuthority = true;
+#endif
+		if (flogAuthority)
+		{
+			layer->schedule(schedule_selector(GameLayer::addFlog), flogSpawnDuration);
+			layer->addFlog(0);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+			if (onlineWs && GetNetworkForcedTeam() == 0)
+				layer->schedule(schedule_selector(GameLayer::tickOnlineFlogSnap), 0.1f);
+#endif
+		}
 	}
 
 	layer->setKeyEventHandler();
@@ -554,7 +592,7 @@ void GameLayer::initFlogs()
 	aName = FlogEnum::FemalePainFlog;
 }
 
-void GameLayer::addFlog(float dt)
+void GameLayer::spawnFlogWave(uint32_t waveSeq)
 {
 	auto KonohaFlogName = kName;
 	auto AkatsukiFlogName = aName;
@@ -566,6 +604,8 @@ void GameLayer::addFlog(float dt)
 	{
 		flog = Flog::create();
 		flog->setID(KonohaFlogName, Role::Flog, Group::Konoha);
+		flog->_netWaveSeq = waveSeq;
+		flog->_netSlot = (uint8_t)i;
 		if (i < kFlogCount / 2)
 			mainPosY = (5.5 - i / 1.5) * 32;
 		else
@@ -583,6 +623,8 @@ void GameLayer::addFlog(float dt)
 	{
 		flog = Flog::create();
 		flog->setID(AkatsukiFlogName, Role::Flog, Group::Akatsuki);
+		flog->_netWaveSeq = waveSeq;
+		flog->_netSlot = (uint8_t)(kFlogCount + i);
 		if (i < kFlogCount / 2)
 			mainPosY = (5.5 - i / 1.5) * 32;
 		else
@@ -595,6 +637,116 @@ void GameLayer::addFlog(float dt)
 		_AkatsukiFlogArray.push_back(flog);
 		addChild(flog, -flog->getPositionY());
 	}
+}
+
+void GameLayer::applyPeerFlogWaveFromNetwork(uint32_t waveSeq)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (!MacWsIsConnected() || GetNetworkForcedTeam() == 0)
+		return;
+#endif
+	spawnFlogWave(waveSeq);
+}
+
+void GameLayer::applyPeerFlogSnapFromNetwork(const std::string &dcsv)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (!MacWsIsConnected() || GetNetworkForcedTeam() == 0 || !_isStarted || _isExiting)
+		return;
+#endif
+	std::stringstream ss(dcsv);
+	std::string rec;
+	while (std::getline(ss, rec, '|'))
+	{
+		if (rec.empty())
+			continue;
+		unsigned w = 0;
+		unsigned s = 0;
+		unsigned hp = 0;
+		unsigned st = 0;
+		unsigned flip = 0;
+		float x = 0.f;
+		float y = 0.f;
+		int parsed =
+			std::sscanf(rec.c_str(), "%u,%u,%f,%f,%u,%u,%u", &w, &s, &x, &y, &hp, &st, &flip);
+		if (parsed != 7)
+		{
+			parsed = std::sscanf(rec.c_str(), "%u,%u,%f,%f,%u,%u", &w, &s, &x, &y, &hp, &st);
+			if (parsed != 6)
+				continue;
+			flip = 0;
+		}
+		Flog *flog = findFlogByNetworkSlot(this, (uint32_t)w, s);
+		if (!flog)
+			continue;
+		flog->setPosition(Vec2(x, y));
+		reorderChild(flog, -(int)flog->getPositionY());
+		flog->setHPValue((uint32_t)hp, false);
+		if (flog->_hpBar)
+			flog->_hpBar->syncVisualPercent(flog->getHpPercent());
+		if (hp == 0 && flog->getState() != State::DEAD)
+			flog->dead();
+		else if (hp > 0)
+			flog->syncFollowerMirrorVisual((State)st, flip != 0);
+	}
+}
+
+void GameLayer::tickOnlineFlogSnap(float)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (!MacWsIsConnected() || GetNetworkForcedTeam() != 0 || !_isStarted || _isExiting || !currentMap)
+		return;
+	std::string d;
+	d.reserve(4096);
+	for (auto *f : _KonohaFlogArray)
+	{
+		if (!f)
+			continue;
+		char chunk[128];
+		std::snprintf(chunk, sizeof(chunk), "%u,%u,%.2f,%.2f,%u,%u,%u|", (unsigned)f->_netWaveSeq, (unsigned)f->_netSlot,
+					  f->getPositionX(), f->getPositionY(), (unsigned)f->getHP(), (unsigned)f->getState(),
+					  f->_isFlipped ? 1u : 0u);
+		d += chunk;
+	}
+	for (auto *f : _AkatsukiFlogArray)
+	{
+		if (!f)
+			continue;
+		char chunk[128];
+		std::snprintf(chunk, sizeof(chunk), "%u,%u,%.2f,%.2f,%u,%u,%u|", (unsigned)f->_netWaveSeq, (unsigned)f->_netSlot,
+					  f->getPositionX(), f->getPositionY(), (unsigned)f->getHP(), (unsigned)f->getState(),
+					  f->_isFlipped ? 1u : 0u);
+		d += chunk;
+	}
+	if (!d.empty())
+		d.pop_back();
+	if (d.empty())
+		return;
+	std::string json = "{\"type\":\"flog_snap\",\"d\":\"";
+	json += d;
+	json += "\"}";
+	MacWsSend(json.c_str());
+#endif
+}
+
+void GameLayer::addFlog(float dt)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (MacWsIsConnected() && GetNetworkForcedTeam() != 0)
+		return;
+#endif
+	const uint32_t waveSeq = _flogWaveSeqCounter++;
+	spawnFlogWave(waveSeq);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (MacWsIsConnected() && GetNetworkForcedTeam() == 0)
+	{
+		char buf[160];
+		std::snprintf(buf, sizeof(buf),
+					  "{\"type\":\"flog_wave\",\"seq\":%u,\"ts\":%ld}",
+					  waveSeq, (long)std::time(nullptr));
+		MacWsSend(buf);
+	}
+#endif
 }
 
 void GameLayer::initTower()
@@ -1051,6 +1203,7 @@ void GameLayer::onGameOver(bool isWin)
 	_isStarted = false;
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 	unschedule(schedule_selector(GameLayer::tickOnlineHeroPositionSnap));
+	unschedule(schedule_selector(GameLayer::tickOnlineFlogSnap));
 #endif
 
 	if (!s_isApplyingRemoteMatchEnd)

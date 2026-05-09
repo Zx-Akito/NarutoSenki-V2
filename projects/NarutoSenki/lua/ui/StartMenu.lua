@@ -78,6 +78,7 @@ function enterSelectLayer(gameMode, enableCustomSelect)
 
     _G.mode = gameMode
     _G.enableCustomSelect = enableCustomSelect
+    _G.__networkSelectLayer = nil
     local selectScene = CCScene:create()
     local selectLayer = SelectLayer:create()
 
@@ -94,4 +95,26 @@ function onGameOver()
     hook.registerInitHandlerOnly(menuLayer)
     menuScene:addChild(menuLayer)
     director.replaceSceneWithFade(menuScene, 1.25)
+end
+
+function onWebSocketEvent(eventName, payload)
+    local lobby = _G.__networkLobbyLayer
+    if lobby and lobby.handleWebSocketEvent then
+        lobby:handleWebSocketEvent(eventName, payload)
+        return
+    end
+    local selectLayer = _G.__networkSelectLayer
+    if selectLayer and selectLayer.handleWebSocketEvent then
+        selectLayer:handleWebSocketEvent(eventName, payload)
+        return
+    end
+    log('[WS] Event %s %s', eventName or '', payload or '')
+end
+
+function enterNetworkLobby()
+    log('Enter network lobby')
+    local scene = CCScene:create()
+    local lobbyLayer = NetworkLobbyLayer:create()
+    scene:addChild(lobbyLayer)
+    director.replaceSceneWithFade(scene, 1)
 end

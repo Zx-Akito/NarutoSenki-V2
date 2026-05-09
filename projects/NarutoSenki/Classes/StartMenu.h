@@ -53,6 +53,7 @@ public:
 	bool init();
 
 	void onTrainingCallBack();
+	void onCustomCallBack();
 	void onHardCoreOn(Ref *sender);
 	void onHardCoreOff(Ref *sender);
 	void onHardLayerCallBack();

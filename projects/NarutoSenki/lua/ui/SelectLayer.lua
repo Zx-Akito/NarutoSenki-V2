@@ -35,6 +35,18 @@ function SelectLayer:init()
 
     self._playerSelect = nil
     self.selectHero = nil
+    self.isNetworkMode = _G.__networkMatchId ~= nil
+    self._remoteHero = nil
+    self._remoteLocked = false
+    self._networkInfoLabel = nil
+    self._networkLockLabel = nil
+    self._networkCountdownLabel = nil
+    self._localLocked = false
+    self._networkGameStarting = false
+    self._networkStartDelay = nil
+    self._networkStartElapsed = 0
+    self._countdownSeconds = 25
+    self._countdownElapsed = 0
 
     tools.addSprites('Record.plist', 'Record2.plist', 'Select.plist',
                      'UI.plist', 'Report.plist', 'Ougis.plist', 'Ougis2.plist',
@@ -229,15 +241,17 @@ function SelectLayer:init()
     menu3:setPosition(width - 15, height - 34)
     self:addChild(menu3, 5)
 
-    local start_btn = ui.newImageMenuItem({
-        image = '#start_btn.png',
-        -- call c++ layer function
-        listener = function() self:onGameStart() end
-    })
-    local menu = ui.newMenu({start_btn})
-    menu:setAnchorPoint(0, 0)
-    menu:setPosition(width - 40, 36)
-    self:addChild(menu, 5)
+    if not self.isNetworkMode then
+        local start_btn = ui.newImageMenuItem({
+            image = '#start_btn.png',
+            -- call c++ layer function
+            listener = function() self:onGameStart() end
+        })
+        local menu = ui.newMenu({start_btn})
+        menu:setAnchorPoint(0, 0)
+        menu:setPosition(width - 40, 36)
+        self:addChild(menu, 5)
+    end
 
     local skill_btn = ui.newImageMenuItem({
         image = '#skill_btn.png',
@@ -261,6 +275,41 @@ function SelectLayer:init()
     end
 
     if save.isBGM() then audio.playMusic(ns.music.SELECT_MUSIC, true) end
+
+    if self.isNetworkMode then
+        _G.__networkSelectLayer = self
+        self._networkInfoLabel = ui.newTTFLabelWithShadow({
+            text = 'Opponent: waiting...',
+            size = 12,
+            x = 14,
+            y = height - 68,
+            align = ui.TEXT_ALIGN_LEFT,
+            dimensions = CCSize(210, 16),
+            valign = ui.TEXT_VALIGN_CENTER
+        })
+        self:addChild(self._networkInfoLabel, 50)
+        self._networkLockLabel = ui.newTTFLabelWithShadow({
+            text = 'You: Pick',
+            size = 12,
+            x = 14,
+            y = height - 86,
+            align = ui.TEXT_ALIGN_LEFT,
+            dimensions = CCSize(210, 16),
+            valign = ui.TEXT_VALIGN_CENTER
+        })
+        self:addChild(self._networkLockLabel, 50)
+        self._networkCountdownLabel = ui.newTTFLabelWithShadow({
+            text = 'The match will start in 25s',
+            size = 12,
+            x = 14,
+            y = height - 104,
+            align = ui.TEXT_ALIGN_LEFT,
+            dimensions = CCSize(210, 16),
+            valign = ui.TEXT_VALIGN_CENTER
+        })
+        self:addChild(self._networkCountdownLabel, 50)
+        self:scheduleUpdateWithPriorityLua(handler(self, SelectLayer.update), 0)
+    end
 end
 
 function SelectLayer:initCustomSelectMode()
@@ -390,6 +439,10 @@ function SelectLayer:setSelected(btn)
     if not self.enableCustomSelect and self._playerSelect then return end
 
     self.selectHero = btn._charName
+    self:updateNetworkInfoLabel()
+    if self.isNetworkMode and wsIsConnected() then
+        wsSend('{"type":"select_update","hero":"' .. tostring(self.selectHero) .. '"}')
+    end
 
     local fd = CCFadeOut:create(1.0)
     local seq = CCRepeatForever:create(transition.sequence({fd, fd:reverse()}))
@@ -398,6 +451,11 @@ function SelectLayer:setSelected(btn)
         if btn._clickTime >= 2 then
             self:setSelectHero(btn._charName)
             self._playerSelect = self.selectHero
+            self._localLocked = true
+            self:updateNetworkInfoLabel()
+            if self.isNetworkMode and wsIsConnected() then
+                wsSend('{"type":"select_lock","hero":"' .. tostring(self._playerSelect) .. '"}')
+            end
 
             if not self.enableCustomSelect then
                 self._selectImg:removeFromParent()
@@ -465,6 +523,148 @@ function SelectLayer:setSelected(btn)
     end
 end
 
+local function extractJsonStringField(payload, fieldName)
+    local pattern = '"' .. fieldName .. '"%s*:%s*"([^"]+)"'
+    return string.match(payload or '', pattern)
+end
+
+local function extractJsonNumberField(payload, fieldName)
+    local pattern = '"' .. fieldName .. '"%s*:%s*(%d+)'
+    local value = string.match(payload or '', pattern)
+    if not value then return nil end
+    return tonumber(value)
+end
+
+function SelectLayer:updateNetworkInfoLabel()
+    if not self._networkInfoLabel then return end
+
+    local hero = self._remoteHero or '-'
+    local lockText = self._remoteLocked and ' [Picked]' or ''
+    local text = 'Enemy: ' .. hero .. lockText
+    if self._networkInfoLabel.label then
+        self._networkInfoLabel.label:setString(text)
+    end
+    if self._networkInfoLabel.shadow1 then
+        self._networkInfoLabel.shadow1:setString(text)
+    end
+
+    if self._networkLockLabel then
+        local localHero = self.selectHero or '-'
+        local localLockText = self._localLocked and ' [Picked]' or ''
+        local lockInfo = 'You: ' .. localHero .. localLockText
+        if self._networkLockLabel.label then
+            self._networkLockLabel.label:setString(lockInfo)
+        end
+        if self._networkLockLabel.shadow1 then
+            self._networkLockLabel.shadow1:setString(lockInfo)
+        end
+    end
+
+    if self._networkCountdownLabel then
+        local countdownText = tostring(math.max(self._countdownSeconds, 0)) .. 's'
+        local countdownInfo = 'The match will start in ' .. countdownText
+        if self._networkCountdownLabel.label then
+            self._networkCountdownLabel.label:setString(countdownInfo)
+        end
+        if self._networkCountdownLabel.shadow1 then
+            self._networkCountdownLabel.shadow1:setString(countdownInfo)
+        end
+    end
+end
+
+function SelectLayer:autoPickRandomHero()
+    if self._playerSelect or not self.selectButtons or #self.selectButtons == 0 then
+        return
+    end
+
+    local index = math.random(1, #self.selectButtons)
+    local randomBtn = self.selectButtons[index]
+    if not randomBtn then return end
+
+    randomBtn._clickTime = 2
+    self:setSelected(randomBtn)
+end
+
+function SelectLayer:update(dt)
+    if not self.isNetworkMode then return end
+    if self._networkStartDelay ~= nil then
+        self._networkStartElapsed = self._networkStartElapsed + dt
+        local remain = math.ceil(self._networkStartDelay - self._networkStartElapsed)
+        if remain <= 0 then remain = 0 end
+
+        if self._networkCountdownLabel then
+            local countdownInfo = 'The match will start in ' .. tostring(remain) .. 's'
+            if self._networkCountdownLabel.label then
+                self._networkCountdownLabel.label:setString(countdownInfo)
+            end
+            if self._networkCountdownLabel.shadow1 then
+                self._networkCountdownLabel.shadow1:setString(countdownInfo)
+            end
+        end
+
+        if self._networkStartElapsed >= self._networkStartDelay then
+            self._networkStartDelay = nil
+            if not self._networkGameStarting then
+                self._networkGameStarting = true
+                _G.__networkSelectLayer = nil
+                self:onGameStart()
+            end
+        end
+        return
+    end
+    if self._networkGameStarting then return end
+    if self._countdownSeconds <= 0 then return end
+
+    self._countdownElapsed = self._countdownElapsed + dt
+    if self._countdownElapsed < 1 then return end
+
+    self._countdownElapsed = self._countdownElapsed - 1
+    self._countdownSeconds = self._countdownSeconds - 1
+    self:updateNetworkInfoLabel()
+
+    if self._countdownSeconds <= 0 and not self._localLocked then
+        self:autoPickRandomHero()
+        self:updateNetworkInfoLabel()
+    end
+end
+
+function SelectLayer:handleWebSocketEvent(eventName, payload)
+    if not self.isNetworkMode then return end
+    if eventName == 'close' or eventName == 'error' then
+        if not self._networkGameStarting then
+            backToStartMenu()
+        end
+        return
+    end
+    if eventName ~= 'message' then return end
+
+    local messageType = extractJsonStringField(payload, 'type')
+    if messageType == 'select_update' then
+        self._remoteHero = extractJsonStringField(payload, 'hero') or self._remoteHero
+        self._remoteLocked = false
+        self:updateNetworkInfoLabel()
+    elseif messageType == 'select_lock' then
+        self._remoteHero = extractJsonStringField(payload, 'hero') or self._remoteHero
+        self._remoteLocked = true
+        self:updateNetworkInfoLabel()
+    elseif messageType == 'both_locked' then
+        -- Wait for `match_start` packet so both clients start together.
+    elseif messageType == 'match_start' then
+        if not self._localLocked or not self._remoteLocked then return end
+        local delayMs = extractJsonNumberField(payload, 'delayMs') or 1500
+        self._networkStartDelay = delayMs / 1000
+        self._networkStartElapsed = 0
+        local seed = extractJsonNumberField(payload, 'seed')
+        if seed then
+            math.randomseed(seed)
+        end
+    elseif messageType == 'opponent_left' then
+        if not self._networkGameStarting then
+            backToStartMenu()
+        end
+    end
+end
+
 function SelectLayer:noComSelect()
     if self.is4v4Mode then
         return self._com3Select
@@ -479,6 +679,8 @@ function backToStartMenu()
     log('back to main menu')
 
     _G.mode = nil
+    _G.__networkSelectLayer = nil
+    _G.__networkMatchId = nil
     audio.playSound('Audio/Menu/cancel.ogg')
     local menuScene = CCScene:create()
     local menuLayer = StartMenu:create()

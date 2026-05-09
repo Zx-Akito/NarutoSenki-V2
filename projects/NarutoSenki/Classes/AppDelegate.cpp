@@ -7,7 +7,106 @@
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 #include <CoreFoundation/CoreFoundation.h>
 #include <limits.h>
+extern "C" {
+void MacWsSetEventCallback(void (*callback)(const char *eventName, const char *payload));
+bool MacWsConnect(const char *url);
+void MacWsSend(const char *message);
+void MacWsDisconnect();
+bool MacWsIsConnected();
+}
 #endif
+
+namespace
+{
+static void sendLuaEvent(const char *eventName, const std::string &payload)
+{
+	auto engine = LuaEngine::defaultEngine();
+	if (!engine || !engine->getLuaStack())
+		return;
+
+	auto *L = engine->getLuaStack()->getLuaState();
+	lua_getglobal(L, "onWebSocketEvent");
+	if (!lua_isfunction(L, -1))
+	{
+		lua_pop(L, 1);
+		return;
+	}
+
+	lua_pushstring(L, eventName);
+	lua_pushstring(L, payload.c_str());
+	if (lua_pcall(L, 2, 0, 0) != LUA_OK)
+	{
+		const char *error = lua_tostring(L, -1);
+		CCLOG("[WebSocket] lua callback error: %s", error ? error : "<unknown>");
+		lua_pop(L, 1);
+	}
+}
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+static void onMacWsEvent(const char *eventName, const char *payload)
+{
+	sendLuaEvent(eventName ? eventName : "",
+				 payload ? payload : "");
+}
+#endif
+
+static int luaWsConnect(lua_State *L)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	const char *url = lua_tostring(L, 1);
+	const bool ok = MacWsConnect(url ? url : "");
+	lua_pushboolean(L, ok ? 1 : 0);
+#else
+	(void)lua_tostring(L, 1);
+	CCLOG("[WebSocket] wsConnect unavailable: this build has no websocket client");
+	lua_pushboolean(L, 0);
+#endif
+	return 1;
+}
+
+static int luaWsSend(lua_State *L)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	const char *message = lua_tostring(L, 1);
+	MacWsSend(message ? message : "");
+#else
+	(void)lua_tostring(L, 1);
+	CCLOG("[WebSocket] wsSend ignored: websocket client unavailable");
+#endif
+	return 0;
+}
+
+static int luaWsDisconnect(lua_State *L)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	MacWsDisconnect();
+#else
+	CCLOG("[WebSocket] wsDisconnect ignored: websocket client unavailable");
+#endif
+	return 0;
+}
+
+static int luaWsIsConnected(lua_State *L)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	lua_pushboolean(L, MacWsIsConnected() ? 1 : 0);
+#else
+	lua_pushboolean(L, 0);
+#endif
+	return 1;
+}
+
+static void registerLuaNetworkFunctions(lua_State *L)
+{
+	lua_register(L, "wsConnect", &luaWsConnect);
+	lua_register(L, "wsSend", &luaWsSend);
+	lua_register(L, "wsDisconnect", &luaWsDisconnect);
+	lua_register(L, "wsIsConnected", &luaWsIsConnected);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	MacWsSetEventCallback(&onMacWsEvent);
+#endif
+}
+} // namespace
 
 AppDelegate::AppDelegate()
 {
@@ -25,6 +124,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	CCScriptEngineManager::sharedManager()->setScriptEngine(pEngine);
 
 	auto pStack = pEngine->getLuaStack();
+	registerLuaNetworkFunctions(pStack->getLuaState());
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 	{

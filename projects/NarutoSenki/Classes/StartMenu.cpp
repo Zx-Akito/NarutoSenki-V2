@@ -1,4 +1,5 @@
 #include "StartMenu.h"
+#include "Constants/UiFlowKeys.hpp"
 
 GameMode s_GameMode = GameMode::Classic;
 std::array<std::unique_ptr<IGameModeHandler>, GameMode::__Internal_Max_Length> s_ModeHandlers = {
@@ -133,7 +134,7 @@ void MenuButton::ccTouchEnded(Touch *touch, Event *event)
 			break;
 		case MenuButtonType::Custom:
 			SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.ogg");
-			// TODO
+			_startMenu->onCustomCallBack();
 			break;
 		case MenuButtonType::HardCore:
 			SimpleAudioEngine::sharedEngine()->playEffect(SELECT_SOUND);
@@ -521,6 +522,11 @@ void StartMenu::onTrainingCallBack()
 	modeScene->addChild(gameModeLayer);
 
 	Director::sharedDirector()->replaceScene(TransitionFade::create(1.25f, modeScene));
+}
+
+void StartMenu::onCustomCallBack()
+{
+	lua_call_func(UiFlowKeys::kEnterNetworkLobby);
 }
 
 void StartMenu::onCreditsCallBack()

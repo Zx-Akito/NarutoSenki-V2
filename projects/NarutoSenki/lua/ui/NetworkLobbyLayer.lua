@@ -82,50 +82,47 @@ function NetworkLobbyLayer:init()
     menu_bar_t:fullScreen()
     self:addChild(menu_bar_t, 2)
 
-    local title = ui.newTTFLabelWithShadow({
-        text = 'Network Lobby',
-        size = 24,
-        x = display.cx,
-        y = display.height - 80,
-        align = ui.TEXT_ALIGN_CENTER
-    })
-    self:addChild(title, 5)
-
+    -- Teks dipusatkan: simetris di sekitar tengah layar (vertikal + horizontal).
     self.statusLabel = ui.newTTFLabelWithShadow({
         text = 'Status: Disconnected',
         size = 18,
         x = display.cx,
-        y = display.cy + 30,
+        y = display.cy + 16,
         align = ui.TEXT_ALIGN_CENTER
     })
     self:addChild(self.statusLabel, 5)
 
     self.messageLabel = ui.newTTFLabelWithShadow({
-        text = 'Click start to start a match',
+        text = 'Click start to find a match',
         size = 14,
         x = display.cx,
-        y = display.cy - 2,
+        y = display.cy - 16,
         align = ui.TEXT_ALIGN_CENTER
     })
     self:addChild(self.messageLabel, 5)
 
     self:scheduleUpdateWithPriorityLua(handler(self, NetworkLobbyLayer.update), 0)
 
-    local connectBtn = ui.newImageMenuItem({
-        image = '#start_btn.png',
-        listener = handler(self, NetworkLobbyLayer.onConnectPressed)
-    })
-    local connectMenu = ui.newMenu({connectBtn})
-    connectMenu:setPosition(display.cx, 55)
-    self:addChild(connectMenu, 5)
+    -- Kanan bawah: Return di atas, Start di bawah (sumbu Y ke atas).
+    local btnStackX = display.width - 38
+    local startBtnY = 52
+    local returnBtnY = startBtnY + 64
 
     local disconnectBtn = ui.newImageMenuItem({
         image = 'UI/return_btn.png',
         listener = handler(self, NetworkLobbyLayer.onDisconnectPressed)
     })
     local disconnectMenu = ui.newMenu({disconnectBtn})
-    disconnectMenu:setPosition(display.width - 38, 55)
+    disconnectMenu:setPosition(btnStackX, returnBtnY)
     self:addChild(disconnectMenu, 5)
+
+    local connectBtn = ui.newImageMenuItem({
+        image = '#start_btn.png',
+        listener = handler(self, NetworkLobbyLayer.onConnectPressed)
+    })
+    local connectMenu = ui.newMenu({connectBtn})
+    connectMenu:setPosition(btnStackX, startBtnY)
+    self:addChild(connectMenu, 5)
 
 end
 

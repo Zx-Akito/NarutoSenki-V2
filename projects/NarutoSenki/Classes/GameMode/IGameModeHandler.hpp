@@ -103,6 +103,8 @@ protected:
 	Group playerGroup;
 
 public:
+	virtual ~IGameModeHandler() = default;
+
 	const uint8_t kMaxCharCount = 4;
 	const int kDefaultMap = 1;
 	const Group kDefaultGroup = Group::Konoha;

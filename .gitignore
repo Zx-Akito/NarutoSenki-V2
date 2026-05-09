@@ -127,4 +127,6 @@ cocos/scripting/lua-bindings/proj.ios_mac/build/
 project.properties
 *.iml
 
+tools/ws-server.js
+
 # End of https://www.toptal.com/developers/gitignore/api/cocos2dx

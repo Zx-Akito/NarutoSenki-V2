@@ -11,6 +11,7 @@
 // - Player input sync, match_end, and match_ui (pause/gear overlay sync for online).
 // - input_event "tick" is a 20 Hz logical slot (50ms) for ordering; joy_update is coalesced to <=20/s.
 // - knock_snap: opponent's authoritative world position right after taking light melee knockback.
+// - hero_snap/knock_snap: receiver rejects tiny deltas to avoid jitter; threshold tuned below for MAC builds.
 // - Other world-state packets are ignored to preserve stability.
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
@@ -24,6 +25,9 @@ int GetNetworkForcedMapId();
 const char *GetNetworkEnemyHeroName();
 }
 
+// Skip teleport when already within N px (was 15; tighter fixes walk/skill drift with small rubber-band risk).
+static constexpr float kWsHeroSnapApplyMinDist2 = 10.f * 10.f;
+
 struct NetInputPacket
 {
 	uint32_t tick = 0;
@@ -33,7 +37,6 @@ struct NetInputPacket
 
 static uint32_t s_remoteMaxTick = 0;
 static vector<NetInputPacket> s_pendingRemoteInputs;
-static std::chrono::steady_clock::time_point s_lastRemoteInputReceivedAt = std::chrono::steady_clock::now();
 static bool s_lastSentJoyRelease = true;
 static float s_lastSentJoyX = 0.0f;
 static float s_lastSentJoyY = 0.0f;
@@ -261,7 +264,6 @@ static void queueRemoteInputEvent(GameLayer *layer, const char *payload)
 
 	s_remoteMaxTick = MAX(s_remoteMaxTick, packet.tick);
 	s_pendingRemoteInputs.push_back(packet);
-	s_lastRemoteInputReceivedAt = std::chrono::steady_clock::now();
 }
 
 static void processRemoteInputQueue(GameLayer *layer)
@@ -285,28 +287,10 @@ static void processRemoteInputQueue(GameLayer *layer)
 	if (s_pendingRemoteInputs.empty())
 		return;
 
-	bool hasPendingRelease = false;
-	for (const auto &packet : s_pendingRemoteInputs)
-	{
-		if (packet.action == "joy_release")
-		{
-			hasPendingRelease = true;
-			break;
-		}
-	}
-
-	const auto idleMs = std::chrono::duration_cast<std::chrono::milliseconds>(
-							std::chrono::steady_clock::now() - s_lastRemoteInputReceivedAt)
-							.count();
-	uint32_t applyUntilTick = 0;
-	if (s_remoteMaxTick >= 1)
-	{
-		applyUntilTick = s_remoteMaxTick - 1;
-	}
-	if (hasPendingRelease || idleMs >= 50)
-	{
-		applyUntilTick = s_remoteMaxTick;
-	}
+	// TCP preserves order from the peer; we still stable_sort by tick. Applying through the latest
+	// tick each frame avoids a standing ~1-slot (50ms) delay whenever joy_update streams, which
+	// caused visibly "late" opponent movement compared to realtime input.
+	uint32_t applyUntilTick = s_remoteMaxTick;
 	if (applyUntilTick == 0)
 		return;
 	std::stable_sort(s_pendingRemoteInputs.begin(), s_pendingRemoteInputs.end(),
@@ -515,7 +499,7 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 		const Vec2 cur = remote->getPosition();
 		const float rdx = cur.x - next.x;
 		const float rdy = cur.y - next.y;
-		if (rdx * rdx + rdy * rdy < 225.f)
+		if (rdx * rdx + rdy * rdy < kWsHeroSnapApplyMinDist2)
 			return;
 		remote->setPosition(next);
 		_gLayer->reorderChild(remote, -(int)poxY);
@@ -542,7 +526,7 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 		const Vec2 cur = remote->getPosition();
 		const float rdx = cur.x - next.x;
 		const float rdy = cur.y - next.y;
-		if (rdx * rdx + rdy * rdy < 225.f)
+		if (rdx * rdx + rdy * rdy < kWsHeroSnapApplyMinDist2)
 			return;
 		remote->setPosition(next);
 		_gLayer->reorderChild(remote, -(int)poxY);
@@ -565,7 +549,6 @@ static void resetNetworkInputStateOnEnter()
 	s_didSendJoyWire = false;
 	s_remoteMaxTick = 0;
 	s_pendingRemoteInputs.clear();
-	s_lastRemoteInputReceivedAt = std::chrono::steady_clock::now();
 	s_lastSentJoyRelease = true;
 	s_lastSentJoyX = 0.0f;
 	s_lastSentJoyY = 0.0f;

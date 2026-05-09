@@ -60,6 +60,11 @@ void GameLayer::sendNetworkOwnedHeroPositionSnapIfNeeded(const Vec2 &worldPos, H
 		minIntervalMs = 50;
 		minQuietDrift2 = 400.f;
 	}
+	else if (kind == HeroSnapKind::PeriodicCalmWalk)
+	{
+		minIntervalMs = 90;
+		minQuietDrift2 = 49.f; // ~7 px
+	}
 	else if (kind == HeroSnapKind::PeriodicSkillCombat)
 	{
 		// Dash / skill timelines diverge fastest—send more often and on smaller deltas.
@@ -136,7 +141,7 @@ void BattleRuntimeSystem::onGameStart(GameLayer *layer, bool skipInitFlogs, floa
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 	if (MacWsIsConnected())
 	{
-		layer->schedule(schedule_selector(GameLayer::tickOnlineHeroPositionSnap), 0.05f);
+		layer->schedule(schedule_selector(GameLayer::tickOnlineHeroPositionSnap), 1.f / 30.f);
 	}
 #endif
 	for (auto hero : layer->_CharacterArray)

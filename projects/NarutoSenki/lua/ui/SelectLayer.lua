@@ -654,6 +654,23 @@ function SelectLayer:handleWebSocketEvent(eventName, payload)
         local delayMs = extractJsonNumberField(payload, 'delayMs') or 1500
         self._networkStartDelay = delayMs / 1000
         self._networkStartElapsed = 0
+        local mapId = extractJsonNumberField(payload, 'mapId') or 1
+        local team = extractJsonNumberField(payload, 'team')
+        if team == nil then team = 0 end
+        local yourHero = extractJsonStringField(payload, 'yourHero')
+        local enemyHero = extractJsonStringField(payload, 'enemyHero')
+        local yourTeamCsv = extractJsonStringField(payload, 'yourTeamCsv')
+        local enemyTeamCsv = extractJsonStringField(payload, 'enemyTeamCsv')
+        wsSetMatchConfig(mapId, team, yourHero or '', enemyHero or '',
+                         yourTeamCsv or '', enemyTeamCsv or '')
+        -- keep UI state in sync with authoritative server config
+        if yourHero and yourHero ~= '' then
+            self.selectHero = yourHero
+        end
+        if enemyHero and enemyHero ~= '' then
+            self._remoteHero = enemyHero
+        end
+        self:updateNetworkInfoLabel()
         local seed = extractJsonNumberField(payload, 'seed')
         if seed then
             math.randomseed(seed)
@@ -681,6 +698,7 @@ function backToStartMenu()
     _G.mode = nil
     _G.__networkSelectLayer = nil
     _G.__networkMatchId = nil
+    wsClearMatchConfig()
     audio.playSound('Audio/Menu/cancel.ogg')
     local menuScene = CCScene:create()
     local menuLayer = StartMenu:create()

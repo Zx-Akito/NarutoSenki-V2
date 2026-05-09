@@ -11,8 +11,15 @@
 #include "Systems/SpawnSystem.hpp"
 #include "Systems/SessionState.hpp"
 
+// GameLayer.cpp
+// - Owns core battle lifecycle and gameplay flow.
+// - Delegates network input details to GameLayerNetworkInput.inl.
+// - Delegates local input/key handling to GameLayerInputControl.inl.
+
 GameLayer *_gLayer = nullptr;
 bool _isFullScreen = false;
+
+#include "GameLayerNetworkInput.inl"
 
 void BattleRuntimeSystem::onGameStart(GameLayer *layer, bool skipInitFlogs, float flogSpawnDuration) const
 {
@@ -36,7 +43,16 @@ void BattleRuntimeSystem::onGameStart(GameLayer *layer, bool skipInitFlogs, floa
 	{
 		hero->setWalkSpeed(hero->_originSpeed);
 		if (hero->isCom())
+		{
+			const char *remoteHeroName = GetNetworkEnemyHeroName();
+			if (remoteHeroName && strlen(remoteHeroName) > 0 && hero->getName() == remoteHeroName)
+			{
+				hero->unschedule(schedule_selector(CharacterBase::setAI));
+				hero->_isAI = false;
+				continue;
+			}
 			hero->doAI();
+		}
 	}
 }
 
@@ -110,6 +126,7 @@ GameLayer::GameLayer()
 
 	_isStarted = false;
 	_isExiting = false;
+	_hasGameOverTriggered = false;
 
 	ougisChar = nullptr;
 	controlChar = nullptr;
@@ -123,6 +140,8 @@ GameLayer::GameLayer()
 
 	_isGear = false;
 	_isPause = false;
+	_gearLayer = nullptr;
+	_pauseLayer = nullptr;
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	_lastPressedMovementKey = -100;
@@ -173,6 +192,9 @@ void GameLayer::onEnter()
 	}
 
 	Layer::onEnter();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	resetNetworkInputStateOnEnter();
+#endif
 
 	if (_isSurrender)
 	{
@@ -183,6 +205,9 @@ void GameLayer::onEnter()
 void GameLayer::onExit()
 {
 	Layer::onExit();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	resetNetworkInputStateOnExit();
+#endif
 
 	if (_isExiting)
 	{
@@ -209,7 +234,11 @@ void GameLayer::initTileMap()
 		CCMessageBox("Not found any map", "[Error] Not found any map");
 		return;
 	}
-	mapId = random(mapCount) + 1;
+	const int forcedMapId = GetNetworkForcedMapId();
+	if (forcedMapId > 0 && forcedMapId <= mapCount)
+		mapId = forcedMapId;
+	else
+		mapId = random(mapCount) + 1;
 	currentMap = TMXTiledMap::create(GetMapPath(mapId));
 	addChild(currentMap, kMapOrder);
 }
@@ -290,21 +319,23 @@ void GameLayer::initHeros()
 	}
 
 	int i = 0;
+	int konohaSpawnIndex = 0;
+	int akatsukiSpawnIndex = 0;
 	for (auto &data : herosDataVector)
 	{
 		if (data.isInit)
 			continue;
 
-		int mapPos = i;
+		int mapPos = 0;
 		if (data.group == Group::Akatsuki)
 		{
-			if (mapPos <= MapPosCount - 1)
-				mapPos += MapPosCount;
+			mapPos = MapPosCount + (akatsukiSpawnIndex % MapPosCount);
+			akatsukiSpawnIndex++;
 		}
 		else
 		{
-			if (mapPos > MapPosCount - 1)
-				mapPos -= MapPosCount;
+			mapPos = (konohaSpawnIndex % MapPosCount);
+			konohaSpawnIndex++;
 		}
 
 		Ref *mapObject = objectArray->objectAtIndex(mapPos);
@@ -523,6 +554,9 @@ void GameLayer::updateGameTime(float dt)
 
 void GameLayer::updateViewPoint(float dt)
 {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	processRemoteInputQueue(this);
+#endif
 	_battleRuntimeSystem->updateViewPoint(this);
 }
 
@@ -667,56 +701,15 @@ void GameLayer::clearDoubleClick()
 	}
 }
 
-void GameLayer::JoyStickRelease()
-{
-	if (currentPlayer->getState() == State::WALK)
-	{
-		currentPlayer->idle();
-	}
-}
-
-void GameLayer::JoyStickUpdate(Vec2 direction)
-{
-	if (!ougisChar)
-	{
-		// CCLOG("x:%f,y:%f",direction.x,direction.y);
-		currentPlayer->walk(direction);
-	}
-}
-
-void GameLayer::attackButtonClick(ABType type)
-{
-	if (type == NAttack)
-	{
-		_isAttackButtonRelease = false;
-	}
-
-	if (type == Item1)
-	{
-		currentPlayer->setItem(type);
-	}
-	else
-	{
-		currentPlayer->attack(type);
-	}
-}
-
-void GameLayer::gearButtonClick(GearType type)
-{
-	currentPlayer->useGear(type);
-}
-
-void GameLayer::attackButtonRelease()
-{
-	_isAttackButtonRelease = true;
-}
-
 void GameLayer::onPause()
 {
 	if (_isPause)
 		return;
 
+	sendNetworkMatchUIIfActive("pause", true);
+
 	_isPause = true;
+	const bool isNetworkOverlay = _isStarted && MacWsIsConnected();
 	RenderTexture *snapshoot = RenderTexture::create(winSize.width, winSize.height);
 	Scene *f = Director::sharedDirector()->getRunningScene();
 	Ref *pObject = f->getChildren()->objectAtIndex(0);
@@ -727,10 +720,18 @@ void GameLayer::onPause()
 	visit();
 	snapshoot->end();
 
-	Scene *pscene = Scene::create();
 	PauseLayer *layer = PauseLayer::create(snapshoot);
-	pscene->addChild(layer);
-	Director::sharedDirector()->pushScene(pscene);
+	_pauseLayer = layer;
+	if (isNetworkOverlay)
+	{
+		f->addChild(layer, 5000);
+	}
+	else
+	{
+		Scene *pscene = Scene::create();
+		pscene->addChild(layer);
+		Director::sharedDirector()->pushScene(pscene);
+	}
 }
 
 void GameLayer::resumeFromPause()
@@ -738,17 +739,25 @@ void GameLayer::resumeFromPause()
 	if (!_isPause)
 		return;
 
-	if (UserDefault::sharedUserDefault()->getBoolForKey("isBGM"))
+	if (_pauseLayer && _pauseLayer->getParent())
 	{
-		SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
+		_pauseLayer->removeFromParent();
+		_pauseLayer = nullptr;
 	}
-	if (UserDefault::sharedUserDefault()->getBoolForKey("isVoice"))
+	else
 	{
-		SimpleAudioEngine::sharedEngine()->resumeAllEffects();
+		if (UserDefault::sharedUserDefault()->getBoolForKey("isBGM"))
+		{
+			SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
+		}
+		if (UserDefault::sharedUserDefault()->getBoolForKey("isVoice"))
+		{
+			SimpleAudioEngine::sharedEngine()->resumeAllEffects();
+		}
+		Director::sharedDirector()->popScene();
 	}
-
-	Director::sharedDirector()->popScene();
 	_isPause = false;
+	sendNetworkMatchUIIfActive("pause", false);
 }
 
 void GameLayer::onGear()
@@ -757,7 +766,11 @@ void GameLayer::onGear()
 		return;
 	if (_isGear)
 		return;
+
+	sendNetworkMatchUIIfActive("gear", true);
+
 	_isGear = true;
+	const bool isNetworkOverlay = _isStarted && MacWsIsConnected();
 
 	RenderTexture *snapshoot = RenderTexture::create(winSize.width, winSize.height);
 	Scene *f = Director::sharedDirector()->getRunningScene();
@@ -769,27 +782,63 @@ void GameLayer::onGear()
 	visit();
 	snapshoot->end();
 
-	Scene *pscene = Scene::create();
 	GearLayer *layer = GearLayer::create(snapshoot);
 	_gearLayer = layer;
 	layer->updatePlayerGear();
-	pscene->addChild(layer);
-	Director::sharedDirector()->pushScene(pscene);
+	if (isNetworkOverlay)
+	{
+		f->addChild(layer, 5000);
+	}
+	else
+	{
+		Scene *pscene = Scene::create();
+		pscene->addChild(layer);
+		Director::sharedDirector()->pushScene(pscene);
+	}
+}
+
+void GameLayer::dismissGearOverlay()
+{
+	if (!_isGear)
+		return;
+	if (_hudLayer)
+	{
+		_hudLayer->updateGears();
+	}
+	if (_gearLayer && _gearLayer->getParent())
+	{
+		_gearLayer->removeFromParent();
+		_gearLayer = nullptr;
+	}
+	else
+	{
+		Director::sharedDirector()->popScene();
+	}
+	_isGear = false;
+	sendNetworkMatchUIIfActive("gear", false);
 }
 
 void GameLayer::onGameOver(bool isWin)
 {
+	if (_hasGameOverTriggered)
+		return;
+	_hasGameOverTriggered = true;
+	_isStarted = false;
+
+	if (!s_isApplyingRemoteMatchEnd)
+	{
+		sendNetworkMatchEnd(isWin, _isSurrender ? "surrender" : "game_over");
+	}
+
 	removeKeyEventHandler();
 
 	if (_isPause)
 	{
-		_isPause = false;
-		Director::sharedDirector()->popScene();
+		resumeFromPause();
 	}
 	if (_isGear)
 	{
-		_isGear = false;
-		Director::sharedDirector()->popScene();
+		dismissGearOverlay();
 	}
 
 	RenderTexture *snapshoot = RenderTexture::create(winSize.width, winSize.height);
@@ -930,32 +979,8 @@ void GameLayer::removeOugis()
 	ougisChar = nullptr;
 }
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-extern "C" void MacKeyboard_register();
-extern "C" void MacKeyboard_unregister();
-#endif
-
-void GameLayer::setKeyEventHandler()
-{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	Director::sharedDirector()->getOpenGLView()->setAccelerometerKeyHook((GLView::LPFN_ACCELEROMETER_KEYHOOK)(&GameLayer::LPFN_ACCELEROMETER_KEYHOOK));
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-	glfwSetKeyCallback(_window, keyEventHandle);
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	MacKeyboard_register();
-#endif
-}
-
-void GameLayer::removeKeyEventHandler()
-{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	Director::sharedDirector()->getOpenGLView()->setAccelerometerKeyHook(nullptr);
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-	glfwSetKeyCallback(_window, nullptr);
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	MacKeyboard_unregister();
-#endif
-}
+// Input/key control split out for readability.
+#include "GameLayerInputControl.inl"
 
 int GameLayer::getMapCount()
 {
@@ -997,437 +1022,3 @@ void GameLayer::clearAllUnitsMainTarget(CharacterBase *target)
 	UnitEx::clearMainTarget(target, _AkatsukiFlogArray);
 }
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-#define isPressed(__KEY__) _isPressed(__KEY__)
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-#if __has_include("glfw3.h")
-#include "glfw3.h"
-#elif __has_include(<GLFW/glfw3.h>)
-#include <GLFW/glfw3.h>
-#elif __has_include("glfw3/include/mac/glfw3.h")
-#include "glfw3/include/mac/glfw3.h"
-#else
-#error "GLFW header not found. Check include paths."
-#endif
-#define isPressed(__KEY__) glfwGetKey(_window, __KEY__)
-#endif
-
-/**
- * Use __W __S __D __A control when to force move
- */
-#define MOVE(__W, __S, __D, __A, name, keyState)                                    \
-	{                                                                               \
-		if (keyState)                                                               \
-			_gLayer->_lastPressedMovementKey = name;                                \
-		else if (_gLayer->_lastPressedMovementKey == name)                          \
-			_gLayer->_lastPressedMovementKey = -100;                                \
-		int horizontal;                                                             \
-		int vertical;                                                               \
-		if (__W)                                                                    \
-		{                                                                           \
-			vertical = (isPressed(KEY_W) ? 1 : -1);                                 \
-		}                                                                           \
-		else if (__S)                                                               \
-		{                                                                           \
-			vertical = (isPressed(KEY_S) ? -1 : 1);                                 \
-		}                                                                           \
-		else                                                                        \
-		{                                                                           \
-			vertical = (isPressed(KEY_W) ? 1 : -1) + (isPressed(KEY_S) ? -1 : 1);   \
-			vertical = abs(vertical) > 1 ? vertical / 2 : vertical;                 \
-		}                                                                           \
-		if (__D)                                                                    \
-		{                                                                           \
-			horizontal = (isPressed(KEY_D) ? 1 : -1);                               \
-		}                                                                           \
-		else if (__A)                                                               \
-		{                                                                           \
-			horizontal = (isPressed(KEY_A) ? -1 : 1);                               \
-		}                                                                           \
-		else                                                                        \
-		{                                                                           \
-			horizontal = (isPressed(KEY_D) ? 1 : -1) + (isPressed(KEY_A) ? -1 : 1); \
-			horizontal = abs(horizontal) > 1 ? horizontal / 2 : horizontal;         \
-		}                                                                           \
-		if (horizontal != 0 || vertical != 0)                                       \
-		{                                                                           \
-			if (!_gLayer->ougisChar)                                                \
-				_gLayer->currentPlayer->walk(Vec2(horizontal, vertical));           \
-		}                                                                           \
-		else if (_gLayer->currentPlayer->getState() == State::WALK)                 \
-		{                                                                           \
-			_gLayer->_lastPressedMovementKey = -100;                                \
-			_gLayer->currentPlayer->idle();                                         \
-		}                                                                           \
-		break;                                                                      \
-	}
-
-#define ON_GEAR_BY(__ID__, __KEY_STATE__)                                     \
-	if (_gLayer->_isGear && __KEY_STATE__)                                    \
-	{                                                                         \
-		auto &gearBtns = _gLayer->_gearLayer->_screwLayer->getGearBtnArray(); \
-		if (gearBtns.size() >= __ID__ - 1)                                    \
-		{                                                                     \
-			auto gear_btn = gearBtns.at(__ID__ - 1);                          \
-			if (gear_btn)                                                     \
-				gear_btn->click();                                            \
-		}                                                                     \
-	}                                                                         \
-	break;
-
-bool GameLayer::checkHasAnyMovement()
-{
-	if (_gLayer)
-	{
-		if (_gLayer->_lastPressedMovementKey != -100)
-		{
-			keyEventHandle(_window, _gLayer->_lastPressedMovementKey, 0, 1, 0);
-			return true;
-		}
-	}
-	return false;
-}
-
-/** NOTE: Impl key listener */
-void GameLayer::keyEventHandle(GLFWwindow *window, int key, int scancode, int keyState, int mods)
-{
-	// NOTE: only attack button can hold
-	//  Other keys is only click
-	if (keyState == 2 && key != KEY_J)
-		return;
-	switch (key)
-	{
-	case KEY_W:
-		// case KEY_UP:
-		MOVE(keyState, 0, 0, 0, KEY_W, keyState);
-	case KEY_S:
-		// case KEY_DOWN:
-		MOVE(0, keyState, 0, 0, KEY_S, keyState);
-	case KEY_A:
-		// case KEY_LEFT:
-		MOVE(0, 0, keyState, 0, KEY_A, keyState);
-	case KEY_D:
-		// case KEY_RIGHT:
-		MOVE(0, 0, 0, keyState, KEY_D, keyState);
-	case KEY_J:
-		if (keyState)
-			_gLayer->_hudLayer->nAttackButton->click();
-		else
-			_gLayer->_isAttackButtonRelease = true;
-		break;
-	case KEY_L: // Ramen button
-		if (keyState)
-			_gLayer->_hudLayer->item1Button->click();
-		break;
-	case KEY_H: // Ougis 2 buttons
-		if (keyState)
-			_gLayer->_hudLayer->skill5Button->click();
-		break;
-	case KEY_K: // Ougis 1 buttons
-		if (keyState)
-			_gLayer->_hudLayer->skill4Button->click();
-		break;
-	case KEY_U: // skill 1
-		if (keyState)
-			_gLayer->_hudLayer->skill1Button->click();
-		break;
-	case KEY_I: // skill 2
-		if (keyState)
-			_gLayer->_hudLayer->skill2Button->click();
-		break;
-	case KEY_O: // skill 3
-		if (keyState)
-			_gLayer->_hudLayer->skill3Button->click();
-		break;
-		// Gear buttons
-	case KEY_1:
-	case KEY_KP_1:
-		ON_GEAR_BY(1, keyState);
-	case KEY_2:
-	case KEY_KP_2:
-		ON_GEAR_BY(2, keyState);
-	case KEY_3:
-	case KEY_KP_3:
-		ON_GEAR_BY(3, keyState);
-	case KEY_4:
-	case KEY_KP_4:
-		ON_GEAR_BY(4, keyState);
-	case KEY_5:
-	case KEY_KP_5:
-		ON_GEAR_BY(5, keyState);
-	case KEY_6:
-	case KEY_KP_6:
-		ON_GEAR_BY(6, keyState);
-	case KEY_7:
-	case KEY_KP_7:
-		ON_GEAR_BY(7, keyState);
-	case KEY_8:
-	case KEY_KP_8:
-		ON_GEAR_BY(8, keyState);
-	case KEY_9:
-	case KEY_KP_9:
-		ON_GEAR_BY(9, keyState);
-	case KEY_0:
-	case KEY_KP_0:
-		break;
-	/* Item buttons */
-	// Item 1 & Purchase
-	case KEY_B:
-		if (keyState)
-		{
-			if (_gLayer->_isGear)
-				_gLayer->_gearLayer->confirmPurchase();
-			else
-				_gLayer->_hudLayer->getItem3Button()->click();
-		}
-		break;
-	// Item 2
-	case KEY_N:
-		if (keyState)
-			_gLayer->_hudLayer->getItem4Button()->click();
-		break;
-	// Item 3
-	case KEY_M:
-		if (keyState)
-			_gLayer->_hudLayer->getItem2Button()->click();
-		break;
-	case KEY_ESCAPE:
-	case KEY_ENTER:
-		if (keyState && _gLayer->_isStarted == true)
-		{
-			if (_gLayer->_isPause)
-			{
-				_gLayer->resumeFromPause();
-			}
-			else if (_gLayer->_isGear)
-			{
-				Director::sharedDirector()->popScene();
-				_gLayer->_isGear = false;
-			}
-			else
-			{
-				_gLayer->onPause(); // enter pause menu
-			}
-		}
-		break;
-	case KEY_SPACE:
-		if (_gLayer->_enableGear && _gLayer->_isStarted && keyState && !_gLayer->_isPause)
-		{
-			if (_gLayer->_isGear)
-			{
-				Director::sharedDirector()->popScene();
-				_gLayer->_isGear = false;
-			}
-			else
-			{
-				_gLayer->onGear(); // enter gear shop
-			}
-		}
-		break;
-	case KEY_F11:
-		// if (keyState)
-		// {
-		// 	// SET_FULL_SCREEN_MODE(_window, _isFullScreen);
-		// 	GLFWmonitor *monitor = glfwGetPrimaryMonitor();
-		// 	if (nullptr == monitor)
-		// 	{
-		// 		return;
-		// 	}
-		// 	const GLFWvidmode *videoMode = glfwGetVideoMode(monitor);
-		// 	int width, height;
-		// 	glfwGetWindowSize(_window, &width, &height);
-		// 	if (_isFullScreen)
-		// 	{
-		// 		glfwSetWindowMonitor(_window, nullptr, videoMode->width / 2, videoMode->height / 2, WIDTH, HEIGHT, videoMode->refreshRate);
-		// 		glfwSetWindowPos(_window,
-		// 						 (videoMode->width - WIDTH) / 2,
-		// 						 (videoMode->height - HEIGHT) * 0.35f);
-		// 	}
-		// 	else
-		// 	{
-		// 		glfwSetWindowMonitor(_window, nullptr, 0, 0, videoMode->width, videoMode->height, videoMode->refreshRate);
-		// 		Director::sharedDirector()->getOpenGLView()->updateFrameSize(videoMode->width,videoMode->height);
-		// 	}
-		// 	_isFullScreen = !_isFullScreen;
-		// }
-		break;
-	}
-}
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-
-void GameLayer::LPFN_ACCELEROMETER_KEYHOOK(UINT message, WPARAM wParam, LPARAM lParam)
-{
-	switch (message)
-	{
-	case WM_SYSKEYDOWN:
-	case WM_KEYDOWN:
-		keyEventHandle(nullptr, wParam, 0, 1, 0);
-		break;
-	case WM_SYSKEYUP:
-	case WM_KEYUP:
-		keyEventHandle(nullptr, wParam, 0, 0, 0);
-		break;
-	}
-}
-
-#endif
-
-#endif
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-
-static bool s_macKeyState[256] = {};
-
-#define isPressed(__KEY__) ((__KEY__) < 256 && s_macKeyState[__KEY__])
-
-#define MOVE_MAC(__W, __S, __D, __A, name, keyState)                                    \
-	{                                                                               \
-		if (keyState)                                                               \
-			_gLayer->_lastPressedMovementKey = name;                                \
-		else if (_gLayer->_lastPressedMovementKey == name)                          \
-			_gLayer->_lastPressedMovementKey = -100;                                \
-		int horizontal;                                                             \
-		int vertical;                                                               \
-		if (__W)                                                                    \
-		{                                                                           \
-			vertical = (isPressed(KEY_W) ? 1 : -1);                                \
-		}                                                                           \
-		else if (__S)                                                               \
-		{                                                                           \
-			vertical = (isPressed(KEY_S) ? -1 : 1);                                \
-		}                                                                           \
-		else                                                                        \
-		{                                                                           \
-			vertical = (isPressed(KEY_W) ? 1 : -1) + (isPressed(KEY_S) ? -1 : 1);  \
-			vertical = abs(vertical) > 1 ? vertical / 2 : vertical;                \
-		}                                                                           \
-		if (__D)                                                                    \
-		{                                                                           \
-			horizontal = (isPressed(KEY_D) ? 1 : -1);                              \
-		}                                                                           \
-		else if (__A)                                                               \
-		{                                                                           \
-			horizontal = (isPressed(KEY_A) ? -1 : 1);                              \
-		}                                                                           \
-		else                                                                        \
-		{                                                                           \
-			horizontal = (isPressed(KEY_D) ? 1 : -1) + (isPressed(KEY_A) ? -1 : 1); \
-			horizontal = abs(horizontal) > 1 ? horizontal / 2 : horizontal;        \
-		}                                                                           \
-		if (horizontal != 0 || vertical != 0)                                       \
-		{                                                                           \
-			if (!_gLayer->ougisChar)                                                \
-				_gLayer->currentPlayer->walk(Vec2(horizontal, vertical));           \
-		}                                                                           \
-		else if (_gLayer->currentPlayer->getState() == State::WALK)                 \
-		{                                                                           \
-			_gLayer->_lastPressedMovementKey = -100;                                \
-			_gLayer->currentPlayer->idle();                                         \
-		}                                                                           \
-		break;                                                                      \
-	}
-
-void GameLayer::keyEventHandle(int key, int keyState)
-{
-	if (!_gLayer || !_gLayer->currentPlayer)
-		return;
-
-	if (key >= 0 && key < 256)
-		s_macKeyState[key] = (keyState != 0);
-
-	switch (key)
-	{
-	case KEY_W:
-		MOVE_MAC(keyState, 0, 0, 0, KEY_W, keyState);
-	case KEY_S:
-		MOVE_MAC(0, keyState, 0, 0, KEY_S, keyState);
-	case KEY_A:
-		MOVE_MAC(0, 0, keyState, 0, KEY_A, keyState);
-	case KEY_D:
-		MOVE_MAC(0, 0, 0, keyState, KEY_D, keyState);
-	case KEY_J:
-		if (keyState)
-			_gLayer->_hudLayer->nAttackButton->click();
-		else
-			_gLayer->_isAttackButtonRelease = true;
-		break;
-	case KEY_L:
-		if (keyState)
-			_gLayer->_hudLayer->item1Button->click();
-		break;
-	case KEY_H:
-		if (keyState)
-			_gLayer->_hudLayer->skill5Button->click();
-		break;
-	case KEY_K:
-		if (keyState)
-			_gLayer->_hudLayer->skill4Button->click();
-		break;
-	case KEY_U:
-		if (keyState)
-			_gLayer->_hudLayer->skill1Button->click();
-		break;
-	case KEY_I:
-		if (keyState)
-			_gLayer->_hudLayer->skill2Button->click();
-		break;
-	case KEY_O:
-		if (keyState)
-			_gLayer->_hudLayer->skill3Button->click();
-		break;
-	case KEY_1: case KEY_KP_1:
-		if (_gLayer->_isGear && keyState) { auto &gb = _gLayer->_gearLayer->_screwLayer->getGearBtnArray(); if (gb.size()>=1 && gb.at(0)) gb.at(0)->click(); } break;
-	case KEY_2: case KEY_KP_2:
-		if (_gLayer->_isGear && keyState) { auto &gb = _gLayer->_gearLayer->_screwLayer->getGearBtnArray(); if (gb.size()>=2 && gb.at(1)) gb.at(1)->click(); } break;
-	case KEY_3: case KEY_KP_3:
-		if (_gLayer->_isGear && keyState) { auto &gb = _gLayer->_gearLayer->_screwLayer->getGearBtnArray(); if (gb.size()>=3 && gb.at(2)) gb.at(2)->click(); } break;
-	case KEY_B:
-		if (keyState) { if (_gLayer->_isGear) _gLayer->_gearLayer->confirmPurchase(); else _gLayer->_hudLayer->getItem3Button()->click(); } break;
-	case KEY_N:
-		if (keyState) _gLayer->_hudLayer->getItem4Button()->click(); break;
-	case KEY_M:
-		if (keyState) _gLayer->_hudLayer->getItem2Button()->click(); break;
-	case KEY_SPACE:
-		if (_gLayer->_enableGear && _gLayer->_isStarted && keyState && !_gLayer->_isPause)
-		{
-			if (_gLayer->_isGear)
-			{
-				Director::sharedDirector()->popScene();
-				_gLayer->_isGear = false;
-			}
-			else
-			{
-				_gLayer->onGear();
-			}
-		}
-		break;
-	case KEY_ESCAPE: case KEY_ENTER:
-		if (keyState && _gLayer->_isStarted)
-		{
-			if (_gLayer->_isPause) { _gLayer->resumeFromPause(); }
-			else if (_gLayer->_isGear) { Director::sharedDirector()->popScene(); _gLayer->_isGear = false; }
-			else { _gLayer->onPause(); }
-		}
-		break;
-	}
-}
-
-bool GameLayer::checkHasAnyMovement()
-{
-	if (_gLayer && _gLayer->_lastPressedMovementKey != -100)
-	{
-		keyEventHandle(_gLayer->_lastPressedMovementKey, 1);
-		return true;
-	}
-	return false;
-}
-
-#elif !(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-bool GameLayer::checkHasAnyMovement()
-{
-	return false;
-}
-#endif

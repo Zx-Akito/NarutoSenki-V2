@@ -125,6 +125,8 @@ public:
 	void onPause();
 	void resumeFromPause();
 	void onGear();
+	/** Pop gear shop scene; used locally and when mirroring remote close in network play. */
+	void dismissGearOverlay();
 	void playGameOpeningAnimation(float dt);
 	void onGameStart(float dt);
 	void onGameOver(bool isWin);
@@ -157,6 +159,7 @@ public:
 	Group playerGroup;
 	bool _isStarted;
 	bool _isExiting;
+	bool _hasGameOverTriggered;
 
 	const char *getGuardianGroup()
 	{
@@ -166,6 +169,7 @@ public:
 	bool _isGear;
 	bool _isPause;
 	GearLayer *_gearLayer;
+	PauseLayer *_pauseLayer;
 
 	void clearAllFlogsMainTarget(CharacterBase *target);
 	void clearAllUnitsMainTarget(CharacterBase *target);

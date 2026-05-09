@@ -10,49 +10,11 @@ function NetworkLobbyLayer:ctor()
     self.isConnecting = false
     self.isInQueue = false
     self.matchId = nil
-    self.countdownSeconds = nil
-    self.countdownElapsed = 0
-
     self:init()
     _G.__networkLobbyLayer = self
 end
 
 function NetworkLobbyLayer:create() return NetworkLobbyLayer.new() end
-
-function NetworkLobbyLayer:startMatchCountdown(seconds)
-    self.countdownSeconds = seconds or 10
-    self.countdownElapsed = 0
-    self:setStatus('Match found: ' .. tostring(self.matchId or '?') ..
-                       ' | Start in ' .. tostring(self.countdownSeconds) .. 's')
-    self:scheduleUpdateWithPriorityLua(handler(self, self.update), 0)
-end
-
-function NetworkLobbyLayer:stopMatchCountdown()
-    if self.countdownSeconds ~= nil then self:unscheduleUpdate() end
-    self.countdownSeconds = nil
-    self.countdownElapsed = 0
-end
-
-function NetworkLobbyLayer:update(dt)
-    if self.countdownSeconds == nil then return end
-
-    self.countdownElapsed = self.countdownElapsed + dt
-    if self.countdownElapsed < 1 then return end
-
-    self.countdownElapsed = self.countdownElapsed - 1
-    self.countdownSeconds = self.countdownSeconds - 1
-
-    if self.countdownSeconds <= 0 then
-        self:stopMatchCountdown()
-        _G.__networkMatchId = self.matchId
-        _G.__networkLobbyLayer = nil
-        enterSelectLayer(GameMode.Classic, false)
-        return
-    end
-
-    self:setStatus('Match found: ' .. tostring(self.matchId or '?') ..
-                       ' | Start in ' .. tostring(self.countdownSeconds) .. 's')
-end
 
 function NetworkLobbyLayer:init()
     tools.addSprites('Select.plist')
@@ -219,7 +181,6 @@ function NetworkLobbyLayer:onConnectPressed()
 end
 
 function NetworkLobbyLayer:onDisconnectPressed()
-    self:stopMatchCountdown()
     if self.isConnected then
         wsSend('{"type":"queue_leave"}')
     end
@@ -248,16 +209,16 @@ function NetworkLobbyLayer:handleWebSocketEvent(eventName, payload)
         self:setMessage(payload or '-')
         local messageType = extractJsonStringField(payload, 'type')
         if messageType == 'queue_waiting' then
-            self:stopMatchCountdown()
             self.matchId = nil
             self:setStatus('Queueing...')
         elseif messageType == 'match_found' then
             self.matchId = extractJsonStringField(payload, 'matchId')
             self.isInQueue = false
             _G.__networkMatchId = self.matchId
-            self:startMatchCountdown(10)
+            self:setStatus('Match found: ' .. tostring(self.matchId or '?'))
+            _G.__networkLobbyLayer = nil
+            enterSelectLayer(GameMode.Classic, false)
         elseif messageType == 'opponent_left' then
-            self:stopMatchCountdown()
             self:setStatus('Opponent left')
             self:setMessage('Match cancelled')
             wsDisconnect()
@@ -272,7 +233,6 @@ function NetworkLobbyLayer:handleWebSocketEvent(eventName, payload)
             -- keepalive ack
         end
     elseif eventName == 'close' then
-        self:stopMatchCountdown()
         self.isConnecting = false
         self.isConnected = false
         self.isInQueue = false
@@ -280,7 +240,6 @@ function NetworkLobbyLayer:handleWebSocketEvent(eventName, payload)
         _G.__networkMatchId = nil
         self:setStatus('Disconnected')
     elseif eventName == 'error' then
-        self:stopMatchCountdown()
         self.isConnecting = false
         self.isConnected = false
         self.isInQueue = false

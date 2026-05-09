@@ -16,6 +16,50 @@ bool MacWsIsConnected();
 }
 #endif
 
+using NativeWsEventCallback = void (*)(const char *eventName, const char *payload);
+static NativeWsEventCallback s_nativeWsEventCallback = nullptr;
+static int s_networkForcedMapId = 0;
+static int s_networkForcedTeam = -1; // 0 = Konoha, 1 = Akatsuki
+static std::string s_networkYourHeroName;
+static std::string s_networkEnemyHeroName;
+static std::string s_networkYourTeamCsv;
+static std::string s_networkEnemyTeamCsv;
+
+extern "C" void SetNativeWsEventCallback(NativeWsEventCallback callback)
+{
+	s_nativeWsEventCallback = callback;
+}
+
+extern "C" int GetNetworkForcedMapId()
+{
+	return s_networkForcedMapId;
+}
+
+extern "C" int GetNetworkForcedTeam()
+{
+	return s_networkForcedTeam;
+}
+
+extern "C" const char *GetNetworkYourHeroName()
+{
+	return s_networkYourHeroName.c_str();
+}
+
+extern "C" const char *GetNetworkEnemyHeroName()
+{
+	return s_networkEnemyHeroName.c_str();
+}
+
+extern "C" const char *GetNetworkYourTeamCsv()
+{
+	return s_networkYourTeamCsv.c_str();
+}
+
+extern "C" const char *GetNetworkEnemyTeamCsv()
+{
+	return s_networkEnemyTeamCsv.c_str();
+}
+
 namespace
 {
 static void sendLuaEvent(const char *eventName, const std::string &payload)
@@ -47,6 +91,11 @@ static void onMacWsEvent(const char *eventName, const char *payload)
 {
 	sendLuaEvent(eventName ? eventName : "",
 				 payload ? payload : "");
+	if (s_nativeWsEventCallback)
+	{
+		s_nativeWsEventCallback(eventName ? eventName : "",
+								 payload ? payload : "");
+	}
 }
 #endif
 
@@ -96,12 +145,42 @@ static int luaWsIsConnected(lua_State *L)
 	return 1;
 }
 
+static int luaWsSetMatchConfig(lua_State *L)
+{
+	const int mapId = (int)lua_tointeger(L, 1);
+	const int team = (int)lua_tointeger(L, 2);
+	s_networkForcedMapId = mapId;
+	s_networkForcedTeam = team;
+	const char *yourHero = lua_tostring(L, 3);
+	const char *enemyHero = lua_tostring(L, 4);
+	const char *yourTeamCsv = lua_tostring(L, 5);
+	const char *enemyTeamCsv = lua_tostring(L, 6);
+	s_networkYourHeroName = yourHero ? yourHero : "";
+	s_networkEnemyHeroName = enemyHero ? enemyHero : "";
+	s_networkYourTeamCsv = yourTeamCsv ? yourTeamCsv : "";
+	s_networkEnemyTeamCsv = enemyTeamCsv ? enemyTeamCsv : "";
+	return 0;
+}
+
+static int luaWsClearMatchConfig(lua_State *L)
+{
+	s_networkForcedMapId = 0;
+	s_networkForcedTeam = -1;
+	s_networkYourHeroName.clear();
+	s_networkEnemyHeroName.clear();
+	s_networkYourTeamCsv.clear();
+	s_networkEnemyTeamCsv.clear();
+	return 0;
+}
+
 static void registerLuaNetworkFunctions(lua_State *L)
 {
 	lua_register(L, "wsConnect", &luaWsConnect);
 	lua_register(L, "wsSend", &luaWsSend);
 	lua_register(L, "wsDisconnect", &luaWsDisconnect);
 	lua_register(L, "wsIsConnected", &luaWsIsConnected);
+	lua_register(L, "wsSetMatchConfig", &luaWsSetMatchConfig);
+	lua_register(L, "wsClearMatchConfig", &luaWsClearMatchConfig);
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 	MacWsSetEventCallback(&onMacWsEvent);
 #endif

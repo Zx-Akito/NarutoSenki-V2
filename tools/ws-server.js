@@ -5,6 +5,15 @@ const wss = new WebSocket.Server({ port: PORT });
 let waitingPlayer = null;
 let nextPlayerId = 1;
 let nextMatchId = 1;
+const TEAM_SIZE = 1;
+const NETWORK_MODE = "1v1";
+const HERO_POOL = [
+  "Naruto", "Sasuke", "Sakura", "Kakashi", "Shikamaru", "Choji", "Ino",
+  "Asuma", "Kiba", "Hinata", "Shino", "Lee", "Neji", "Tenten", "Gaara",
+  "Temari", "Kankuro", "Sai", "Yamato", "Deidara", "Hidan", "Kisame",
+  "Itachi", "Pain", "Konan", "Tobi", "Karin", "Suigetsu", "Jugo",
+  "Tobirama", "Hiruzen", "Minato"
+];
 
 console.log(`[ws-server] listening on ws://127.0.0.1:${PORT}`);
 
@@ -44,6 +53,26 @@ function relayToOpponent(ws, payload) {
   safeSend(ws.opponent, payload);
 }
 
+function buildMatchTeams(heroA, heroB, teamSize = TEAM_SIZE) {
+  const mainA = heroA || "Naruto";
+  const mainB = heroB || "Sasuke";
+  const teamA = [mainA];
+  const teamB = [mainB];
+
+  const pool = HERO_POOL.filter((h) => h && h !== mainA && h !== mainB);
+  let i = 0;
+  while (teamA.length < teamSize && i < pool.length) {
+    teamA.push(pool[i++]);
+  }
+  while (teamB.length < teamSize && i < pool.length) {
+    teamB.push(pool[i++]);
+  }
+  while (teamA.length < teamSize) teamA.push("Naruto");
+  while (teamB.length < teamSize) teamB.push("Sasuke");
+
+  return { teamA, teamB };
+}
+
 function tryMatchmake(ws) {
   if (!waitingPlayer || waitingPlayer === ws) {
     waitingPlayer = ws;
@@ -55,8 +84,18 @@ function tryMatchmake(ws) {
   waitingPlayer = null;
 
   const matchId = `M${nextMatchId++}`;
+  const mapId = 1;
+  // Keep queue order intuitive:
+  // - player already waiting => Konoha (left)
+  // - player who just joined => Akatsuki (right)
+  const wsTeam = 1; // Akatsuki
+  const otherTeam = 0; // Konoha
   ws.matchId = matchId;
   other.matchId = matchId;
+  ws.mapId = mapId;
+  other.mapId = mapId;
+  ws.team = wsTeam;
+  other.team = otherTeam;
   ws.opponent = other;
   other.opponent = ws;
   ws.selectLocked = false;
@@ -68,12 +107,14 @@ function tryMatchmake(ws) {
 
   safeSend(ws, {
     type: "match_found",
+    mode: NETWORK_MODE,
     matchId,
     opponentId: other.playerId,
     ts: Date.now(),
   });
   safeSend(other, {
     type: "match_found",
+    mode: NETWORK_MODE,
     matchId,
     opponentId: ws.playerId,
     ts: Date.now(),
@@ -113,6 +154,10 @@ wss.on("connection", (ws) => {
     }
 
     if (message.type === "queue_join") {
+      if (message.mode && message.mode !== NETWORK_MODE) {
+        safeSend(ws, { type: "error", reason: "mode_not_supported", supportedMode: NETWORK_MODE, ts: Date.now() });
+        return;
+      }
       tryMatchmake(ws);
       return;
     }
@@ -149,23 +194,84 @@ wss.on("connection", (ws) => {
       if (ws.opponent && ws.opponent.selectLocked && !ws.matchStarted && !ws.opponent.matchStarted) {
         const startDelayMs = 1500;
         const seed = Math.floor(Math.random() * 2147483647);
+        const { teamA, teamB } = buildMatchTeams(
+          ws.selectHero,
+          ws.opponent.selectHero,
+          TEAM_SIZE
+        );
         ws.matchStarted = true;
         ws.opponent.matchStarted = true;
         safeSend(ws, { type: "both_locked", ts: Date.now() });
         safeSend(ws.opponent, { type: "both_locked", ts: Date.now() });
         safeSend(ws, {
           type: "match_start",
+          mode: NETWORK_MODE,
+          teamSize: TEAM_SIZE,
           delayMs: startDelayMs,
           seed,
+          mapId: ws.mapId || 1,
+          team: ws.team ?? 0,
+          yourHero: ws.selectHero || "",
+          enemyHero: ws.opponent.selectHero || "",
+          yourTeamCsv: teamA.join(","),
+          enemyTeamCsv: teamB.join(","),
           ts: Date.now(),
         });
         safeSend(ws.opponent, {
           type: "match_start",
+          mode: NETWORK_MODE,
+          teamSize: TEAM_SIZE,
           delayMs: startDelayMs,
           seed,
+          mapId: ws.opponent.mapId || 1,
+          team: ws.opponent.team ?? 1,
+          yourHero: ws.opponent.selectHero || "",
+          enemyHero: ws.selectHero || "",
+          yourTeamCsv: teamB.join(","),
+          enemyTeamCsv: teamA.join(","),
           ts: Date.now(),
         });
+        console.log(
+          `[ws-server] match_start ${ws.matchId} | ` +
+            `p${ws.playerId} team=${ws.team} hero=${ws.selectHero} roster=${teamA.join("|")} ` +
+            `vs p${ws.opponent.playerId} team=${ws.opponent.team} hero=${ws.opponent.selectHero} roster=${teamB.join("|")}`
+        );
       }
+      return;
+    }
+
+    if (message.type === "input_event") {
+      relayToOpponent(ws, {
+        type: "input_event",
+        action: message.action || "",
+        payload: message.payload || {},
+        tick: Number.isFinite(message.tick) ? message.tick : 0,
+        from: ws.playerId,
+        ts: Date.now(),
+      });
+      return;
+    }
+
+    if (message.type === "match_end") {
+      const localIsWin = !!message.isWin;
+      relayToOpponent(ws, {
+        type: "match_end",
+        isWin: !localIsWin,
+        reason: message.reason || "remote_end",
+        from: ws.playerId,
+        ts: Date.now(),
+      });
+      return;
+    }
+
+    if (message.type === "match_ui") {
+      relayToOpponent(ws, {
+        type: "match_ui",
+        ui: message.ui || "",
+        open: !!message.open,
+        from: ws.playerId,
+        ts: Date.now(),
+      });
       return;
     }
 

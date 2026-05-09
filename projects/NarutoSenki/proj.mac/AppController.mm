@@ -185,7 +185,8 @@ static AppDelegate s_sharedApplication;
 
 -(void) applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-	NSRect rect = NSMakeRect(200, 200, (CGFloat)1280, (CGFloat)720);
+	// Smaller default desktop window for local multi-instance testing.
+	NSRect rect = NSMakeRect(200, 200, (CGFloat)960, (CGFloat)540);
 	NSUInteger windowStyle = NSClosableWindowMask | NSMiniaturizableWindowMask |
 		NSResizableWindowMask | NSTitledWindowMask;
 

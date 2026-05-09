@@ -3,8 +3,15 @@
 #include "GameLayer.h"
 #include "LoadLayer.h"
 #include "SelectLayer.h"
+#include <cstring>
+#include <sstream>
 
 class IGameModeHandler;
+extern "C" int GetNetworkForcedTeam();
+extern "C" const char *GetNetworkYourHeroName();
+extern "C" const char *GetNetworkEnemyHeroName();
+extern "C" const char *GetNetworkYourTeamCsv();
+extern "C" const char *GetNetworkEnemyTeamCsv();
 
 enum GameMode : uint32_t
 {
@@ -199,7 +206,8 @@ protected:
 		playerCount = playerCount > kMaxCharCount ? kMaxCharCount : playerCount;
 		enemyCount = enemyCount > kMaxCharCount ? kMaxCharCount : enemyCount;
 		setRand();
-		int team = random(2);
+		int forcedTeam = GetNetworkForcedTeam();
+		int team = forcedTeam >= 0 ? forcedTeam : random(2);
 		// TODO: Support custom player group
 		// playerGroup = playerGroup == nullptr ? (team > 0 ? Group::Konoha : Group::Akatsuki) : playerGroup;
 		playerGroup = team > 0 ? Group::Akatsuki : Group::Konoha;
@@ -208,6 +216,74 @@ protected:
 		uint8_t totalCount = playerCount + enemyCount;
 		uint8_t comCount = totalCount > 0 ? totalCount - 1 : 0;
 		uint8_t comOfPlayerGroupCount = playerCount > 0 ? playerCount - 1 : 0;
+		const char *forcedYourHero = GetNetworkYourHeroName();
+		const char *forcedEnemyHero = GetNetworkEnemyHeroName();
+		const char *forcedYourTeamCsv = GetNetworkYourTeamCsv();
+		const char *forcedEnemyTeamCsv = GetNetworkEnemyTeamCsv();
+		const bool hasForcedNetworkRoster =
+			forcedYourHero && forcedEnemyHero &&
+			strlen(forcedYourHero) > 0 && strlen(forcedEnemyHero) > 0;
+
+		if (hasForcedNetworkRoster)
+		{
+			auto parseCsv = [](const char *csv) {
+				vector<string> out;
+				if (!csv || strlen(csv) == 0)
+					return out;
+				std::stringstream ss(csv);
+				string item;
+				while (std::getline(ss, item, ','))
+				{
+					if (!item.empty())
+						out.push_back(item);
+				}
+				return out;
+			};
+			auto yourTeam = parseCsv(forcedYourTeamCsv);
+			auto enemyTeam = parseCsv(forcedEnemyTeamCsv);
+			// Hard-lock network path to 1v1 roster profile (player + 2 com per side max).
+			const uint8_t forcedYourCount = (uint8_t)MIN((int)kMaxCharCount, MAX(1, (int)yourTeam.size()));
+			const uint8_t forcedEnemyCount = (uint8_t)MIN((int)kMaxCharCount, MAX(1, (int)enemyTeam.size()));
+			playerCount = forcedYourCount;
+			enemyCount = forcedEnemyCount;
+			this->gd.use4v4SpawnLayout = false;
+			// 1v1 network baseline: disable lane minion waves to avoid unsynced AI drift.
+			this->skipInitFlogs = true;
+			if (!yourTeam.empty())
+				forcedYourHero = yourTeam.front().c_str();
+			if (!enemyTeam.empty())
+				forcedEnemyHero = enemyTeam.front().c_str();
+
+			selectLayer->_playerSelect = forcedYourHero;
+			selectLayer->_com1Select = nullptr;
+			selectLayer->_com2Select = nullptr;
+			selectLayer->_com3Select = nullptr;
+
+			heroDataVector.push_back({forcedYourHero, Role::Player, playerGroup});
+			heroVector.push_back(forcedYourHero);
+
+			const Group enemyGroup = playerGroup == Group::Konoha ? Group::Akatsuki : Group::Konoha;
+			for (uint8_t i = 1; i < playerCount; i++)
+			{
+				string hero = i < yourTeam.size() ? yourTeam[i] : getRandomHeroExceptAll(heroVector);
+				heroDataVector.push_back({hero, Role::Com, playerGroup});
+				heroVector.push_back(hero);
+			}
+
+			for (uint8_t i = 0; i < enemyCount; i++)
+			{
+				string hero;
+				if (i < enemyTeam.size())
+					hero = enemyTeam[i];
+				else if (i == 0)
+					hero = forcedEnemyHero;
+				else
+					hero = getRandomHeroExceptAll(heroVector);
+				heroDataVector.push_back({hero, Role::Com, enemyGroup});
+				heroVector.push_back(hero);
+			}
+			return;
+		}
 
 		if (playerSelect)
 			selectLayer->_playerSelect = playerSelect;

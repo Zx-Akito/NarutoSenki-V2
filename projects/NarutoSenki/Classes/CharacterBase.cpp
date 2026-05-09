@@ -7,6 +7,65 @@
 #include "Systems/CommandSystem.hpp"
 #include "Utils/Debug/UnitDebug.hpp"
 
+namespace
+{
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+extern "C" bool MacWsIsConnected();
+extern "C" const char *GetNetworkEnemyHeroName();
+#endif
+
+/** Online opponent is spawned as Role::Com locally; reuse player tower-blocking so they cannot walk through towers on the watcher client. */
+static bool characterUsesPlayerTowerBlockingWhenWalking(CharacterBase *self)
+{
+	if (!self || self->_isAI || self->_isInvincible || self->_isArmored)
+		return false;
+	if (self->isPlayer())
+		return true;
+	if (!self->isCom())
+		return false;
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	GameLayer *layer = getGameLayer();
+	if (!layer || !layer->_isStarted || !MacWsIsConnected())
+		return false;
+	if (self->getGroup() == layer->playerGroup)
+		return false;
+	const char *remoteHero = GetNetworkEnemyHeroName();
+	if (!remoteHero || remoteHero[0] == '\0')
+		return false;
+	return self->getName() == remoteHero;
+#else
+	return false;
+#endif
+}
+
+/** When replaying remote walk, sliding by anchor/velocity can disagree and tunnel through the tower AABB; shove to the nearest outside point instead. */
+static Vec2 resolvePointOutsideTowerCollisionBox(const Vec2 &p, const CCRect &rect)
+{
+	if (!rect.containsPoint(CCPointMake(p.x, p.y)))
+		return p;
+
+	const float minX = rect.getMinX();
+	const float maxX = rect.getMaxX();
+	const float minY = rect.getMinY();
+	const float maxY = rect.getMaxY();
+	const float dLeft = p.x - minX;
+	const float dRight = maxX - p.x;
+	const float dBottom = p.y - minY;
+	const float dTop = maxY - p.y;
+	const float eps = 2.0f;
+
+	if (dLeft <= dRight && dLeft <= dBottom && dLeft <= dTop)
+		return Vec2(minX - eps, p.y);
+	if (dRight <= dBottom && dRight <= dTop)
+		return Vec2(maxX + eps, p.y);
+	if (dBottom <= dTop)
+		return Vec2(p.x, minY - eps);
+	return Vec2(p.x, maxY + eps);
+}
+} // namespace
+
 CharacterBase::CharacterBase()
 {
 	_state = State::WALK;
@@ -321,7 +380,7 @@ void CharacterBase::update(float dt)
 	{
 		_desiredPosition = getPosition() + (_velocity * dt);
 
-		if (isPlayer() && !_isAI && !_isInvincible && !_isArmored)
+		if (characterUsesPlayerTowerBlockingWhenWalking(this))
 		{
 			// save the stop Area
 			for (auto tower : getGameLayer()->_TowerArray)
@@ -338,16 +397,23 @@ void CharacterBase::update(float dt)
 					{
 						_affectedByTower = true;
 
-						float anchorYpoint = metaY + metaHeight / 2;
-						if (getPositionY() > anchorYpoint)
+						const bool networkWalkProxy =
+							characterUsesPlayerTowerBlockingWhenWalking(this) && isCom();
+						if (networkWalkProxy)
 						{
-							_velocity = Vec2(0, 1 * _walkSpeed * kSpeedBase);
+							// Do not reuse player slide (anchor/velocity); it can disagree across
+							// peers and either flip direction or tunnel. Pin to nearest box exterior.
+							_desiredPosition = resolvePointOutsideTowerCollisionBox(_desiredPosition, rect);
 						}
 						else
 						{
-							_velocity = Vec2(0, -1 * _walkSpeed * kSpeedBase);
+							float anchorYpoint = metaY + metaHeight / 2;
+							if (getPositionY() > anchorYpoint)
+								_velocity = Vec2(0, 1 * _walkSpeed * kSpeedBase);
+							else
+								_velocity = Vec2(0, -1 * _walkSpeed * kSpeedBase);
+							_desiredPosition = getPosition() + (_velocity * dt);
 						}
-						_desiredPosition = getPosition() + (_velocity * dt);
 					}
 				}
 			}

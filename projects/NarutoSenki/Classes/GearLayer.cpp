@@ -316,10 +316,7 @@ void GearLayer::confirmPurchase()
 
 void GearLayer::onResume(Ref *sender)
 {
-	getGameLayer()->getHudLayer()->updateGears();
-	Director::sharedDirector()->popScene();
-
-	getGameLayer()->_isGear = false;
+	getGameLayer()->dismissGearOverlay();
 }
 
 void GearLayer::onGearBuy(Ref *sender)

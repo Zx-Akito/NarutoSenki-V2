@@ -89,6 +89,7 @@ function enterSelectLayer(gameMode, enableCustomSelect)
 end
 
 function onGameOver()
+    wsClearMatchConfig()
     local menuScene = CCScene:create()
     local menuLayer = StartMenu:create()
 

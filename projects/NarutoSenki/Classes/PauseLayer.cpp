@@ -1,14 +1,26 @@
 #include "PauseLayer.h"
 #include "GameLayer.h"
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+extern "C" bool MacWsIsConnected();
+#endif
+
 bool PauseLayer::init(RenderTexture *snapshoot)
 {
 	if (!Layer::init())
 		return false;
 
-	SimpleAudioEngine::sharedEngine()->stopAllEffects();
-	SimpleAudioEngine::sharedEngine()->pauseAllEffects();
-	SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
+	bool shouldPauseAudio = true;
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	auto layer = getGameLayer();
+	shouldPauseAudio = !(layer && layer->_isStarted && MacWsIsConnected());
+#endif
+	if (shouldPauseAudio)
+	{
+		SimpleAudioEngine::sharedEngine()->stopAllEffects();
+		SimpleAudioEngine::sharedEngine()->pauseAllEffects();
+		SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
+	}
 
 	Texture2D *bgTexture = snapshoot->getSprite()->getTexture();
 	Sprite *bg = Sprite::createWithTexture(bgTexture);
@@ -122,17 +134,7 @@ void PauseLayer::onPreload(Ref *sender)
 
 void PauseLayer::onResume(Ref *sender)
 {
-	if (UserDefault::sharedUserDefault()->getBoolForKey("isBGM"))
-	{
-		SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
-	}
-	if (UserDefault::sharedUserDefault()->getBoolForKey("isVoice"))
-	{
-		SimpleAudioEngine::sharedEngine()->resumeAllEffects();
-	}
-
-	Director::sharedDirector()->popScene();
-	getGameLayer()->_isPause = false;
+	getGameLayer()->resumeFromPause();
 }
 
 void PauseLayer::onBackToMenu(Ref *sender)
@@ -169,9 +171,7 @@ void PauseLayer::onLeft(Ref *sender)
 {
 	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.ogg");
 	getGameLayer()->_isSurrender = true;
-	Director::sharedDirector()->popScene();
-
-	getGameLayer()->_isPause = false;
+	getGameLayer()->resumeFromPause();
 }
 
 void PauseLayer::onCancel(Ref *sender)

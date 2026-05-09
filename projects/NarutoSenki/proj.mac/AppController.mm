@@ -205,6 +205,11 @@ static AppDelegate s_sharedApplication;
 	[window makeKeyAndOrderFront:self];
 	[window center];
 	[window setAcceptsMouseMovedEvents:YES];
+	// Keep GL content aspect ratio when resizing (drag corners); avoids stretched/squashed output.
+	if (rect.size.width > 0.0 && rect.size.height > 0.0)
+	{
+		[window setContentAspectRatio:NSMakeSize(rect.size.width, rect.size.height)];
+	}
 
 	// Must run GL view init before Lua / director access in AppDelegate.
 	cocos2d::CCApplication::sharedApplication()->run();

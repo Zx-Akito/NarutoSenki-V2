@@ -118,6 +118,27 @@ void CCEGLViewProtocol::setFrameSize(float width, float height)
     m_obDesignResolutionSize = m_obScreenSize = CCSizeMake(width, height);
 }
 
+void CCEGLViewProtocol::handleScreenResize(float width, float height)
+{
+    if (width <= 0.f || height <= 0.f)
+    {
+        return;
+    }
+
+    CCSize designSize = m_obDesignResolutionSize;
+    ResolutionPolicy policy = m_eResolutionPolicy;
+
+    m_obScreenSize.setSize(width, height);
+
+    if (policy == kResolutionUnKnown)
+    {
+        m_obDesignResolutionSize = m_obScreenSize;
+        return;
+    }
+
+    setDesignResolutionSize(designSize.width, designSize.height, policy);
+}
+
 CCSize  CCEGLViewProtocol::getVisibleSize() const
 {
     if (m_eResolutionPolicy == kResolutionNoBorder)

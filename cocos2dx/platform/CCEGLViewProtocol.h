@@ -85,6 +85,13 @@ public:
     virtual void setFrameSize(float width, float height);
 
     /**
+     * Called when the OS drawable size changes (e.g. macOS window resize).
+     * Updates internal frame size and reapplies the current design resolution so
+     * touch coordinates and the viewport stay aligned with rendering.
+     */
+    virtual void handleScreenResize(float width, float height);
+
+    /**
      * Get the visible area size of opengl viewport.
      */
     virtual CCSize getVisibleSize() const;

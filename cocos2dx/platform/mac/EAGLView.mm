@@ -220,9 +220,14 @@ static EAGLView *view;
 	// Add a mutex around to avoid the threads accessing the context simultaneously when resizing
 
 	[self lockOpenGLContext];
-	
-//	NSRect rect = [self bounds];
-	
+
+	NSRect rect = [self bounds];
+	cocos2d::CCEGLView *eglView = cocos2d::CCEGLView::sharedOpenGLView();
+	if (eglView)
+	{
+		eglView->handleScreenResize(rect.size.width, rect.size.height);
+	}
+
 	cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
 //	CGSize size = NSSizeToCGSize(rect.size);
 //	cocos2d::CCSize ccsize = cocos2d::CCSizeMake(size.width, size.height);

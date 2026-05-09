@@ -264,6 +264,20 @@ wss.on("connection", (ws) => {
       return;
     }
 
+    if (message.type === "knock_snap") {
+      const x = Number(message.x);
+      const y = Number(message.y);
+      if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+      relayToOpponent(ws, {
+        type: "knock_snap",
+        x,
+        y,
+        from: ws.playerId,
+        ts: Date.now(),
+      });
+      return;
+    }
+
     if (message.type === "match_end") {
       const localIsWin = !!message.isWin;
       relayToOpponent(ws, {

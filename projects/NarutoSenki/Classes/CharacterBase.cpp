@@ -1,5 +1,7 @@
 #include "CharacterBase.h"
 #include <cmath>
+#include <cstdio>
+#include <ctime>
 #include "Core/Provider.hpp"
 #include "HudLayer.h"
 #include "GameLayer.h"
@@ -211,6 +213,37 @@ static Vec2 onlineResolveTowerWalkDestination(const Vec2 &from, const Vec2 &to, 
 	return prev;
 }
 } // namespace
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+extern "C" bool MacWsIsConnected();
+extern "C" void MacWsSend(const char *message);
+#endif
+
+/** WebSocket sync: authoritative world position after local player takes light knockback (scheduled ~knock slide duration). */
+void CharacterBase::sendOnlineKnockSnapToPeer(float)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	GameLayer *layer = getGameLayer();
+	if (!layer || !layer->_isStarted || layer->_isExiting || !layer->currentMap ||
+		!MacWsIsConnected())
+		return;
+	if (!isPlayer())
+		return;
+
+	const Vec2 pos = getPosition();
+	auto *map = layer->currentMap;
+	const float mw = float(map->getMapSize().width * map->getTileSize().width);
+	const float maxY = float(map->getTileSize().height * 5.5f);
+	const float cx = MIN(mw, MAX(0.f, pos.x));
+	const float cy = MIN(maxY, MAX(0.f, pos.y));
+
+	char buf[192];
+	std::snprintf(buf, sizeof(buf),
+				  "{\"type\":\"knock_snap\",\"x\":%.2f,\"y\":%.2f,\"ts\":%ld}",
+				  (double)cx, (double)cy, (long)std::time(nullptr));
+	MacWsSend(buf);
+#endif
+}
 
 CharacterBase::CharacterBase()
 {
@@ -606,7 +639,8 @@ void CharacterBase::update(float dt)
 		setPosition(Vec2(posX, poxY));
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 		if (shouldSnapTowerClamp && isPlayer() && getGameLayer())
-			getGameLayer()->sendNetworkOwnedHeroPositionSnapIfNeeded(getPosition(), true);
+			getGameLayer()->sendNetworkOwnedHeroPositionSnapIfNeeded(getPosition(),
+																	 HeroSnapKind::TowerClamp);
 #endif
 		getGameLayer()->reorderChild(this, -getPositionY());
 		if (isPlayerOrCom())
@@ -865,7 +899,25 @@ void CharacterBase::acceptAttack(Ref *object)
 							{
 								setKnockLength(32);
 							}
+							if (gameLayerOnlineBattleActive())
+							{
+								// Light knock uses setMove() with _hurtFromLeft/_hurtFromRight only.
+								// Those flags come from sub-pixel range checks and can disagree between
+								// peers; attacker facing matches for the same registered hit.
+								_hurtFromLeft = !attacker->_isFlipped;
+								_hurtFromRight = attacker->_isFlipped;
+							}
 							hurt();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+							if (gameLayerOnlineBattleActive() && isPlayer() &&
+								_state == State::HURT)
+							{
+								unschedule(schedule_selector(CharacterBase::sendOnlineKnockSnapToPeer));
+								// Knock slide in hurt XML is typically 0.1s — snap after move settles.
+								scheduleOnce(schedule_selector(CharacterBase::sendOnlineKnockSnapToPeer),
+											 0.12f);
+							}
+#endif
 						}
 						else if (hitType == "c_hit" ||
 								 hitType == "bc_hit")

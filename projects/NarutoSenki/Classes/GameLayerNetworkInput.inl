@@ -10,6 +10,7 @@
 // - Handles websocket input/event bridge for in-match networking.
 // - Player input sync, match_end, and match_ui (pause/gear overlay sync for online).
 // - input_event "tick" is a 20 Hz logical slot (50ms) for ordering; joy_update is coalesced to <=20/s.
+// - knock_snap: opponent's authoritative world position right after taking light melee knockback.
 // - Other world-state packets are ignored to preserve stability.
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
@@ -492,7 +493,45 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 			return;
 
 		auto *remote = getRemoteControlTarget(_gLayer);
-		if (!remote || remote->getState() != State::WALK)
+		if (!remote || remote->getState() == State::DEAD)
+			return;
+
+		const State st = remote->getState();
+		const bool heroSnapApplicable =
+			(st == State::IDLE || st == State::WALK ||
+			 st == State::NATTACK || st == State::SATTACK ||
+			 st == State::OATTACK || st == State::O2ATTACK ||
+			 st == State::HURT || st == State::JUMP ||
+			 st == State::FLOAT || st == State::AIRHURT ||
+			 st == State::KNOCKDOWN);
+		if (!heroSnapApplicable)
+			return;
+
+		auto *map = _gLayer->currentMap;
+		const float mw = float(map->getMapSize().width * map->getTileSize().width);
+		float posX = MIN(mw, MAX(0.f, nx));
+		float poxY = MIN(float(map->getTileSize().height * 5.5f), MAX(0.f, ny));
+		const Vec2 next(posX, poxY);
+		const Vec2 cur = remote->getPosition();
+		const float rdx = cur.x - next.x;
+		const float rdy = cur.y - next.y;
+		if (rdx * rdx + rdy * rdy < 225.f)
+			return;
+		remote->setPosition(next);
+		_gLayer->reorderChild(remote, -(int)poxY);
+		return;
+	}
+	if (strstr(payload, "\"type\":\"knock_snap\"") != nullptr)
+	{
+		if (!_gLayer || !_gLayer->_isStarted || _gLayer->_isExiting || !_gLayer->currentMap)
+			return;
+		float nx = 0.f;
+		float ny = 0.f;
+		if (!jsonFloatField(payload, "x", nx) || !jsonFloatField(payload, "y", ny))
+			return;
+
+		auto *remote = getRemoteControlTarget(_gLayer);
+		if (!remote || remote->getState() == State::DEAD)
 			return;
 
 		auto *map = _gLayer->currentMap;

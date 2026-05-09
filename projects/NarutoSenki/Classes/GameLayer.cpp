@@ -37,11 +37,11 @@ bool GameLayer::shouldBlockNetworkBattleInputEcho() const
 #endif
 }
 
-void GameLayer::sendNetworkOwnedHeroPositionSnapIfNeeded(const Vec2 &worldPos, bool afterTowerClamp)
+void GameLayer::sendNetworkOwnedHeroPositionSnapIfNeeded(const Vec2 &worldPos, HeroSnapKind kind)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 	extern void MacWsSend(const char *message);
-	if (!afterTowerClamp || !MacWsIsConnected() || !_isStarted || _isExiting)
+	if (!MacWsIsConnected() || !_isStarted || _isExiting)
 		return;
 	using namespace std::chrono;
 	static steady_clock::time_point s_lastSentAt = steady_clock::now();
@@ -52,8 +52,41 @@ void GameLayer::sendNetworkOwnedHeroPositionSnapIfNeeded(const Vec2 &worldPos, b
 	const float ddx = worldPos.x - s_lastSentPos.x;
 	const float ddy = worldPos.y - s_lastSentPos.y;
 	const float drift2 = ddx * ddx + ddy * ddy;
-	if (msSince < 50 && drift2 < 400.f && s_haveLastSentPos)
+
+	int minIntervalMs = 250;
+	float minQuietDrift2 = 100.f;
+	if (kind == HeroSnapKind::TowerClamp)
+	{
+		minIntervalMs = 50;
+		minQuietDrift2 = 400.f;
+	}
+	else if (kind == HeroSnapKind::PeriodicSkillCombat)
+	{
+		// Dash / skill timelines diverge fastest—send more often and on smaller deltas.
+		minIntervalMs = 72;
+		minQuietDrift2 = 144.f; // ~12 px
+	}
+	else if (kind == HeroSnapKind::ImmediateBurst)
+	{
+		minIntervalMs = 0;
+		minQuietDrift2 = 0.f;
+	}
+	else
+	{
+		minIntervalMs = 220;
+		minQuietDrift2 = 100.f; // ~10 px
+	}
+
+	if (kind != HeroSnapKind::ImmediateBurst)
+	{
+		if (msSince < minIntervalMs && drift2 < minQuietDrift2 && s_haveLastSentPos)
+			return;
+	}
+	else if (drift2 < 0.01f && s_haveLastSentPos && msSince < 16)
+	{
 		return;
+	}
+
 	char heroSnapBuf[192];
 	std::snprintf(heroSnapBuf, sizeof(heroSnapBuf),
 				  "{\"type\":\"hero_snap\",\"x\":%.2f,\"y\":%.2f,\"ts\":%ld}",
@@ -64,7 +97,21 @@ void GameLayer::sendNetworkOwnedHeroPositionSnapIfNeeded(const Vec2 &worldPos, b
 	s_lastSentAt = now;
 #else
 	(void)worldPos;
-	(void)afterTowerClamp;
+	(void)kind;
+#endif
+}
+
+void GameLayer::tickOnlineHeroPositionSnap(float)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (!_isStarted || _isExiting || !MacWsIsConnected() || !currentPlayer ||
+		currentPlayer->getState() == State::DEAD)
+		return;
+	const State st = currentPlayer->getState();
+	const bool calm = (st == State::IDLE || st == State::WALK);
+	sendNetworkOwnedHeroPositionSnapIfNeeded(currentPlayer->getPosition(),
+											 calm ? HeroSnapKind::PeriodicCalmWalk
+												  : HeroSnapKind::PeriodicSkillCombat);
 #endif
 }
 
@@ -86,6 +133,12 @@ void BattleRuntimeSystem::onGameStart(GameLayer *layer, bool skipInitFlogs, floa
 	}
 
 	layer->setKeyEventHandler();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (MacWsIsConnected())
+	{
+		layer->schedule(schedule_selector(GameLayer::tickOnlineHeroPositionSnap), 0.05f);
+	}
+#endif
 	for (auto hero : layer->_CharacterArray)
 	{
 		hero->setWalkSpeed(hero->_originSpeed);
@@ -897,6 +950,9 @@ void GameLayer::onGameOver(bool isWin)
 		return;
 	_hasGameOverTriggered = true;
 	_isStarted = false;
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	unschedule(schedule_selector(GameLayer::tickOnlineHeroPositionSnap));
+#endif
 
 	if (!s_isApplyingRemoteMatchEnd)
 	{

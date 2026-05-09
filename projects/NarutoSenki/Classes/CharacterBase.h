@@ -281,6 +281,7 @@ public:
 	void				oAttack(ABType type);
 	bool				hurt();
 	bool				hardHurt(int delayTime, bool isHurtAction, bool isCatch, bool isStick, bool isStun);
+	void				sendOnlineKnockSnapToPeer(float dt);
 	// bool				hardHurt(int delayTime, bool isHurtAction, HardHurtState state);
 	void				absorb(Vec2 position, bool isImmediate);
 	void				jump() {}; // No reference

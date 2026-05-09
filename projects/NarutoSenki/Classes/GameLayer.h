@@ -26,6 +26,15 @@
 #include "../../../cocos2dx/platform/android/jni/JniHelper.h"
 #endif
 
+enum class HeroSnapKind : uint8_t
+{
+	TowerClamp,
+	PeriodicCalmWalk,
+	PeriodicSkillCombat,
+	/** One-shot after attack/skill replication—no throttle (drops duplicate coordinates via last-send cache only). */
+	ImmediateBurst,
+};
+
 class BGLayer;
 class CharacterBase;
 class Hero;
@@ -129,8 +138,10 @@ public:
 	void dismissGearOverlay();
 	/** Online in-match pause/gear menu: suppress replication so stray touches/keys don't confuse the opponent. */
 	bool shouldBlockNetworkBattleInputEcho() const;
-	/** After online tower collision clamp, send world position so both sides match pillar edges. */
-	void sendNetworkOwnedHeroPositionSnapIfNeeded(const Vec2 &worldPos, bool afterTowerClamp);
+	/** Broadcast local hero world position—tower edge, calm idle/walk (~4–5 Hz), or skill combat (~13 Hz capped). */
+	void sendNetworkOwnedHeroPositionSnapIfNeeded(const Vec2 &worldPos, HeroSnapKind kind);
+	/** Scheduled ~10 Hz; internal throttling reduces bandwidth while skills are active. */
+	void tickOnlineHeroPositionSnap(float dt);
 
 	void playGameOpeningAnimation(float dt);
 	void onGameStart(float dt);

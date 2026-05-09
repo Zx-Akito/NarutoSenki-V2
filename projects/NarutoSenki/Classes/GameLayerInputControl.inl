@@ -48,7 +48,14 @@ void GameLayer::JoyStickUpdate(Vec2 direction)
 		if (shouldBlockNetworkBattleInputEcho())
 			return;
 		currentPlayer->walk(direction);
+		// Online: walk() is a no-op for the local player during NATTACK and other blocked states,
+		// but we must not still send joy_update — the peer would apply it to the enemy hero mirror.
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+		if (MacWsIsConnected() && currentPlayer->getState() == State::WALK)
+			sendNetworkJoyUpdateEvent(direction.x, direction.y);
+#else
 		sendNetworkJoyUpdateEvent(direction.x, direction.y);
+#endif
 	}
 }
 
@@ -59,6 +66,10 @@ void GameLayer::attackButtonClick(ABType type)
 	if (type == NAttack)
 	{
 		_isAttackButtonRelease = false;
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+		if (MacWsIsConnected())
+			sendNetworkJoyReleaseEvent();
+#endif
 	}
 
 	if (type == Item1)
@@ -71,6 +82,13 @@ void GameLayer::attackButtonClick(ABType type)
 	}
 	sendNetworkInputEvent("attack_click",
 						 format("{{\"type\":{}}}", (int)type));
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (MacWsIsConnected() && type != Item1)
+	{
+		sendNetworkOwnedHeroPositionSnapIfNeeded(currentPlayer->getPosition(),
+													HeroSnapKind::ImmediateBurst);
+	}
+#endif
 }
 
 void GameLayer::gearButtonClick(GearType type)
@@ -326,8 +344,10 @@ static bool s_macKeyState[256] = {};
 		{                                                                           \
 			if (!_gLayer->ougisChar && !_gLayer->shouldBlockNetworkBattleInputEcho()) \
 			{                                                                       \
-				_gLayer->currentPlayer->walk(Vec2(horizontal, vertical));           \
-				sendNetworkJoyUpdateEvent((float)horizontal, (float)vertical);      \
+				auto *cp = _gLayer->currentPlayer;                                  \
+				cp->walk(Vec2(horizontal, vertical));                             \
+				if (MacWsIsConnected() && cp->getState() == State::WALK)          \
+					sendNetworkJoyUpdateEvent((float)horizontal, (float)vertical); \
 			}                                                                       \
 		}                                                                           \
 		else if (_gLayer->currentPlayer->getState() == State::WALK)                 \

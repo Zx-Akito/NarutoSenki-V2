@@ -1,6 +1,10 @@
 #include "Core/Hero.hpp"
 #include "HudLayer.h"
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+extern "C" bool MacWsIsConnected();
+#endif
+
 bool HPBar::init(const char *szImage)
 {
 	RETURN_FALSE_IF(!Sprite::init());
@@ -393,6 +397,10 @@ void HPBar::loseHP(float percent)
 				uint32_t realKillNum = currentSlayer->getKillNum() + 1;
 				currentSlayer->setKillNum(realKillNum);
 				getGameLayer()->setReport(currentSlayer->getName(), _delegate->getName(), currentSlayer->getKillNum());
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+				if (MacWsIsConnected() && currentSlayer == getGameLayer()->currentPlayer)
+					getGameLayer()->syncOnlineBattleStatsToPeer(true);
+#endif
 
 				auto currentTeam = getGameLayer()->playerGroup;
 				if (currentTeam == currentSlayer->getGroup())

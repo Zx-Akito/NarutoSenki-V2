@@ -117,6 +117,7 @@ void GameLayer::tickOnlineHeroPositionSnap(float)
 	sendNetworkOwnedHeroPositionSnapIfNeeded(currentPlayer->getPosition(),
 											 calm ? HeroSnapKind::PeriodicCalmWalk
 												  : HeroSnapKind::PeriodicSkillCombat);
+	syncOnlineBattleStatsToPeer(false);
 #endif
 }
 
@@ -159,6 +160,10 @@ void BattleRuntimeSystem::onGameStart(GameLayer *layer, bool skipInitFlogs, floa
 			hero->doAI();
 		}
 	}
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (MacWsIsConnected())
+		layer->syncOnlineBattleStatsToPeer(true);
+#endif
 }
 
 void BattleRuntimeSystem::updateGameTime(GameLayer *layer) const
@@ -247,6 +252,8 @@ GameLayer::GameLayer()
 	_isPause = false;
 	_gearLayer = nullptr;
 	_pauseLayer = nullptr;
+	_gearOpenedWithPushScene = false;
+	_pauseOpenedWithPushScene = false;
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	_lastPressedMovementKey = -100;
@@ -678,6 +685,46 @@ void GameLayer::updateHudSkillButtons()
 void GameLayer::setHPLose(float percent)
 {
 	_hudLayer->setHPLose(percent);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	if (MacWsIsConnected())
+		syncOnlineBattleStatsToPeer(false);
+#endif
+}
+
+void GameLayer::syncOnlineBattleStatsToPeer(bool force)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	extern void MacWsSend(const char *message);
+	static std::chrono::steady_clock::time_point s_lastBattleStatSent{};
+	static bool s_didSendBattleStat = false;
+	static constexpr int kBattleStatMinIntervalMs = 180;
+
+	if (!MacWsIsConnected() || !_isStarted || _isExiting || !currentPlayer)
+		return;
+
+	const auto now = std::chrono::steady_clock::now();
+	if (!force && s_didSendBattleStat)
+	{
+		const auto dt = std::chrono::duration_cast<std::chrono::milliseconds>(now - s_lastBattleStatSent).count();
+		if (dt < kBattleStatMinIntervalMs)
+			return;
+	}
+	s_didSendBattleStat = true;
+	s_lastBattleStatSent = now;
+
+	const uint32_t hp = currentPlayer->getHP();
+	const uint32_t maxHp = currentPlayer->getMaxHP();
+	const uint32_t kills = currentPlayer->getKillNum();
+	const uint32_t deaths = currentPlayer->_deadNum;
+
+	char buf[224];
+	std::snprintf(buf, sizeof(buf),
+				  "{\"type\":\"battle_stat\",\"hp\":%u,\"maxHp\":%u,\"kills\":%u,\"deaths\":%u,\"ts\":%ld}",
+				  hp, maxHp, kills, deaths, (long)std::time(nullptr));
+	MacWsSend(buf);
+#else
+	(void)force;
+#endif
 }
 
 void GameLayer::setCKRLose(bool isCRK2)
@@ -843,12 +890,14 @@ void GameLayer::onPause()
 	if (isNetworkOverlay)
 	{
 		f->addChild(layer, 5000);
+		_pauseOpenedWithPushScene = false;
 	}
 	else
 	{
 		Scene *pscene = Scene::create();
 		pscene->addChild(layer);
 		Director::sharedDirector()->pushScene(pscene);
+		_pauseOpenedWithPushScene = true;
 	}
 }
 
@@ -857,7 +906,21 @@ void GameLayer::resumeFromPause()
 	if (!_isPause)
 		return;
 
-	if (_pauseLayer && _pauseLayer->getParent())
+	if (_pauseOpenedWithPushScene)
+	{
+		if (UserDefault::sharedUserDefault()->getBoolForKey("isBGM"))
+		{
+			SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
+		}
+		if (UserDefault::sharedUserDefault()->getBoolForKey("isVoice"))
+		{
+			SimpleAudioEngine::sharedEngine()->resumeAllEffects();
+		}
+		_pauseLayer = nullptr;
+		Director::sharedDirector()->popScene();
+		_pauseOpenedWithPushScene = false;
+	}
+	else if (_pauseLayer && _pauseLayer->getParent())
 	{
 		_pauseLayer->removeFromParent();
 		_pauseLayer = nullptr;
@@ -919,12 +982,14 @@ void GameLayer::onGear()
 	if (isNetworkOverlay)
 	{
 		f->addChild(layer, 5000);
+		_gearOpenedWithPushScene = false;
 	}
 	else
 	{
 		Scene *pscene = Scene::create();
 		pscene->addChild(layer);
 		Director::sharedDirector()->pushScene(pscene);
+		_gearOpenedWithPushScene = true;
 	}
 }
 
@@ -936,7 +1001,13 @@ void GameLayer::dismissGearOverlay()
 	{
 		_hudLayer->updateGears();
 	}
-	if (_gearLayer && _gearLayer->getParent())
+	if (_gearOpenedWithPushScene)
+	{
+		_gearLayer = nullptr;
+		Director::sharedDirector()->popScene();
+		_gearOpenedWithPushScene = false;
+	}
+	else if (_gearLayer && _gearLayer->getParent())
 	{
 		_gearLayer->removeFromParent();
 		_gearLayer = nullptr;

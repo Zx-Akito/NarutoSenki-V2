@@ -142,6 +142,8 @@ public:
 	void sendNetworkOwnedHeroPositionSnapIfNeeded(const Vec2 &worldPos, HeroSnapKind kind);
 	/** Scheduled ~10 Hz; internal throttling reduces bandwidth while skills are active. */
 	void tickOnlineHeroPositionSnap(float dt);
+	/** Online: push HP / kill / death stats to peer (throttled unless force). */
+	void syncOnlineBattleStatsToPeer(bool force = false);
 
 	void playGameOpeningAnimation(float dt);
 	void onGameStart(float dt);
@@ -186,6 +188,10 @@ public:
 	bool _isPause;
 	GearLayer *_gearLayer;
 	PauseLayer *_pauseLayer;
+	/** Local/offline: gear UI uses pushScene; online Mac overlay uses addChild on running scene. */
+	bool _gearOpenedWithPushScene;
+	/** Same distinction as gear for pause menu. */
+	bool _pauseOpenedWithPushScene;
 
 	void clearAllFlogsMainTarget(CharacterBase *target);
 	void clearAllUnitsMainTarget(CharacterBase *target);

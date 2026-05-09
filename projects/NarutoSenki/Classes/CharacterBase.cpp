@@ -4765,6 +4765,10 @@ void CharacterBase::dead()
 				auto deadStr = getGameLayer()->getHudLayer()->deadLabel->getString();
 				int deads = to_int(deadStr) + 1;
 				getGameLayer()->getHudLayer()->deadLabel->setString(to_cstr(deads));
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+				if (MacWsIsConnected())
+					getGameLayer()->syncOnlineBattleStatsToPeer(true);
+#endif
 			}
 		}
 

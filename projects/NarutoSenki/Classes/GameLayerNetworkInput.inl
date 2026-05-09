@@ -11,6 +11,7 @@
 // - Player input sync, match_end, and match_ui (pause/gear overlay sync for online).
 // - input_event "tick" is a 20 Hz logical slot (50ms) for ordering; joy_update is coalesced to <=20/s.
 // - knock_snap: opponent's authoritative world position right after taking light melee knockback.
+// - battle_stat: peer's HP + kill/death counts (receiver maps peer kills -> local dead count, peer deaths -> local kill count).
 // - hero_snap/knock_snap: receiver rejects tiny deltas to avoid jitter; threshold tuned below for MAC builds.
 // - Other world-state packets are ignored to preserve stability.
 
@@ -191,6 +192,68 @@ static CharacterBase *getRemoteControlTarget(GameLayer *layer)
 		}
 	}
 	return fallback;
+}
+
+/** Network enemy mirror by hero name, including when DEAD (for HP bar UI sync from peer). */
+static CharacterBase *getRemoteHeroMirror(GameLayer *layer)
+{
+	if (!layer)
+		return nullptr;
+	const char *remoteHeroName = GetNetworkEnemyHeroName();
+	CharacterBase *fallback = nullptr;
+	for (auto hero : layer->_CharacterArray)
+	{
+		if (!hero)
+			continue;
+		if (hero == layer->currentPlayer)
+			continue;
+		if (hero->getGroup() == layer->playerGroup)
+			continue;
+		if (remoteHeroName && strlen(remoteHeroName) > 0 && hero->getName() == remoteHeroName)
+			return hero;
+		if (!fallback)
+			fallback = hero;
+	}
+	return fallback;
+}
+
+static void applyPeerBattleStat(GameLayer *layer, const char *payload)
+{
+	if (!layer || !payload || !layer->_isStarted || layer->_isExiting)
+		return;
+
+	int hp = 0;
+	int peerKills = 0;
+	int peerDeaths = 0;
+	if (!jsonIntField(payload, "hp", hp))
+		return;
+	if (!jsonIntField(payload, "kills", peerKills))
+		return;
+	if (!jsonIntField(payload, "deaths", peerDeaths))
+		return;
+
+	if (hp < 0)
+		hp = 0;
+
+	if (auto *mirror = getRemoteHeroMirror(layer))
+	{
+		if (mirror->getState() != State::DEAD)
+		{
+			uint32_t cap = mirror->getMaxHP();
+			uint32_t uhp = (uint32_t)hp;
+			if (uhp > cap)
+				uhp = cap;
+			mirror->setHPValue(uhp, true);
+		}
+	}
+
+	if (auto *hud = layer->getHudLayer())
+	{
+		if (hud->killLabel)
+			hud->killLabel->setString(to_cstr(std::max(0, peerDeaths)));
+		if (hud->deadLabel)
+			hud->deadLabel->setString(to_cstr(std::max(0, peerKills)));
+	}
 }
 
 static void applyRemoteInputAction(GameLayer *layer, const NetInputPacket &packet)
@@ -530,6 +593,12 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 			return;
 		remote->setPosition(next);
 		_gLayer->reorderChild(remote, -(int)poxY);
+		return;
+	}
+	if (strstr(payload, "\"type\":\"battle_stat\"") != nullptr)
+	{
+		if (_gLayer && _gLayer->_isStarted && !_gLayer->_isExiting)
+			applyPeerBattleStat(_gLayer, payload);
 		return;
 	}
 	if (strstr(payload, "\"type\":\"input_event\"") == nullptr)

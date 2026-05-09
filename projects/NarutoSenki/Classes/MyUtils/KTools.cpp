@@ -325,15 +325,34 @@ string KTools::readFromSQLite(const char *table /* ="GameRecord" */, const char 
 
 	if (pDB != nullptr)
 	{
-		char **result;
+		char **result = nullptr;
 
 		string sql = format("select {} from  GameRecord", "coin");
 		int row = 0;
 		int column = 0;
+		char *errMsg = nullptr;
 
-		sqlite3_get_table(pDB, sql.c_str(), &result, &row, &column, nullptr);
+		const int rc = sqlite3_get_table(pDB, sql.c_str(), &result, &row, &column, &errMsg);
+		if (rc != SQLITE_OK || result == nullptr || column < 1 || row < 1)
+		{
+			if (result)
+				sqlite3_free_table(result);
+			if (errMsg)
+				sqlite3_free(errMsg);
+			sqlite3_close(pDB);
+			return "";
+		}
+		const int numCells = column * (row + 1);
+		if (numCells <= column)
+		{
+			sqlite3_free_table(result);
+			if (errMsg)
+				sqlite3_free(errMsg);
+			sqlite3_close(pDB);
+			return "";
+		}
 
-		string str = result[1];
+		string str = result[column];
 		decode(str);
 		sqlite3_free_table(result);
 		sqlite3_close(pDB);
@@ -349,16 +368,35 @@ string KTools::readSQLite(const char *table, const char *column, const char *val
 
 	if (pDB != nullptr)
 	{
-		char **result;
+		char **result = nullptr;
 
 		string sql = format("select {},{} from  {}", column, targetColumn, table);
 		int row = 0;
-		int column = 0;
+		int ncol = 0;
+		char *errMsg = nullptr;
 
-		sqlite3_get_table(pDB, sql.c_str(), &result, &row, &column, nullptr);
+		const int rc = sqlite3_get_table(pDB, sql.c_str(), &result, &row, &ncol, &errMsg);
+		if (rc != SQLITE_OK || result == nullptr || ncol < 1 || row < 0)
+		{
+			if (result)
+				sqlite3_free_table(result);
+			if (errMsg)
+				sqlite3_free(errMsg);
+			sqlite3_close(pDB);
+			return "";
+		}
+		const int numCells = ncol * (row + 1);
+		if (numCells < 2)
+		{
+			sqlite3_free_table(result);
+			if (errMsg)
+				sqlite3_free(errMsg);
+			sqlite3_close(pDB);
+			return "";
+		}
 
 		string target;
-		for (int i = 0; i <= row * 2; i++)
+		for (int i = 0; i + 1 < numCells; i++)
 		{
 			string str = result[i];
 
@@ -378,6 +416,8 @@ string KTools::readSQLite(const char *table, const char *column, const char *val
 		}
 
 		sqlite3_free_table(result);
+		if (errMsg)
+			sqlite3_free(errMsg);
 		sqlite3_close(pDB);
 		return target;
 	}
@@ -392,17 +432,36 @@ void KTools::saveSQLite(const char *table, const char *relatedColumn, const char
 
 	if (pDB != nullptr)
 	{
-		char **result;
+		char **result = nullptr;
 
 		string sql = format("select {},{} from {}", relatedColumn, targetColumn, table);
 		int row = 0;
 		int column = 0;
+		char *getErr = nullptr;
 
-		sqlite3_get_table(pDB, sql.c_str(), &result, &row, &column, nullptr);
+		const int rcGet = sqlite3_get_table(pDB, sql.c_str(), &result, &row, &column, &getErr);
+		if (rcGet != SQLITE_OK || result == nullptr || column < 1 || row < 0)
+		{
+			if (result)
+				sqlite3_free_table(result);
+			if (getErr)
+				sqlite3_free(getErr);
+			sqlite3_close(pDB);
+			return;
+		}
+		const int numCells = column * (row + 1);
+		if (numCells < 2)
+		{
+			sqlite3_free_table(result);
+			if (getErr)
+				sqlite3_free(getErr);
+			sqlite3_close(pDB);
+			return;
+		}
 
 		string target;
 		string columnValue;
-		for (int i = 0; i <= row * 2; i++)
+		for (int i = 0; i + 1 < numCells; i++)
 		{
 			string str = result[i];
 			decode(str);
@@ -432,24 +491,35 @@ void KTools::saveSQLite(const char *table, const char *relatedColumn, const char
 
 		if (isPlus)
 		{
-			char **result2;
+			char **result2 = nullptr;
 			sql = "select coin from GameRecord";
-			sqlite3_get_table(pDB, sql.c_str(), &result2, &row, &column, nullptr);
-			string str2 = result2[1];
-			decode(str2);
-
-			string str3 = "uuuuu<";
-			decode(str3);
-
-			if (to_int(str2.c_str()) > to_int(str3.c_str()))
+			char *errCoin = nullptr;
+			const int rcCoin = sqlite3_get_table(pDB, sql.c_str(), &result2, &row, &column, &errCoin);
+			if (rcCoin == SQLITE_OK && result2 != nullptr && column >= 1 && row >= 1 &&
+				column * (row + 1) > column)
 			{
-				auto coin = "uuuuu<";
-				sql = format("update GameRecord set coin='{}'", coin);
-				sqlite3_exec(pDB, sql.c_str(), nullptr, nullptr, &errorMsg);
+				string str2 = result2[column];
+				decode(str2);
+
+				string str3 = "uuuuu<";
+				decode(str3);
+
+				if (to_int(str2.c_str()) > to_int(str3.c_str()))
+				{
+					auto coin = "uuuuu<";
+					sql = format("update GameRecord set coin='{}'", coin);
+					sqlite3_exec(pDB, sql.c_str(), nullptr, nullptr, &errorMsg);
+				}
 			}
+			if (result2)
+				sqlite3_free_table(result2);
+			if (errCoin)
+				sqlite3_free(errCoin);
 		}
 
 		sqlite3_free_table(result);
+		if (getErr)
+			sqlite3_free(getErr);
 		sqlite3_close(pDB);
 		return;
 	}

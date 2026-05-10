@@ -97,25 +97,64 @@ void GearButton::click()
 
 bool GearButton::ccTouchBegan(Touch *touch, Event *event)
 {
-	// touch area
+	// Reject the touch when the finger is outside the icon or the gear is
+	// already owned (sold-out badge present); otherwise capture starting
+	// coordinates so we can later distinguish a tap from a scroll swipe.
 	if (!containsTouchLocation(touch) || soIcon)
 	{
 		return false;
 	}
-	else
-	{
-		return true;
-	}
+
+	_touchStartPos = touch->getLocation();
+	_lastTouchY = _touchStartPos.y;
+	_isScrolling = false;
+	return true;
 }
 
 void GearButton::ccTouchMoved(Touch *touch, Event *event)
 {
-	// touch area
+	// Threshold (in points) the finger must travel vertically before we
+	// reinterpret the gesture as a scroll. Small enough to feel responsive
+	// yet large enough to tolerate jitter from a tap.
+	constexpr float kScrollSlop = 6.0f;
+
+	Vec2 curPoint = touch->getLocation();
+
+	if (!_isScrolling && fabsf(curPoint.y - _touchStartPos.y) > kScrollSlop)
+	{
+		_isScrolling = true;
+	}
+
+	if (_isScrolling && _delegate && _delegate->_screwLayer)
+	{
+		float distanceY = curPoint.y - _lastTouchY;
+		_delegate->_screwLayer->scrollByDelta(distanceY);
+	}
+
+	_lastTouchY = curPoint.y;
 }
 
 void GearButton::ccTouchEnded(Touch *touch, Event *event)
 {
+	if (_isScrolling)
+	{
+		if (_delegate && _delegate->_screwLayer)
+		{
+			_delegate->_screwLayer->clampAfterRelease();
+		}
+		_isScrolling = false;
+		return;
+	}
 	click();
+}
+
+void GearButton::ccTouchCancelled(Touch *touch, Event *event)
+{
+	if (_isScrolling && _delegate && _delegate->_screwLayer)
+	{
+		_delegate->_screwLayer->clampAfterRelease();
+	}
+	_isScrolling = false;
 }
 
 void GearButton::playSound()
@@ -164,45 +203,54 @@ bool ScrewLayer::ccTouchBegan(Touch *touch, Event *event)
 
 void ScrewLayer::ccTouchMoved(Touch *touch, Event *event)
 {
-	// touch area
+	// Touches that begin on an empty area inside the clipped scroll region
+	// (between the gear icons) end up here. Touches that start on a
+	// GearButton are forwarded directly via scrollByDelta() instead.
 	Vec2 curPoint = touch->getLocation();
 	if (prePosY == 0)
 	{
 		prePosY = curPoint.y;
+		return;
 	}
-	else
-	{
-		float distanceY = curPoint.y - prePosY;
-		if (getPositionY() < totalRow * 74 || distanceY < 0)
-		{
-			setPositionY(getPositionY() + distanceY);
-		}
 
-		if ((screwBar->getPositionY() > 90 || distanceY < 0) && screwBar->getPositionY() <= 122)
-		{
-			screwBar->setPositionY(screwBar->getPositionY() - distanceY);
-		}
-
-		if (screwBar->getPositionY() > 122)
-		{
-			screwBar->setPositionY(122);
-		}
-
-		if (screwBar->getPositionY() < 90)
-		{
-			screwBar->setPositionY(90);
-		}
-
-		prePosY = curPoint.y;
-	}
-};
+	scrollByDelta(curPoint.y - prePosY);
+	prePosY = curPoint.y;
+}
 
 void ScrewLayer::ccTouchEnded(Touch *touch, Event *event)
 {
 	prePosY = 0;
-	// CCLOG("%f",getPositionY());
-	// CCLOG("Height:%f",getContentSize().height);
+	clampAfterRelease();
+}
 
+void ScrewLayer::scrollByDelta(float distanceY)
+{
+	if (!screwBar)
+		return;
+
+	if (getPositionY() < totalRow * 74 || distanceY < 0)
+	{
+		setPositionY(getPositionY() + distanceY);
+	}
+
+	if ((screwBar->getPositionY() > 90 || distanceY < 0) && screwBar->getPositionY() <= 122)
+	{
+		screwBar->setPositionY(screwBar->getPositionY() - distanceY);
+	}
+
+	if (screwBar->getPositionY() > 122)
+	{
+		screwBar->setPositionY(122);
+	}
+
+	if (screwBar->getPositionY() < 90)
+	{
+		screwBar->setPositionY(90);
+	}
+}
+
+void ScrewLayer::clampAfterRelease()
+{
 	if (getPositionY() > totalRow * 74 - 74)
 	{
 		setPositionY(totalRow * 65);
@@ -212,6 +260,9 @@ void ScrewLayer::ccTouchEnded(Touch *touch, Event *event)
 	{
 		setPositionY(76);
 	}
+
+	if (!screwBar)
+		return;
 
 	if (screwBar->getPositionY() > 122)
 	{

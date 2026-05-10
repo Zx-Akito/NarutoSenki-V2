@@ -389,7 +389,10 @@ void GameLayer::initTileMap()
 		CCMessageBox("Not found any map", "[Error] Not found any map");
 		return;
 	}
-	const int forcedMapId = GetNetworkForcedMapId();
+	int forcedMapId = 0;
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	forcedMapId = GetNetworkForcedMapId();
+#endif
 	if (forcedMapId > 0 && forcedMapId <= mapCount)
 		mapId = forcedMapId;
 	else
@@ -1099,7 +1102,10 @@ void GameLayer::onPause()
 #endif
 
 	_isPause = true;
-	const bool isNetworkOverlay = _isStarted && MacWsIsConnected();
+	bool isNetworkOverlay = false;
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	isNetworkOverlay = _isStarted && MacWsIsConnected();
+#endif
 	Scene *f = Director::sharedDirector()->getRunningScene();
 	RenderTexture *snapshoot = nullptr;
 	if (!isNetworkOverlay)
@@ -1189,7 +1195,10 @@ void GameLayer::onGear()
 #endif
 
 	_isGear = true;
-	const bool isNetworkOverlay = _isStarted && MacWsIsConnected();
+	bool isNetworkOverlay = false;
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	isNetworkOverlay = _isStarted && MacWsIsConnected();
+#endif
 
 	Scene *f = Director::sharedDirector()->getRunningScene();
 	RenderTexture *snapshoot = nullptr;
@@ -1266,7 +1275,11 @@ void GameLayer::onGameOver(bool isWin)
 	unschedule(schedule_selector(GameLayer::tickOnlineFlogSnap));
 #endif
 
-	if (!s_isApplyingRemoteMatchEnd)
+	bool isApplyingRemoteMatchEnd = false;
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	isApplyingRemoteMatchEnd = s_isApplyingRemoteMatchEnd;
+#endif
+	if (!isApplyingRemoteMatchEnd)
 	{
 		sendNetworkMatchEnd(isWin, _isSurrender ? "surrender" : "game_over");
 	}

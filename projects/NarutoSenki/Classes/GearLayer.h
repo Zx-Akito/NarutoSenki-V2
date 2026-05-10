@@ -66,8 +66,17 @@ protected:
 	bool ccTouchBegan(Touch *touch, Event *event);
 	void ccTouchMoved(Touch *touch, Event *event);
 	void ccTouchEnded(Touch *touch, Event *event);
+	void ccTouchCancelled(Touch *touch, Event *event);
 
 	inline bool containsTouchLocation(Touch *touch);
+
+private:
+	// Tracks finger position to differentiate a tap from a scroll gesture
+	// so that swipes on a gear button still scroll the list instead of
+	// being trapped as a click.
+	Vec2 _touchStartPos;
+	float _lastTouchY = 0.0f;
+	bool _isScrolling = false;
 };
 
 class ScrewLayer : public Layer
@@ -81,6 +90,13 @@ public:
 	Sprite *screwBar;
 	PROP_Vector(vector<GearButton *>, _gearBtnArray, GearBtnArray);
 	PROP(GearLayer *, _delegate, Delegate);
+
+	// Apply a vertical scroll delta to the gear list and the side scroll bar.
+	// Exposed so child gear buttons can forward scroll gestures here when the
+	// user drags on top of a button instead of an empty area.
+	void scrollByDelta(float distanceY);
+	// Snap scroll position back into valid bounds after the finger is lifted.
+	void clampAfterRelease();
 
 	CREATE_FUNC(ScrewLayer);
 

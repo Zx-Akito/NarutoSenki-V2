@@ -141,9 +141,8 @@ public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelpe
         // ...add to FrameLayout
         mFrameLayout.addView(this.mGLSurfaceView);
 
-        // Switch to supported OpenGL (ARGB888) mode on emulator
-        if (isAndroidEmulator())
-           this.mGLSurfaceView.setEGLConfigChooser(8 , 8, 8, 8, 16, 8);
+        // Always request a stencil buffer so CCClippingNode works on real devices too.
+        this.mGLSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
 
         this.mGLSurfaceView.setCocos2dxRenderer(new Cocos2dxRenderer());
         this.mGLSurfaceView.setCocos2dxEditText(edittext);

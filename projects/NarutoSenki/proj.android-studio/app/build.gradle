@@ -18,9 +18,9 @@ android {
             if (PROP_BUILD_TYPE == 'ndk-build') {
                 ndkBuild {
                     targets 'cocos2dcpp'
-                    // arguments 'NDK_TOOLCHAIN_VERSION=clang'
+                    arguments 'NDK_TOOLCHAIN_VERSION=clang'
                     arguments '-j' + Runtime.runtime.availableProcessors()
-                    arguments 'NDK_TOOLCHAIN_VERSION=4.9'
+                    // GCC toolchain 4.9 is removed in modern NDK; use clang.
                     // arguments 'APP_PLATFORM=android-'+PROP_APP_PLATFORM
 
                     def module_paths = [
@@ -103,6 +103,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':libcocos2dx')
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
 }
 
 task cleanAssets(type: Delete) {

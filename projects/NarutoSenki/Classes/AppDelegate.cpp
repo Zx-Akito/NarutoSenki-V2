@@ -16,6 +16,11 @@ bool MacWsIsConnected();
 }
 #endif
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#include "../../../cocos2dx/platform/android/jni/JniHelper.h"
+#include <jni.h>
+#endif
+
 using NativeWsEventCallback = void (*)(const char *eventName, const char *payload);
 static NativeWsEventCallback s_nativeWsEventCallback = nullptr;
 static int s_networkForcedMapId = 0;
@@ -92,6 +97,27 @@ static void sendLuaEvent(const char *eventName, const std::string &payload)
 	}
 }
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+static bool callAndroidStaticVoid(const char *methodName, const char *signature, const char *arg)
+{
+	JniMethodInfo methodInfo;
+	if (!JniHelper::getStaticMethodInfo(methodInfo,
+										"re/naruto/game/NarutoSenki",
+										methodName,
+										signature))
+	{
+		CCLOG("[WebSocket] missing Java static method: %s", methodName ? methodName : "<null>");
+		return false;
+	}
+
+	jstring jArg = methodInfo.env->NewStringUTF(arg ? arg : "");
+	methodInfo.env->CallStaticVoidMethod(methodInfo.classID, methodInfo.methodID, jArg);
+	methodInfo.env->DeleteLocalRef(jArg);
+	methodInfo.env->DeleteLocalRef(methodInfo.classID);
+	return true;
+}
+#endif
+
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 static void onMacWsEvent(const char *eventName, const char *payload)
 {
@@ -111,6 +137,23 @@ static int luaWsConnect(lua_State *L)
 	const char *url = lua_tostring(L, 1);
 	const bool ok = MacWsConnect(url ? url : "");
 	lua_pushboolean(L, ok ? 1 : 0);
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	const char *url = lua_tostring(L, 1);
+	JniMethodInfo methodInfo;
+	if (!JniHelper::getStaticMethodInfo(methodInfo,
+										"re/naruto/game/NarutoSenki",
+										"wsConnect",
+										"(Ljava/lang/String;)Z"))
+	{
+		CCLOG("[WebSocket] wsConnect unavailable: Java method not found");
+		lua_pushboolean(L, 0);
+		return 1;
+	}
+	jstring jUrl = methodInfo.env->NewStringUTF(url ? url : "");
+	const jboolean result = methodInfo.env->CallStaticBooleanMethod(methodInfo.classID, methodInfo.methodID, jUrl);
+	methodInfo.env->DeleteLocalRef(jUrl);
+	methodInfo.env->DeleteLocalRef(methodInfo.classID);
+	lua_pushboolean(L, result ? 1 : 0);
 #else
 	(void)lua_tostring(L, 1);
 	CCLOG("[WebSocket] wsConnect unavailable: this build has no websocket client");
@@ -124,6 +167,9 @@ static int luaWsSend(lua_State *L)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 	const char *message = lua_tostring(L, 1);
 	MacWsSend(message ? message : "");
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	const char *message = lua_tostring(L, 1);
+	callAndroidStaticVoid("wsSend", "(Ljava/lang/String;)V", message ? message : "");
 #else
 	(void)lua_tostring(L, 1);
 	CCLOG("[WebSocket] wsSend ignored: websocket client unavailable");
@@ -135,6 +181,16 @@ static int luaWsDisconnect(lua_State *L)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 	MacWsDisconnect();
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	JniMethodInfo methodInfo;
+	if (JniHelper::getStaticMethodInfo(methodInfo,
+									   "re/naruto/game/NarutoSenki",
+									   "wsDisconnect",
+									   "()V"))
+	{
+		methodInfo.env->CallStaticVoidMethod(methodInfo.classID, methodInfo.methodID);
+		methodInfo.env->DeleteLocalRef(methodInfo.classID);
+	}
 #else
 	CCLOG("[WebSocket] wsDisconnect ignored: websocket client unavailable");
 #endif
@@ -145,6 +201,19 @@ static int luaWsIsConnected(lua_State *L)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 	lua_pushboolean(L, MacWsIsConnected() ? 1 : 0);
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	JniMethodInfo methodInfo;
+	if (!JniHelper::getStaticMethodInfo(methodInfo,
+										"re/naruto/game/NarutoSenki",
+										"wsIsConnected",
+										"()Z"))
+	{
+		lua_pushboolean(L, 0);
+		return 1;
+	}
+	const jboolean isConnected = methodInfo.env->CallStaticBooleanMethod(methodInfo.classID, methodInfo.methodID);
+	methodInfo.env->DeleteLocalRef(methodInfo.classID);
+	lua_pushboolean(L, isConnected ? 1 : 0);
 #else
 	lua_pushboolean(L, 0);
 #endif
@@ -194,6 +263,30 @@ static void registerLuaNetworkFunctions(lua_State *L)
 #endif
 }
 } // namespace
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+extern "C" JNIEXPORT void JNICALL Java_re_naruto_game_NarutoSenki_nativeOnWebSocketEvent(JNIEnv *env,
+																						   jclass /*clazz*/,
+																						   jstring eventName,
+																						   jstring payload)
+{
+	const char *event = eventName ? env->GetStringUTFChars(eventName, nullptr) : "";
+	const char *data = payload ? env->GetStringUTFChars(payload, nullptr) : "";
+	const char *safeEvent = event ? event : "";
+	const char *safeData = data ? data : "";
+
+	sendLuaEvent(safeEvent, safeData);
+	if (s_nativeWsEventCallback)
+	{
+		s_nativeWsEventCallback(safeEvent, safeData);
+	}
+
+	if (eventName && event)
+		env->ReleaseStringUTFChars(eventName, event);
+	if (payload && data)
+		env->ReleaseStringUTFChars(payload, data);
+}
+#endif
 
 AppDelegate::AppDelegate()
 {

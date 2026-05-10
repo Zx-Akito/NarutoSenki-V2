@@ -8,7 +8,7 @@
 #else
 #define FMT_HEADER_ONLY
 #define FMT_CONSTEVAL
-#include "fmt/core.h"
+#include "../../../../external/fmt/core.h"
 
 using namespace fmt;
 #endif

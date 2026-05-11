@@ -239,6 +239,17 @@ void CCIMEDispatcher::dispatchDeleteBackward()
     } while (0);
 }
 
+void CCIMEDispatcher::dispatchSelectAll()
+{
+    do
+    {
+        CC_BREAK_IF(! m_pImpl);
+        CC_BREAK_IF(! m_pImpl->m_DelegateWithIme);
+
+        m_pImpl->m_DelegateWithIme->selectAll();
+    } while (0);
+}
+
 const char * CCIMEDispatcher::getContentText()
 {
     const char * pszContentText = 0;

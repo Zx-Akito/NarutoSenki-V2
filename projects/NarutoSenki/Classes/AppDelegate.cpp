@@ -19,6 +19,7 @@ bool MacWsIsConnected();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #include "../../../cocos2dx/platform/android/jni/JniHelper.h"
 #include <jni.h>
+static jclass s_narutoSenkiWsClass = nullptr;
 #endif
 
 using NativeWsEventCallback = void (*)(const char *eventName, const char *payload);
@@ -71,6 +72,159 @@ extern "C" bool GetNetworkOpponentIsBot()
 	return s_networkOpponentIsBot;
 }
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+static bool narutoSenkiScratchEnv(JniMethodInfo *outScratch)
+{
+	return JniHelper::getStaticMethodInfo(*outScratch, "java/lang/String", "valueOf", "(I)Ljava/lang/String;");
+}
+
+static void narutoSenkiReleaseScratch(JniMethodInfo *scratch)
+{
+	if (scratch && scratch->env != nullptr && scratch->classID != nullptr)
+	{
+		scratch->env->DeleteLocalRef(scratch->classID);
+		scratch->classID = nullptr;
+	}
+}
+
+static void narutoSenkiClearJniException(JNIEnv *env)
+{
+	if (env && env->ExceptionCheck())
+	{
+		env->ExceptionClear();
+	}
+}
+
+static bool callAndroidStaticVoid(const char *methodName, const char *signature, const char *arg)
+{
+	if (s_narutoSenkiWsClass != nullptr)
+	{
+		JniMethodInfo scratch;
+		if (narutoSenkiScratchEnv(&scratch))
+		{
+			JNIEnv *env = scratch.env;
+			jmethodID mid = env->GetStaticMethodID(s_narutoSenkiWsClass, methodName, signature);
+			if (mid != nullptr)
+			{
+				jstring jArg = env->NewStringUTF(arg ? arg : "");
+				env->CallStaticVoidMethod(s_narutoSenkiWsClass, mid, jArg);
+				env->DeleteLocalRef(jArg);
+				narutoSenkiReleaseScratch(&scratch);
+				return true;
+			}
+			narutoSenkiClearJniException(env);
+			narutoSenkiReleaseScratch(&scratch);
+		}
+	}
+
+	JniMethodInfo methodInfo;
+	if (!JniHelper::getStaticMethodInfo(methodInfo,
+										"re/naruto/game/NarutoSenki",
+										methodName,
+										signature))
+	{
+		CCLOG("[WebSocket] missing Java static method: %s", methodName ? methodName : "<null>");
+		return false;
+	}
+
+	jstring jArg = methodInfo.env->NewStringUTF(arg ? arg : "");
+	methodInfo.env->CallStaticVoidMethod(methodInfo.classID, methodInfo.methodID, jArg);
+	methodInfo.env->DeleteLocalRef(jArg);
+	methodInfo.env->DeleteLocalRef(methodInfo.classID);
+	return true;
+}
+
+static bool androidQueryWsIsConnected()
+{
+	jboolean isConnected = JNI_FALSE;
+	bool resolvedConnected = false;
+	if (s_narutoSenkiWsClass != nullptr)
+	{
+		JniMethodInfo scratch;
+		if (narutoSenkiScratchEnv(&scratch))
+		{
+			JNIEnv *env = scratch.env;
+			jmethodID mid = env->GetStaticMethodID(s_narutoSenkiWsClass, "wsIsConnected", "()Z");
+			if (mid != nullptr)
+			{
+				isConnected = env->CallStaticBooleanMethod(s_narutoSenkiWsClass, mid);
+				resolvedConnected = true;
+			}
+			else
+			{
+				narutoSenkiClearJniException(env);
+			}
+			narutoSenkiReleaseScratch(&scratch);
+		}
+	}
+	if (!resolvedConnected)
+	{
+		JniMethodInfo methodInfo;
+		if (!JniHelper::getStaticMethodInfo(methodInfo,
+											"re/naruto/game/NarutoSenki",
+											"wsIsConnected",
+											"()Z"))
+		{
+			return false;
+		}
+		isConnected = methodInfo.env->CallStaticBooleanMethod(methodInfo.classID, methodInfo.methodID);
+		methodInfo.env->DeleteLocalRef(methodInfo.classID);
+	}
+	return isConnected == JNI_TRUE;
+}
+
+static void androidCallWsDisconnect()
+{
+	bool disconnectDone = false;
+	if (s_narutoSenkiWsClass != nullptr)
+	{
+		JniMethodInfo scratch;
+		if (narutoSenkiScratchEnv(&scratch))
+		{
+			JNIEnv *env = scratch.env;
+			jmethodID mid = env->GetStaticMethodID(s_narutoSenkiWsClass, "wsDisconnect", "()V");
+			if (mid != nullptr)
+			{
+				env->CallStaticVoidMethod(s_narutoSenkiWsClass, mid);
+				disconnectDone = true;
+			}
+			else
+			{
+				narutoSenkiClearJniException(env);
+			}
+			narutoSenkiReleaseScratch(&scratch);
+		}
+	}
+	if (!disconnectDone)
+	{
+		JniMethodInfo methodInfo;
+		if (JniHelper::getStaticMethodInfo(methodInfo,
+										   "re/naruto/game/NarutoSenki",
+										   "wsDisconnect",
+										   "()V"))
+		{
+			methodInfo.env->CallStaticVoidMethod(methodInfo.classID, methodInfo.methodID);
+			methodInfo.env->DeleteLocalRef(methodInfo.classID);
+		}
+	}
+}
+
+extern "C" void NativeBridgeWsSend(const char *message)
+{
+	callAndroidStaticVoid("wsSend", "(Ljava/lang/String;)V", message ? message : "");
+}
+
+extern "C" bool NativeBridgeWsIsConnected(void)
+{
+	return androidQueryWsIsConnected();
+}
+
+extern "C" void NativeBridgeWsDisconnect(void)
+{
+	androidCallWsDisconnect();
+}
+#endif
+
 namespace
 {
 static void sendLuaEvent(const char *eventName, const std::string &payload)
@@ -97,27 +251,6 @@ static void sendLuaEvent(const char *eventName, const std::string &payload)
 	}
 }
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-static bool callAndroidStaticVoid(const char *methodName, const char *signature, const char *arg)
-{
-	JniMethodInfo methodInfo;
-	if (!JniHelper::getStaticMethodInfo(methodInfo,
-										"re/naruto/game/NarutoSenki",
-										methodName,
-										signature))
-	{
-		CCLOG("[WebSocket] missing Java static method: %s", methodName ? methodName : "<null>");
-		return false;
-	}
-
-	jstring jArg = methodInfo.env->NewStringUTF(arg ? arg : "");
-	methodInfo.env->CallStaticVoidMethod(methodInfo.classID, methodInfo.methodID, jArg);
-	methodInfo.env->DeleteLocalRef(jArg);
-	methodInfo.env->DeleteLocalRef(methodInfo.classID);
-	return true;
-}
-#endif
-
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 static void onMacWsEvent(const char *eventName, const char *payload)
 {
@@ -139,21 +272,52 @@ static int luaWsConnect(lua_State *L)
 	lua_pushboolean(L, ok ? 1 : 0);
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	const char *url = lua_tostring(L, 1);
-	JniMethodInfo methodInfo;
-	if (!JniHelper::getStaticMethodInfo(methodInfo,
-										"re/naruto/game/NarutoSenki",
-										"wsConnect",
-										"(Ljava/lang/String;)Z"))
+	jboolean jniResult = JNI_FALSE;
+	bool resolved = false;
+
+	// FindClass from the GL/native thread often fails for app classes on Android; prefer class ref from Activity onCreate.
+	if (s_narutoSenkiWsClass != nullptr)
 	{
-		CCLOG("[WebSocket] wsConnect unavailable: Java method not found");
-		lua_pushboolean(L, 0);
-		return 1;
+		JniMethodInfo scratch;
+		if (narutoSenkiScratchEnv(&scratch))
+		{
+			JNIEnv *env = scratch.env;
+			jmethodID mid = env->GetStaticMethodID(s_narutoSenkiWsClass, "wsConnect", "(Ljava/lang/String;)Z");
+			if (mid != nullptr)
+			{
+				jstring jUrl = env->NewStringUTF(url ? url : "");
+				jniResult = env->CallStaticBooleanMethod(s_narutoSenkiWsClass, mid, jUrl);
+				env->DeleteLocalRef(jUrl);
+				resolved = true;
+			}
+			else
+			{
+				CCLOG("[WebSocket] wsConnect method id missing (cached NarutoSenki class)");
+				narutoSenkiClearJniException(env);
+			}
+			narutoSenkiReleaseScratch(&scratch);
+		}
 	}
-	jstring jUrl = methodInfo.env->NewStringUTF(url ? url : "");
-	const jboolean result = methodInfo.env->CallStaticBooleanMethod(methodInfo.classID, methodInfo.methodID, jUrl);
-	methodInfo.env->DeleteLocalRef(jUrl);
-	methodInfo.env->DeleteLocalRef(methodInfo.classID);
-	lua_pushboolean(L, result ? 1 : 0);
+
+	if (!resolved)
+	{
+		JniMethodInfo methodInfo;
+		if (!JniHelper::getStaticMethodInfo(methodInfo,
+											"re/naruto/game/NarutoSenki",
+											"wsConnect",
+											"(Ljava/lang/String;)Z"))
+		{
+			CCLOG("[WebSocket] wsConnect unavailable: Java method not found");
+			lua_pushboolean(L, 0);
+			return 1;
+		}
+		jstring jUrl = methodInfo.env->NewStringUTF(url ? url : "");
+		jniResult = methodInfo.env->CallStaticBooleanMethod(methodInfo.classID, methodInfo.methodID, jUrl);
+		methodInfo.env->DeleteLocalRef(jUrl);
+		methodInfo.env->DeleteLocalRef(methodInfo.classID);
+	}
+
+	lua_pushboolean(L, jniResult ? 1 : 0);
 #else
 	(void)lua_tostring(L, 1);
 	CCLOG("[WebSocket] wsConnect unavailable: this build has no websocket client");
@@ -169,7 +333,7 @@ static int luaWsSend(lua_State *L)
 	MacWsSend(message ? message : "");
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	const char *message = lua_tostring(L, 1);
-	callAndroidStaticVoid("wsSend", "(Ljava/lang/String;)V", message ? message : "");
+	NativeBridgeWsSend(message ? message : "");
 #else
 	(void)lua_tostring(L, 1);
 	CCLOG("[WebSocket] wsSend ignored: websocket client unavailable");
@@ -182,15 +346,7 @@ static int luaWsDisconnect(lua_State *L)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 	MacWsDisconnect();
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	JniMethodInfo methodInfo;
-	if (JniHelper::getStaticMethodInfo(methodInfo,
-									   "re/naruto/game/NarutoSenki",
-									   "wsDisconnect",
-									   "()V"))
-	{
-		methodInfo.env->CallStaticVoidMethod(methodInfo.classID, methodInfo.methodID);
-		methodInfo.env->DeleteLocalRef(methodInfo.classID);
-	}
+	androidCallWsDisconnect();
 #else
 	CCLOG("[WebSocket] wsDisconnect ignored: websocket client unavailable");
 #endif
@@ -202,18 +358,7 @@ static int luaWsIsConnected(lua_State *L)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 	lua_pushboolean(L, MacWsIsConnected() ? 1 : 0);
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	JniMethodInfo methodInfo;
-	if (!JniHelper::getStaticMethodInfo(methodInfo,
-										"re/naruto/game/NarutoSenki",
-										"wsIsConnected",
-										"()Z"))
-	{
-		lua_pushboolean(L, 0);
-		return 1;
-	}
-	const jboolean isConnected = methodInfo.env->CallStaticBooleanMethod(methodInfo.classID, methodInfo.methodID);
-	methodInfo.env->DeleteLocalRef(methodInfo.classID);
-	lua_pushboolean(L, isConnected ? 1 : 0);
+	lua_pushboolean(L, androidQueryWsIsConnected() ? 1 : 0);
 #else
 	lua_pushboolean(L, 0);
 #endif
@@ -265,6 +410,16 @@ static void registerLuaNetworkFunctions(lua_State *L)
 } // namespace
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+extern "C" JNIEXPORT void JNICALL Java_re_naruto_game_NarutoSenki_nativeWsJniBoot(JNIEnv *env, jclass clazz)
+{
+	if (s_narutoSenkiWsClass != nullptr)
+	{
+		env->DeleteGlobalRef(s_narutoSenkiWsClass);
+		s_narutoSenkiWsClass = nullptr;
+	}
+	s_narutoSenkiWsClass = (jclass)env->NewGlobalRef(clazz);
+}
+
 extern "C" JNIEXPORT void JNICALL Java_re_naruto_game_NarutoSenki_nativeOnWebSocketEvent(JNIEnv *env,
 																						   jclass /*clazz*/,
 																						   jstring eventName,

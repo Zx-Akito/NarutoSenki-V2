@@ -42,9 +42,15 @@
 
 @end
 
+/** Secure password entry (bullets); used when kEditBoxInputFlagPassword is set. */
+@interface CustomNSSecureTextField : NSSecureTextField
+{
+}
+@end
+
 @interface EditBoxImplMac : NSObject <NSTextFieldDelegate>
 {
-    CustomNSTextField* textField_;
+    NSTextField* textField_;
     void* editBox_;
     BOOL editState_;
 }
@@ -60,6 +66,7 @@
 -(void) visit;
 -(void) openKeyboard;
 -(void) closeKeyboard;
+-(void) applyPasswordMode:(BOOL)password;
 
 @end
 

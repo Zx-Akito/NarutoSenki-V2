@@ -12,11 +12,38 @@
 #include "Systems/CommandSystem.hpp"
 #include "Utils/Debug/UnitDebug.hpp"
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+extern "C" bool MacWsIsConnected();
+extern "C" void MacWsSend(const char *message);
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+extern "C" bool NativeBridgeWsIsConnected(void);
+extern "C" void NativeBridgeWsSend(const char *message);
+#endif
+
+static inline bool nkOnlineWsConnected()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	return MacWsIsConnected();
+#else
+	return NativeBridgeWsIsConnected();
+#endif
+}
+
+static inline void nkOnlineWsSend(const char *msg)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	MacWsSend(msg);
+#else
+	NativeBridgeWsSend(msg);
+#endif
+}
+#endif
+
 namespace
 {
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-extern "C" bool MacWsIsConnected();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 extern "C" const char *GetNetworkEnemyHeroName();
 extern "C" bool GetNetworkOpponentIsBot();
 #endif
@@ -31,9 +58,9 @@ static bool characterUsesPlayerTowerBlockingWhenWalking(CharacterBase *self)
 	if (!self->isCom())
 		return false;
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	GameLayer *layer = getGameLayer();
-	if (!layer || !layer->_isStarted || !MacWsIsConnected())
+	if (!layer || !layer->_isStarted || !nkOnlineWsConnected())
 		return false;
 	if (GetNetworkOpponentIsBot())
 		return false;
@@ -54,9 +81,9 @@ static bool isNetworkWsEnemyHeroMirror(CharacterBase *self)
 	if (!self || !self->isCom() || self->isPlayer())
 		return false;
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	GameLayer *layer = getGameLayer();
-	if (!layer || !layer->_isStarted || !MacWsIsConnected())
+	if (!layer || !layer->_isStarted || !nkOnlineWsConnected())
 		return false;
 	if (GetNetworkOpponentIsBot())
 		return false;
@@ -71,11 +98,11 @@ static bool isNetworkWsEnemyHeroMirror(CharacterBase *self)
 #endif
 }
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 static bool gameLayerOnlineBattleActive()
 {
 	auto *layer = getGameLayer();
-	return layer && layer->_isStarted && MacWsIsConnected();
+	return layer && layer->_isStarted && nkOnlineWsConnected();
 }
 #else
 static bool gameLayerOnlineBattleActive()
@@ -221,18 +248,13 @@ static Vec2 onlineResolveTowerWalkDestination(const Vec2 &from, const Vec2 &to, 
 }
 } // namespace
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-extern "C" bool MacWsIsConnected();
-extern "C" void MacWsSend(const char *message);
-#endif
-
 /** WebSocket sync: authoritative world position after local player takes light knockback (scheduled ~knock slide duration). */
 void CharacterBase::sendOnlineKnockSnapToPeer(float)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	GameLayer *layer = getGameLayer();
 	if (!layer || !layer->_isStarted || layer->_isExiting || !layer->currentMap ||
-		!MacWsIsConnected())
+		!nkOnlineWsConnected())
 		return;
 	if (!isPlayer())
 		return;
@@ -248,7 +270,7 @@ void CharacterBase::sendOnlineKnockSnapToPeer(float)
 	std::snprintf(buf, sizeof(buf),
 				  "{\"type\":\"knock_snap\",\"x\":%.2f,\"y\":%.2f,\"ts\":%ld}",
 				  (double)cx, (double)cy, (long)std::time(nullptr));
-	MacWsSend(buf);
+	nkOnlineWsSend(buf);
 #endif
 }
 
@@ -570,7 +592,7 @@ void CharacterBase::update(float dt)
 
 		if (characterUsesPlayerTowerBlockingWhenWalking(this))
 		{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 			const bool useOnlineTowerClamp = gameLayerOnlineBattleActive();
 
 			if (useOnlineTowerClamp)
@@ -644,7 +666,7 @@ void CharacterBase::update(float dt)
 		float poxY = MIN(getGameLayer()->currentMap->getTileSize().height * 5.5, MAX(0, _desiredPosition.y));
 
 		setPosition(Vec2(posX, poxY));
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 		if (shouldSnapTowerClamp && isPlayer() && getGameLayer())
 			getGameLayer()->sendNetworkOwnedHeroPositionSnapIfNeeded(getPosition(),
 																	 HeroSnapKind::TowerClamp);
@@ -915,7 +937,7 @@ void CharacterBase::acceptAttack(Ref *object)
 								_hurtFromRight = attacker->_isFlipped;
 							}
 							hurt();
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 							if (gameLayerOnlineBattleActive() && isPlayer() &&
 								_state == State::HURT)
 							{
@@ -4663,7 +4685,7 @@ void CharacterBase::dead()
 {
 	getGameModeHandler()->onCharacterDead(this);
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	if (gameLayerOnlineBattleActive() && !gameLayerIsApplyingPeerSummonDeathFromNetwork() && _master &&
 		(isClone() || isSummon()))
 	{
@@ -4675,7 +4697,7 @@ void CharacterBase::dead()
 					  getName().c_str(),
 					  masterIsPlayer ? "true" : "false",
 					  (long)std::time(nullptr));
-		MacWsSend(buf);
+		nkOnlineWsSend(buf);
 	}
 	if (gameLayerOnlineBattleActive() && !gameLayerIsApplyingPeerSummonDeathFromNetwork() &&
 		!gameLayerIsApplyingPeerTowerDestroyFromNetwork() && isTower())
@@ -4699,7 +4721,7 @@ void CharacterBase::dead()
 			std::snprintf(buf, sizeof(buf),
 						  "{\"type\":\"tower_destroy\",\"charId\":%d,\"mapId\":%d,\"tower\":\"%s\",\"gdx\":%d,\"ts\":%ld}",
 						  getCharId(), layer->mapId, getName().c_str(), gdxVal, (long)std::time(nullptr));
-			MacWsSend(buf);
+			nkOnlineWsSend(buf);
 		}
 	}
 #endif
@@ -4809,8 +4831,8 @@ void CharacterBase::dead()
 				auto deadStr = getGameLayer()->getHudLayer()->deadLabel->getString();
 				int deads = to_int(deadStr) + 1;
 				getGameLayer()->getHudLayer()->deadLabel->setString(to_cstr(deads));
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-				if (MacWsIsConnected())
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+				if (nkOnlineWsConnected())
 					getGameLayer()->syncOnlineBattleStatsToPeer(true);
 #endif
 			}

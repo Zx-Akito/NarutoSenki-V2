@@ -3,9 +3,23 @@
 #include "HudLayer.h"
 #include "MyUtils/CCShake.h"
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 extern "C" bool MacWsIsConnected();
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+extern "C" bool NativeBridgeWsIsConnected(void);
+#endif
+extern "C" int GetNetworkForcedTeam();
 void NetLatencyPingSend();
+
+static inline bool hudOnlineWsConnected()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	return MacWsIsConnected();
+#else
+	return NativeBridgeWsIsConnected();
+#endif
+}
 #endif
 
 MiniIcon::MiniIcon()
@@ -260,8 +274,10 @@ void HudLayer::initHeroInterface()
 	pauseNenu->setPosition(Vec2(winWidth, winHeight));
 	addChild(pauseNenu);
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	if (MacWsIsConnected())
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	// Match config is set before LoadLayer; WS may report connected slightly later on Android (JNI),
+	// so key off network session, not only hudOnlineWsConnected() at init time.
+	if (GetNetworkForcedTeam() != -1 || hudOnlineWsConnected())
 	{
 		const float mmw = menu_button->getContentSize().width;
 		pingLabel = CCLabelBMFont::create("-- ms", Fonts::Default);
@@ -589,9 +605,9 @@ void HudLayer::setOnlinePingMs(int ms)
 
 void HudLayer::tickOnlinePingLatency(float dt)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	(void)dt;
-	if (MacWsIsConnected())
+	if (hudOnlineWsConnected())
 		NetLatencyPingSend();
 #else
 	(void)dt;

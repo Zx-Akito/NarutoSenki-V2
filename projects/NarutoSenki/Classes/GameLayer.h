@@ -58,7 +58,7 @@ inline GameLayer *getGameLayer()
 	return _gLayer;
 }
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 /** True while applying summon_death from the peer so CharacterBase::dead() does not echo back. */
 bool gameLayerIsApplyingPeerSummonDeathFromNetwork();
 /** True while applying tower_destroy from the peer so CharacterBase::dead() does not echo WS again. */

@@ -1,5 +1,8 @@
 #include "StartMenu.h"
 #include "Constants/UiFlowKeys.hpp"
+#include "GUI/CCControlExtension/CCScale9Sprite.h"
+
+USING_NS_CC_EXT;
 
 GameMode s_GameMode = GameMode::Classic;
 std::array<std::unique_ptr<IGameModeHandler>, GameMode::__Internal_Max_Length> s_ModeHandlers = {
@@ -204,6 +207,11 @@ StartMenu::StartMenu()
 	notice_layer = nullptr;
 	noticeLabel = nullptr;
 	login_btn = nullptr;
+	loginLayer = nullptr;
+	loginUserEdit = nullptr;
+	loginPwEdit = nullptr;
+	loginUserFieldBg = nullptr;
+	loginPwFieldBg = nullptr;
 }
 
 bool StartMenu::init()
@@ -378,15 +386,173 @@ void StartMenu::onEnter()
 void StartMenu::onExit()
 {
 	Layer::onExit();
+	loginLayer = nullptr;
+	loginUserEdit = nullptr;
+	loginPwEdit = nullptr;
+	loginUserFieldBg = nullptr;
+	loginPwFieldBg = nullptr;
 	// Keep audio engine alive across scene transitions (e.g. Credits),
 	// otherwise newly started BGM can be cut off when StartMenu exits.
 }
 
 void StartMenu::onLoginBtn(Ref *sender)
 {
+	if (loginLayer)
+	{
+		return;
+	}
+
+	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.ogg");
+
+	loginLayer = Layer::create();
+
+	auto confirmBg = Sprite::createWithSpriteFrameName("confirm_bg.png");
+	confirmBg->setPosition(Vec2(winSize.width / 2, winSize.height / 2));
+	loginLayer->addChild(confirmBg, 1);
+
+	auto userTitle = Sprite::createWithSpriteFrameName("userInput_title.png");
+	userTitle->setAnchorPoint(Vec2(0, 0.5f));
+	userTitle->setPosition(Vec2(winSize.width / 2 - 74, winSize.height / 2 + 28));
+	loginLayer->addChild(userTitle, 2);
+
+	loginUserFieldBg = Sprite::createWithSpriteFrameName("input_bg.png");
+	loginUserFieldBg->setAnchorPoint(Vec2(0, 0.5f));
+	loginUserFieldBg->setPosition(Vec2(winSize.width / 2 - 35, winSize.height / 2 + 28));
+	loginLayer->addChild(loginUserFieldBg, 2);
+
+	auto pwTitle = Sprite::createWithSpriteFrameName("pwInput_title.png");
+	pwTitle->setAnchorPoint(Vec2(0, 0.5f));
+	pwTitle->setPosition(Vec2(winSize.width / 2 - 74, winSize.height / 2 - 3));
+	loginLayer->addChild(pwTitle, 2);
+
+	loginPwFieldBg = Sprite::createWithSpriteFrameName("input_bg.png");
+	loginPwFieldBg->setAnchorPoint(Vec2(0, 0.5f));
+	loginPwFieldBg->setPosition(Vec2(winSize.width / 2 - 35, winSize.height / 2 - 3));
+	loginLayer->addChild(loginPwFieldBg, 2);
+
+	const CCSize userFieldSize = loginUserFieldBg->getContentSize();
+	CCScale9Sprite *userEditBg = CCScale9Sprite::createWithSpriteFrameName("input_bg.png");
+	userEditBg->setOpacity(0);
+	loginUserEdit = CCEditBox::create(userFieldSize, userEditBg);
+	loginUserEdit->setPosition(Vec2(
+		loginUserFieldBg->getPositionX() + userFieldSize.width * 0.5f,
+		loginUserFieldBg->getPositionY()));
+	loginUserEdit->setFont(FONT_NAME, 12);
+	loginUserEdit->setFontColor(ccc3(255, 255, 255));
+	loginUserEdit->setPlaceHolder("");
+	loginUserEdit->setInputMode(kEditBoxInputModeSingleLine);
+	loginUserEdit->setInputFlag(kEditBoxInputFlagSensitive);
+	loginUserEdit->setReturnType(kKeyboardReturnTypeDefault);
+	loginUserEdit->setMaxLength(64);
+	loginUserEdit->setDelegate(this);
+	loginLayer->addChild(loginUserEdit, 4);
+
+	const CCSize pwFieldSize = loginPwFieldBg->getContentSize();
+	CCScale9Sprite *pwEditBg = CCScale9Sprite::createWithSpriteFrameName("input_bg.png");
+	pwEditBg->setOpacity(0);
+	loginPwEdit = CCEditBox::create(pwFieldSize, pwEditBg);
+	loginPwEdit->setPosition(Vec2(
+		loginPwFieldBg->getPositionX() + pwFieldSize.width * 0.5f,
+		loginPwFieldBg->getPositionY()));
+	loginPwEdit->setFont(FONT_NAME, 12);
+	loginPwEdit->setFontColor(ccc3(255, 255, 255));
+	loginPwEdit->setPlaceHolder("");
+	loginPwEdit->setInputMode(kEditBoxInputModeSingleLine);
+	loginPwEdit->setInputFlag(kEditBoxInputFlagPassword);
+	loginPwEdit->setReturnType(kKeyboardReturnTypeDone);
+	loginPwEdit->setMaxLength(64);
+	loginPwEdit->setDelegate(this);
+	loginLayer->addChild(loginPwEdit, 4);
+
+	auto loginSubmitBtn = MenuItemSprite::create(
+		Sprite::createWithSpriteFrameName("login_btn2.png"),
+		Sprite::createWithSpriteFrameName("login_btn1.png"),
+		this, menu_selector(StartMenu::onLoginLayerSubmit));
+	auto closeBtn = MenuItemSprite::create(
+		Sprite::createWithSpriteFrameName("no_btn1.png"),
+		Sprite::createWithSpriteFrameName("no_btn2.png"),
+		this, menu_selector(StartMenu::onLoginLayerClose));
+
+	auto loginMenu = Menu::create(loginSubmitBtn, closeBtn, nullptr);
+	loginMenu->setPosition(Vec2(0, 0));
+	loginSubmitBtn->setPosition(Vec2(winSize.width / 2 - 40, winSize.height / 2 - 36));
+	closeBtn->setPosition(Vec2(winSize.width / 2 + 40, winSize.height / 2 - 36));
+	loginLayer->addChild(loginMenu, 3);
+
+	addChild(loginLayer, 800);
+	updateLoginFieldHighlight(true);
+}
+
+void StartMenu::onLoginLayerClose(Ref *sender)
+{
+	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/cancel.ogg");
+	if (!loginLayer)
+	{
+		return;
+	}
+
+	if (loginUserEdit)
+	{
+		loginUserEdit->setDelegate(nullptr);
+	}
+	if (loginPwEdit)
+	{
+		loginPwEdit->setDelegate(nullptr);
+	}
+
+	loginLayer->removeAllChildren();
+	loginLayer->removeFromParent();
+	loginLayer = nullptr;
+	loginUserEdit = nullptr;
+	loginPwEdit = nullptr;
+	loginUserFieldBg = nullptr;
+	loginPwFieldBg = nullptr;
+}
+
+void StartMenu::onLoginLayerSubmit(Ref *sender)
+{
+	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.ogg");
+
 	auto tip = CCTips::create("ServerMainten");
 	addChild(tip, 5000);
-	return;
+
+	onLoginLayerClose(nullptr);
+}
+
+void StartMenu::editBoxEditingDidBegin(CCEditBox *editBox)
+{
+	if (editBox == loginUserEdit)
+	{
+		updateLoginFieldHighlight(true);
+	}
+	else if (editBox == loginPwEdit)
+	{
+		updateLoginFieldHighlight(false);
+	}
+}
+
+void StartMenu::editBoxEditingDidEnd(CCEditBox *)
+{
+}
+
+void StartMenu::editBoxTextChanged(CCEditBox *, const std::string &)
+{
+}
+
+void StartMenu::editBoxReturn(CCEditBox *)
+{
+}
+
+void StartMenu::updateLoginFieldHighlight(bool userActive)
+{
+	if (!loginUserFieldBg || !loginPwFieldBg)
+	{
+		return;
+	}
+
+	// Active field brighter, inactive field dimmer.
+	loginUserFieldBg->setColor(userActive ? ccc3(255, 255, 255) : ccc3(180, 180, 180));
+	loginPwFieldBg->setColor(userActive ? ccc3(180, 180, 180) : ccc3(255, 255, 255));
 }
 
 void StartMenu::update(float dt)

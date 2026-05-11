@@ -2,8 +2,21 @@
 #include "GameLayer.h"
 #include "SimpleAudioEngine.h"
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 extern "C" bool MacWsIsConnected();
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+extern "C" bool NativeBridgeWsIsConnected(void);
+#endif
+
+static inline bool pauseLayerOnlineWsConnected()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	return MacWsIsConnected();
+#else
+	return NativeBridgeWsIsConnected();
+#endif
+}
 #endif
 
 bool PauseLayer::init(RenderTexture *snapshoot, bool overlayLiveBackdrop)
@@ -12,9 +25,9 @@ bool PauseLayer::init(RenderTexture *snapshoot, bool overlayLiveBackdrop)
 		return false;
 
 	bool shouldPauseAudio = true;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	auto layer = getGameLayer();
-	shouldPauseAudio = !(layer && layer->_isStarted && MacWsIsConnected());
+	shouldPauseAudio = !(layer && layer->_isStarted && pauseLayerOnlineWsConnected());
 #endif
 	if (shouldPauseAudio)
 	{

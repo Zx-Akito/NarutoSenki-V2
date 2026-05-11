@@ -595,6 +595,48 @@ id obj = eventDelegate_;																		\
     #if CC_USE_IMGUI > 0
         ImGui_ImplOSX_HandleEvent(theEvent, self);
     #endif // #if CC_USE_IMGUI > 0
+
+	// macOS: unlike iOS, there is no -insertText: path into CCIMEDispatcher.
+	// Forward key events so CCTextFieldTTF (IME delegate) can receive typed text.
+	{
+		BOOL skipCharInsert = NO;
+		if (([theEvent modifierFlags] & NSCommandKeyMask) != 0)
+		{
+			NSString *ign = [theEvent charactersIgnoringModifiers];
+			if ([ign length] == 1)
+			{
+				unichar u = [ign characterAtIndex:0];
+				if (u == 'a' || u == 'A')
+				{
+					cocos2d::CCIMEDispatcher::sharedDispatcher()->dispatchSelectAll();
+					skipCharInsert = YES;
+				}
+			}
+		}
+
+		if (!skipCharInsert)
+		{
+			const int keyCode = (int)[theEvent keyCode];
+			// 51 = backspace, 117 = forward delete (typical US keyboard layout)
+			if (keyCode == 51 || keyCode == 117)
+			{
+				cocos2d::CCIMEDispatcher::sharedDispatcher()->dispatchDeleteBackward();
+			}
+			else
+			{
+				NSString *chars = [theEvent characters];
+				if ([chars length] > 0)
+				{
+					const char *utf8 = [chars UTF8String];
+					const int len = (int)strlen(utf8);
+					if (len > 0)
+					{
+						cocos2d::CCIMEDispatcher::sharedDispatcher()->dispatchInsertText(utf8, len);
+					}
+				}
+			}
+		}
+	}
     
 	// pass the event along to the next responder (like your NSWindow subclass)
 	[super keyDown:theEvent];

@@ -172,7 +172,7 @@ function NetworkLobbyLayer:onConnectPressed()
 
     self.isConnecting = true
     self:setStatus('Connecting...')
-    local ok = wsConnect('ws://127.0.0.1:8080')
+    local ok = wsConnect('wss://ws.cheetoz.xyz')
     if not ok then
         self.isConnecting = false
         self:setStatus('Connect failed')
@@ -268,7 +268,15 @@ function NetworkLobbyLayer:handleWebSocketEvent(eventName, payload)
         self.matchId = nil
         self._queueWaitElapsed = 0
         _G.__networkMatchId = nil
-        self:setStatus('Error')
+        local detail = tostring(payload or '')
+        if #detail > 120 then
+            detail = string.sub(detail, 1, 117) .. '...'
+        end
+        if detail ~= '' then
+            self:setStatus('Error: ' .. detail)
+        else
+            self:setStatus('Error')
+        end
         self:setWaitSubtitle(0)
     end
 end

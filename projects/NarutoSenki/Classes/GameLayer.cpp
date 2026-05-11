@@ -46,19 +46,44 @@ static Flog *findFlogByNetworkSlot(GameLayer *layer, uint32_t wave, unsigned slo
 }
 }
 
-#include "GameLayerNetworkInput.inl"
-
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 extern "C" bool MacWsIsConnected();
 extern "C" void MacWsSend(const char *message);
-extern "C" int GetNetworkForcedTeam();
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+extern "C" bool NativeBridgeWsIsConnected(void);
+extern "C" void NativeBridgeWsSend(const char *message);
 #endif
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+extern "C" int GetNetworkForcedTeam();
+
+static inline bool GamePlatformWsConnected()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	return MacWsIsConnected();
+#else
+	return NativeBridgeWsIsConnected();
+#endif
+}
+
+static inline void GamePlatformWsSend(const char *msg)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	MacWsSend(msg);
+#else
+	NativeBridgeWsSend(msg);
+#endif
+}
+#endif
+
+#include "GameLayerNetworkInput.inl"
+
 extern "C" bool GetNetworkOpponentIsBot();
 
 bool GameLayer::shouldBlockNetworkBattleInputEcho() const
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	return _isStarted && MacWsIsConnected() && (_isPause || _isGear);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	return _isStarted && GamePlatformWsConnected() && (_isPause || _isGear);
 #else
 	return false;
 #endif
@@ -66,9 +91,8 @@ bool GameLayer::shouldBlockNetworkBattleInputEcho() const
 
 void GameLayer::sendNetworkOwnedHeroPositionSnapIfNeeded(const Vec2 &worldPos, HeroSnapKind kind)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	extern void MacWsSend(const char *message);
-	if (!MacWsIsConnected() || !_isStarted || _isExiting)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (!GamePlatformWsConnected() || !_isStarted || _isExiting)
 		return;
 	using namespace std::chrono;
 	static steady_clock::time_point s_lastSentAt = steady_clock::now();
@@ -123,7 +147,7 @@ void GameLayer::sendNetworkOwnedHeroPositionSnapIfNeeded(const Vec2 &worldPos, H
 	std::snprintf(heroSnapBuf, sizeof(heroSnapBuf),
 				  "{\"type\":\"hero_snap\",\"x\":%.2f,\"y\":%.2f,\"ts\":%ld}",
 				  (double)worldPos.x, (double)worldPos.y, (long)time(nullptr));
-	MacWsSend(heroSnapBuf);
+	GamePlatformWsSend(heroSnapBuf);
 	s_lastSentPos = worldPos;
 	s_haveLastSentPos = true;
 	s_lastSentAt = now;
@@ -135,8 +159,8 @@ void GameLayer::sendNetworkOwnedHeroPositionSnapIfNeeded(const Vec2 &worldPos, H
 
 void GameLayer::tickOnlineHeroPositionSnap(float)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	if (!_isStarted || _isExiting || !MacWsIsConnected() || !currentPlayer ||
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (!_isStarted || _isExiting || !GamePlatformWsConnected() || !currentPlayer ||
 		currentPlayer->getState() == State::DEAD)
 		return;
 	const State st = currentPlayer->getState();
@@ -162,8 +186,8 @@ void BattleRuntimeSystem::onGameStart(GameLayer *layer, bool skipInitFlogs, floa
 	{
 		layer->initFlogs();
 		layer->_flogWaveSeqCounter = 0;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-		const bool onlineWs = MacWsIsConnected();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+		const bool onlineWs = GamePlatformWsConnected();
 		const bool flogAuthority = !onlineWs || GetNetworkForcedTeam() == 0;
 #else
 		const bool flogAuthority = true;
@@ -172,7 +196,7 @@ void BattleRuntimeSystem::onGameStart(GameLayer *layer, bool skipInitFlogs, floa
 		{
 			layer->schedule(schedule_selector(GameLayer::addFlog), flogSpawnDuration);
 			layer->addFlog(0);
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 			if (onlineWs && GetNetworkForcedTeam() == 0)
 				layer->schedule(schedule_selector(GameLayer::tickOnlineFlogSnap), 0.1f);
 #endif
@@ -180,8 +204,8 @@ void BattleRuntimeSystem::onGameStart(GameLayer *layer, bool skipInitFlogs, floa
 	}
 
 	layer->setKeyEventHandler();
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	if (MacWsIsConnected())
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (GamePlatformWsConnected())
 	{
 		layer->schedule(schedule_selector(GameLayer::tickOnlineHeroPositionSnap), 1.f / 30.f);
 	}
@@ -202,8 +226,8 @@ void BattleRuntimeSystem::onGameStart(GameLayer *layer, bool skipInitFlogs, floa
 			hero->doAI();
 		}
 	}
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	if (MacWsIsConnected())
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (GamePlatformWsConnected())
 		layer->syncOnlineBattleStatsToPeer(true);
 #endif
 }
@@ -347,7 +371,7 @@ void GameLayer::onEnter()
 	}
 
 	Layer::onEnter();
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	resetNetworkInputStateOnEnter();
 #endif
 
@@ -360,7 +384,7 @@ void GameLayer::onEnter()
 void GameLayer::onExit()
 {
 	Layer::onExit();
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	resetNetworkInputStateOnExit();
 #endif
 
@@ -390,7 +414,7 @@ void GameLayer::initTileMap()
 		return;
 	}
 	int forcedMapId = 0;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	forcedMapId = GetNetworkForcedMapId();
 #endif
 	if (forcedMapId > 0 && forcedMapId <= mapCount)
@@ -406,9 +430,9 @@ void GameLayer::initGard(int guardianVariant, bool notifyNetworkPeers, const std
 	if (_hasSpawnedGuardian)
 		return;
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	/** Hardcore guardians (Roshi/Han) are disabled for WS matches — avoids sync issues and keeps lanes simpler. */
-	if (MacWsIsConnected())
+	if (GamePlatformWsConnected())
 		return;
 #endif
 
@@ -468,8 +492,8 @@ void GameLayer::initGard(int guardianVariant, bool notifyNetworkPeers, const std
 
 	_hasSpawnedGuardian = true;
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	if (notifyNetworkPeers && MacWsIsConnected())
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (notifyNetworkPeers && GamePlatformWsConnected())
 	{
 		char buf[224];
 		if (anchorTowerName && !anchorTowerName->empty())
@@ -477,7 +501,7 @@ void GameLayer::initGard(int guardianVariant, bool notifyNetworkPeers, const std
 					 anchorTowerName->c_str());
 		else
 			snprintf(buf, sizeof(buf), "{\"type\":\"guardian_spawn\",\"idx\":%d}", index);
-		MacWsSend(buf);
+		GamePlatformWsSend(buf);
 	}
 #else
 	(void)notifyNetworkPeers;
@@ -681,8 +705,8 @@ void GameLayer::spawnFlogWave(uint32_t waveSeq)
 
 void GameLayer::applyPeerFlogWaveFromNetwork(uint32_t waveSeq)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	if (!MacWsIsConnected() || GetNetworkForcedTeam() == 0)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (!GamePlatformWsConnected() || GetNetworkForcedTeam() == 0)
 		return;
 #endif
 	spawnFlogWave(waveSeq);
@@ -690,8 +714,8 @@ void GameLayer::applyPeerFlogWaveFromNetwork(uint32_t waveSeq)
 
 void GameLayer::applyPeerFlogSnapFromNetwork(const std::string &dcsv)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	if (!MacWsIsConnected() || GetNetworkForcedTeam() == 0 || !_isStarted || _isExiting)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (!GamePlatformWsConnected() || GetNetworkForcedTeam() == 0 || !_isStarted || _isExiting)
 		return;
 #endif
 	std::stringstream ss(dcsv);
@@ -719,8 +743,8 @@ void GameLayer::applyPeerFlogSnapFromNetwork(const std::string &dcsv)
 		Flog *flog = findFlogByNetworkSlot(this, (uint32_t)w, s);
 		if (!flog)
 			continue;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-		if (MacWsIsConnected() && GetNetworkForcedTeam() != 0)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+		if (GamePlatformWsConnected() && GetNetworkForcedTeam() != 0)
 		{
 			const Vec2 tgt(x, y);
 			flog->_followNetTargetPos = tgt;
@@ -749,8 +773,8 @@ void GameLayer::applyPeerFlogSnapFromNetwork(const std::string &dcsv)
 
 void GameLayer::tickOnlineFlogSnap(float)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	if (!MacWsIsConnected() || GetNetworkForcedTeam() != 0 || !_isStarted || _isExiting || !currentMap)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (!GamePlatformWsConnected() || GetNetworkForcedTeam() != 0 || !_isStarted || _isExiting || !currentMap)
 		return;
 	std::string d;
 	d.reserve(4096);
@@ -781,26 +805,26 @@ void GameLayer::tickOnlineFlogSnap(float)
 	std::string json = "{\"type\":\"flog_snap\",\"d\":\"";
 	json += d;
 	json += "\"}";
-	MacWsSend(json.c_str());
+	GamePlatformWsSend(json.c_str());
 #endif
 }
 
 void GameLayer::addFlog(float dt)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	if (MacWsIsConnected() && GetNetworkForcedTeam() != 0)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (GamePlatformWsConnected() && GetNetworkForcedTeam() != 0)
 		return;
 #endif
 	const uint32_t waveSeq = _flogWaveSeqCounter++;
 	spawnFlogWave(waveSeq);
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	if (MacWsIsConnected() && GetNetworkForcedTeam() == 0)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (GamePlatformWsConnected() && GetNetworkForcedTeam() == 0)
 	{
 		char buf[160];
 		std::snprintf(buf, sizeof(buf),
 					  "{\"type\":\"flog_wave\",\"seq\":%u,\"ts\":%ld}",
 					  waveSeq, (long)std::time(nullptr));
-		MacWsSend(buf);
+		GamePlatformWsSend(buf);
 	}
 #endif
 }
@@ -889,7 +913,7 @@ void GameLayer::updateGameTime(float dt)
 
 void GameLayer::updateViewPoint(float dt)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	processRemoteInputQueue(this);
 #endif
 	_battleRuntimeSystem->updateViewPoint(this);
@@ -908,21 +932,20 @@ void GameLayer::updateHudSkillButtons()
 void GameLayer::setHPLose(float percent)
 {
 	_hudLayer->setHPLose(percent);
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	if (MacWsIsConnected())
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (GamePlatformWsConnected())
 		syncOnlineBattleStatsToPeer(false);
 #endif
 }
 
 void GameLayer::syncOnlineBattleStatsToPeer(bool force)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	extern void MacWsSend(const char *message);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	static std::chrono::steady_clock::time_point s_lastBattleStatSent{};
 	static bool s_didSendBattleStat = false;
 	static constexpr int kBattleStatMinIntervalMs = 180;
 
-	if (!MacWsIsConnected() || !_isStarted || _isExiting || !currentPlayer)
+	if (!GamePlatformWsConnected() || !_isStarted || _isExiting || !currentPlayer)
 		return;
 
 	const auto now = std::chrono::steady_clock::now();
@@ -953,7 +976,7 @@ void GameLayer::syncOnlineBattleStatsToPeer(bool force)
 				  "{\"type\":\"battle_stat\",\"hp\":%u,\"maxHp\":%u,\"kills\":%u,\"deaths\":%u,\"flog\":%u,"
 				  "\"kono\":%d,\"aka\":%d,\"ts\":%ld}",
 				  hp, maxHp, kills, deaths, flog, kono, aka, (long)std::time(nullptr));
-	MacWsSend(buf);
+	GamePlatformWsSend(buf);
 #else
 	(void)force;
 #endif
@@ -1092,8 +1115,8 @@ void GameLayer::onPause()
 
 	sendNetworkMatchUIIfActive("pause", true);
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	if (_isStarted && MacWsIsConnected())
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (_isStarted && GamePlatformWsConnected())
 	{
 		sendNetworkJoyReleaseEvent();
 		if (currentPlayer && currentPlayer->getState() == State::WALK)
@@ -1103,8 +1126,8 @@ void GameLayer::onPause()
 
 	_isPause = true;
 	bool isNetworkOverlay = false;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	isNetworkOverlay = _isStarted && MacWsIsConnected();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	isNetworkOverlay = _isStarted && GamePlatformWsConnected();
 #endif
 	Scene *f = Director::sharedDirector()->getRunningScene();
 	RenderTexture *snapshoot = nullptr;
@@ -1185,8 +1208,8 @@ void GameLayer::onGear()
 
 	sendNetworkMatchUIIfActive("gear", true);
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	if (_isStarted && MacWsIsConnected())
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (_isStarted && GamePlatformWsConnected())
 	{
 		sendNetworkJoyReleaseEvent();
 		if (currentPlayer && currentPlayer->getState() == State::WALK)
@@ -1196,8 +1219,8 @@ void GameLayer::onGear()
 
 	_isGear = true;
 	bool isNetworkOverlay = false;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	isNetworkOverlay = _isStarted && MacWsIsConnected();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	isNetworkOverlay = _isStarted && GamePlatformWsConnected();
 #endif
 
 	Scene *f = Director::sharedDirector()->getRunningScene();
@@ -1263,20 +1286,20 @@ void GameLayer::onGameOver(bool isWin)
 	if (_hasGameOverTriggered)
 		return;
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	if (MacWsIsConnected())
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (GamePlatformWsConnected())
 		syncOnlineBattleStatsToPeer(true);
 #endif
 
 	_hasGameOverTriggered = true;
 	_isStarted = false;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	unschedule(schedule_selector(GameLayer::tickOnlineHeroPositionSnap));
 	unschedule(schedule_selector(GameLayer::tickOnlineFlogSnap));
 #endif
 
 	bool isApplyingRemoteMatchEnd = false;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	isApplyingRemoteMatchEnd = s_isApplyingRemoteMatchEnd;
 #endif
 	if (!isApplyingRemoteMatchEnd)

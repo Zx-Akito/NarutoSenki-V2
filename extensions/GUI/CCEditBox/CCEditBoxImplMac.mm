@@ -45,8 +45,35 @@
 
 - (void)setup {
     [self setBordered:NO];
+    [self setDrawsBackground:NO];
+    [self setBackgroundColor:[NSColor clearColor]];
     [self setHidden:NO];
     [self setWantsLayer:YES];
+}
+
+@end
+
+@implementation CustomNSSecureTextField
+
+- (CGRect)textRectForBounds:(CGRect)bounds
+{
+	float padding = 5.0f;
+	return CGRectMake(bounds.origin.x + padding, bounds.origin.y + padding,
+					  bounds.size.width - padding * 2, bounds.size.height - padding * 2);
+}
+
+- (CGRect)editingRectForBounds:(CGRect)bounds
+{
+	return [self textRectForBounds:bounds];
+}
+
+- (void)setup
+{
+	[self setBordered:NO];
+	[self setDrawsBackground:NO];
+	[self setBackgroundColor:[NSColor clearColor]];
+	[self setHidden:NO];
+	[self setWantsLayer:YES];
 }
 
 @end
@@ -78,6 +105,7 @@
         if (!textField_) break;
         [textField_ setTextColor:[NSColor whiteColor]];
         textField_.font = [NSFont systemFontOfSize:frameRect.size.height*2/3]; //TODO need to delete hard code here.
+        [textField_ setDrawsBackground:NO];
         textField_.backgroundColor = [NSColor clearColor];
         [textField_ setup];
         textField_.delegate = self;
@@ -118,6 +146,61 @@
 -(void) openKeyboard
 {
     [textField_ becomeFirstResponder];
+}
+
+- (void) applyPasswordMode:(BOOL)password
+{
+	if (!textField_)
+	{
+		return;
+	}
+
+	const BOOL currentlySecure = [textField_ isKindOfClass:[NSSecureTextField class]];
+	if (password && currentlySecure)
+	{
+		return;
+	}
+	if (!password && !currentlySecure)
+	{
+		return;
+	}
+
+	NSRect frame = [textField_ frame];
+	NSString *value = [textField_ stringValue];
+	NSColor *textColor = [textField_ textColor];
+	NSFont *font = [textField_ font];
+
+	[textField_ resignFirstResponder];
+	[textField_ removeFromSuperview];
+	self.textField = nil;
+
+	NSTextField *newField = nil;
+	if (password)
+	{
+		newField = [[CustomNSSecureTextField alloc] initWithFrame:frame];
+		[(CustomNSSecureTextField *)newField setup];
+	}
+	else
+	{
+		newField = [[CustomNSTextField alloc] initWithFrame:frame];
+		[(CustomNSTextField *)newField setup];
+	}
+
+	self.textField = [newField autorelease];
+	[textField_ setStringValue:value];
+	[textField_ setTextColor:textColor];
+	if (font)
+	{
+		[textField_ setFont:font];
+	}
+	else
+	{
+		textField_.font = [NSFont systemFontOfSize:frame.size.height * 2 / 3];
+	}
+	[textField_ setDelegate:self];
+	[textField_ setDrawsBackground:NO];
+	[textField_ setBackgroundColor:[NSColor clearColor]];
+	[[EAGLView sharedEGLView] addSubview:textField_];
 }
 
 -(void) closeKeyboard
@@ -308,7 +391,12 @@ int CCEditBoxImplMac::getMaxLength()
 
 void CCEditBoxImplMac::setInputFlag(EditBoxInputFlag inputFlag)
 {
-    // TODO: NSSecureTextField
+	if (!m_pSysEdit)
+	{
+		return;
+	}
+	const BOOL secure = (inputFlag == kEditBoxInputFlagPassword);
+	[m_pSysEdit applyPasswordMode:secure];
 }
 
 void CCEditBoxImplMac::setReturnType(KeyboardReturnType returnType)

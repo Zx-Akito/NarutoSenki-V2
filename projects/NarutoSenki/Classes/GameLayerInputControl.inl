@@ -50,8 +50,8 @@ void GameLayer::JoyStickUpdate(Vec2 direction)
 		currentPlayer->walk(direction);
 		// Online: walk() is a no-op for the local player during NATTACK and other blocked states,
 		// but we must not still send joy_update — the peer would apply it to the enemy hero mirror.
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-		if (MacWsIsConnected() && currentPlayer->getState() == State::WALK)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+		if (GamePlatformWsConnected() && currentPlayer->getState() == State::WALK)
 			sendNetworkJoyUpdateEvent(direction.x, direction.y);
 #else
 		sendNetworkJoyUpdateEvent(direction.x, direction.y);
@@ -66,8 +66,8 @@ void GameLayer::attackButtonClick(ABType type)
 	if (type == NAttack)
 	{
 		_isAttackButtonRelease = false;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-		if (MacWsIsConnected())
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+		if (GamePlatformWsConnected())
 			sendNetworkJoyReleaseEvent();
 #endif
 	}
@@ -82,8 +82,8 @@ void GameLayer::attackButtonClick(ABType type)
 	}
 	sendNetworkInputEvent("attack_click",
 						 format("{{\"type\":{}}}", (int)type));
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-	if (MacWsIsConnected() && type != Item1)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (GamePlatformWsConnected() && type != Item1)
 	{
 		sendNetworkOwnedHeroPositionSnapIfNeeded(currentPlayer->getPosition(),
 													HeroSnapKind::ImmediateBurst);

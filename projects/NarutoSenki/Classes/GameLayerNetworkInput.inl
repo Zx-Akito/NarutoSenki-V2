@@ -20,21 +20,37 @@
 // - tower_destroy: tower reached 0 HP locally — peer removes same tower by charId (map spawn index) so minimap/base match.
 // - Other world-state packets are ignored to preserve stability.
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #include "Core/Tower/Tower.hpp"
 #include "Enums/TowerEnum.h"
 
 extern "C"
 {
 void SetNativeWsEventCallback(void (*callback)(const char *eventName, const char *payload));
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 void MacWsSend(const char *message);
 void MacWsDisconnect();
 bool MacWsIsConnected();
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+void NativeBridgeWsSend(const char *message);
+void NativeBridgeWsDisconnect(void);
+bool NativeBridgeWsIsConnected(void);
+#endif
 int GetNetworkForcedMapId();
 int GetNetworkForcedTeam();
 const char *GetNetworkEnemyHeroName();
 bool GetNetworkOpponentIsBot();
 }
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#define GAME_NET_WS_SEND(msg) MacWsSend((msg))
+#define GAME_NET_WS_CONNECTED() MacWsIsConnected()
+#define GAME_NET_WS_DISCONNECT() MacWsDisconnect()
+#else
+#define GAME_NET_WS_SEND(msg) NativeBridgeWsSend((msg))
+#define GAME_NET_WS_CONNECTED() NativeBridgeWsIsConnected()
+#define GAME_NET_WS_DISCONNECT() NativeBridgeWsDisconnect()
+#endif
 
 // Skip teleport when already within N px (was 15; tighter fixes walk/skill drift with small rubber-band risk).
 static constexpr float kWsHeroSnapApplyMinDist2 = 10.f * 10.f;
@@ -103,14 +119,14 @@ static void marshalAndSendInputEvent(const string &action, const string &payload
 	auto message =
 		string("{\"type\":\"input_event\",\"action\":\"") + action + "\",\"payload\":" + payload +
 		",\"tick\":" + to_string(s_wsNetLogicalTick) + ",\"ts\":" + to_string((int)time(nullptr)) + "}";
-	MacWsSend(message.c_str());
+	GAME_NET_WS_SEND(message.c_str());
 }
 
 static void flushPendingJoyWire(bool force)
 {
 	if (!s_pendingJoyWire)
 		return;
-	if (!MacWsIsConnected())
+	if (!GAME_NET_WS_CONNECTED())
 		return;
 	if (_gLayer && _gLayer->shouldBlockNetworkBattleInputEcho())
 		return;
@@ -538,7 +554,7 @@ static void processRemoteInputQueue(GameLayer *layer)
 
 static void sendNetworkInputEvent(const string &action, const string &payload = "{}")
 {
-	if (!MacWsIsConnected())
+	if (!GAME_NET_WS_CONNECTED())
 		return;
 	if (_gLayer && _gLayer->shouldBlockNetworkBattleInputEcho())
 	{
@@ -551,7 +567,7 @@ static void sendNetworkInputEvent(const string &action, const string &payload = 
 
 static void sendNetworkJoyUpdateEvent(float x, float y)
 {
-	if (!MacWsIsConnected())
+	if (!GAME_NET_WS_CONNECTED())
 		return;
 	if (_gLayer && _gLayer->shouldBlockNetworkBattleInputEcho())
 		return;
@@ -566,7 +582,7 @@ static void sendNetworkJoyReleaseEvent()
 {
 	if (s_lastSentJoyRelease)
 		return;
-	if (MacWsIsConnected() && (!_gLayer || !_gLayer->shouldBlockNetworkBattleInputEcho()))
+	if (GAME_NET_WS_CONNECTED() && (!_gLayer || !_gLayer->shouldBlockNetworkBattleInputEcho()))
 		flushPendingJoyWire(true);
 	s_lastSentJoyRelease = true;
 	sendNetworkInputEvent("joy_release");
@@ -574,7 +590,7 @@ static void sendNetworkJoyReleaseEvent()
 
 static void sendNetworkMatchEnd(bool isWin, const char *reason = "game_over")
 {
-	if (!MacWsIsConnected())
+	if (!GAME_NET_WS_CONNECTED())
 		return;
 
 	const char *reasonTag = "game_over";
@@ -600,7 +616,7 @@ static void sendNetworkMatchEnd(bool isWin, const char *reason = "game_over")
 				  "{\"type\":\"match_end\",\"isWin\":%s,\"reason\":\"%s\","
 				  "\"pk\":%u,\"pd\":%u,\"pf\":%u,\"pn\":%u,\"ps\":%u,\"ts\":%ld}",
 				  isWin ? "true" : "false", reasonTag, pk, pd, pf, pn, ps, (long)time(nullptr));
-	MacWsSend(buf);
+	GAME_NET_WS_SEND(buf);
 }
 
 static bool s_suppressNetworkMatchUI = false;
@@ -609,24 +625,24 @@ static void sendNetworkMatchUIIfActive(const char *which, bool open)
 {
 	if (s_suppressNetworkMatchUI)
 		return;
-	if (!MacWsIsConnected() || !_gLayer || !_gLayer->_isStarted)
+	if (!GAME_NET_WS_CONNECTED() || !_gLayer || !_gLayer->_isStarted)
 		return;
 	string safeUi = which ? which : "";
 	auto message = string("{\"type\":\"match_ui\",\"ui\":\"") + safeUi + "\",\"open\":" +
 				   (open ? "true" : "false") +
 				   ",\"ts\":" + to_string((int)time(nullptr)) + "}";
-	MacWsSend(message.c_str());
+	GAME_NET_WS_SEND(message.c_str());
 }
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 /** Exported for HudLayer RTT display — defined once in this TU (GameLayer.cpp). */
 void NetLatencyPingSend()
 {
-	if (!MacWsIsConnected())
+	if (!GAME_NET_WS_CONNECTED())
 		return;
 	s_latencyPingSentAt = std::chrono::steady_clock::now();
 	s_latencyPingPending = true;
-	MacWsSend("{\"type\":\"latency_ping\",\"seq\":1}");
+	GAME_NET_WS_SEND("{\"type\":\"latency_ping\",\"seq\":1}");
 }
 #endif
 
@@ -635,7 +651,7 @@ static void applyRemoteMatchUI(GameLayer *layer, const char *which, bool open)
 	if (!which || !layer || !layer->_isStarted || layer->_isExiting)
 		return;
 	// Network match now keeps gameplay running: ignore pause/gear overlay sync.
-	if (MacWsIsConnected())
+	if (GAME_NET_WS_CONNECTED())
 		return;
 	s_suppressNetworkMatchUI = true;
 	if (strcmp(which, "pause") == 0)
@@ -679,7 +695,7 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 		{
 			if (!_gLayer->_hasGameOverTriggered)
 				_gLayer->onGameOver(true);
-			MacWsDisconnect();
+			GAME_NET_WS_DISCONNECT();
 		}
 		return;
 	}
@@ -690,7 +706,7 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 		return;
 	if (strstr(payload, "\"type\":\"latency_pong\"") != nullptr)
 	{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 		if (s_latencyPingPending)
 		{
 			s_latencyPingPending = false;
@@ -711,7 +727,7 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 		{
 			if (!_gLayer->_hasGameOverTriggered)
 				_gLayer->onGameOver(true);
-			MacWsDisconnect();
+			GAME_NET_WS_DISCONNECT();
 		}
 		return;
 	}
@@ -862,7 +878,7 @@ static void onNativeWsEvent(const char *eventName, const char *payload)
 	}
 	if (strstr(payload, "\"type\":\"flog_wave\"") != nullptr)
 	{
-		if (_gLayer && _gLayer->_isStarted && !_gLayer->_isExiting && MacWsIsConnected() &&
+		if (_gLayer && _gLayer->_isStarted && !_gLayer->_isExiting && GAME_NET_WS_CONNECTED() &&
 			GetNetworkForcedTeam() != 0)
 		{
 			int seqInt = 0;

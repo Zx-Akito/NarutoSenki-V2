@@ -2,12 +2,16 @@ package re.naruto.game;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -18,9 +22,22 @@ import okhttp3.WebSocketListener;
 import okio.ByteString;
 
 public class NarutoSenki extends Cocos2dxActivity{
+	private static final String TAG = "NarutoWs";
 	private static final Object WS_LOCK = new Object();
+	private static final ExecutorService WS_EXECUTOR = Executors.newSingleThreadExecutor(new ThreadFactory() {
+		@Override
+		public Thread newThread(Runnable r) {
+			Thread t = new Thread(r, "NarutoWs");
+			t.setDaemon(true);
+			return t;
+		}
+	});
 	private static final OkHttpClient WS_CLIENT = new OkHttpClient.Builder()
 			.readTimeout(0, TimeUnit.MILLISECONDS)
+			.connectTimeout(30, TimeUnit.SECONDS)
+			.writeTimeout(30, TimeUnit.SECONDS)
+			.callTimeout(0, TimeUnit.MILLISECONDS)
+			.retryOnConnectionFailure(true)
 			.build();
 	private static final String EVENT_OPEN = "open";
 	private static final String EVENT_MESSAGE = "message";
@@ -31,8 +48,11 @@ public class NarutoSenki extends Cocos2dxActivity{
 	private static volatile boolean sIsConnected = false;
 	private static NarutoSenki sInstance = null;
 
+	private static native void nativeWsJniBoot();
+
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		nativeWsJniBoot();
 		sInstance = this;
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
@@ -48,61 +68,101 @@ public class NarutoSenki extends Cocos2dxActivity{
 	}
 
 	public static boolean wsConnect(final String url) {
-		if (url == null || url.trim().isEmpty()) {
+		final String trimmed = url != null ? url.trim() : "";
+		if (trimmed.isEmpty()) {
+			Log.w(TAG, "wsConnect: empty url");
 			return false;
 		}
 
-		synchronized (WS_LOCK) {
-			if (sWebSocket != null) {
-				sWebSocket.cancel();
-				sWebSocket = null;
-			}
-			sIsConnected = false;
-
-			try {
-				Request request = new Request.Builder().url(url).build();
-				sWebSocket = WS_CLIENT.newWebSocket(request, new WebSocketListener() {
-					@Override
-					public void onOpen(WebSocket webSocket, Response response) {
-						sIsConnected = true;
-						dispatchWebSocketEvent(EVENT_OPEN, "");
+		WS_EXECUTOR.execute(new Runnable() {
+			@Override
+			public void run() {
+				synchronized (WS_LOCK) {
+					if (sWebSocket != null) {
+						sWebSocket.cancel();
+						sWebSocket = null;
 					}
+					sIsConnected = false;
 
-					@Override
-					public void onMessage(WebSocket webSocket, String text) {
-						dispatchWebSocketEvent(EVENT_MESSAGE, text != null ? text : "");
-					}
-
-					@Override
-					public void onMessage(WebSocket webSocket, ByteString bytes) {
-						dispatchWebSocketEvent(EVENT_MESSAGE, bytes != null ? bytes.hex() : "");
-					}
-
-					@Override
-					public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-						sIsConnected = false;
-						dispatchWebSocketEvent(EVENT_ERROR, t != null ? t.getMessage() : "unknown websocket error");
-					}
-
-					@Override
-					public void onClosed(WebSocket webSocket, int code, String reason) {
-						sIsConnected = false;
-						synchronized (WS_LOCK) {
-							if (sWebSocket == webSocket) {
-								sWebSocket = null;
+					try {
+						Request request = new Request.Builder().url(trimmed).build();
+						sWebSocket = WS_CLIENT.newWebSocket(request, new WebSocketListener() {
+							@Override
+							public void onOpen(WebSocket webSocket, Response response) {
+								sIsConnected = true;
+								dispatchWebSocketEvent(EVENT_OPEN, "");
 							}
-						}
-						dispatchWebSocketEvent(EVENT_CLOSE, reason != null ? reason : "");
+
+							@Override
+							public void onMessage(WebSocket webSocket, String text) {
+								dispatchWebSocketEvent(EVENT_MESSAGE, text != null ? text : "");
+							}
+
+							@Override
+							public void onMessage(WebSocket webSocket, ByteString bytes) {
+								dispatchWebSocketEvent(EVENT_MESSAGE, bytes != null ? bytes.hex() : "");
+							}
+
+							@Override
+							public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+								sIsConnected = false;
+								synchronized (WS_LOCK) {
+									if (sWebSocket == webSocket) {
+										sWebSocket = null;
+									}
+								}
+								final String summary = formatWsFailureMessage(t, response);
+								Log.e(TAG, "onFailure url=" + trimmed, t);
+								dispatchWebSocketEvent(EVENT_ERROR, summary);
+							}
+
+							@Override
+							public void onClosed(WebSocket webSocket, int code, String reason) {
+								sIsConnected = false;
+								synchronized (WS_LOCK) {
+									if (sWebSocket == webSocket) {
+										sWebSocket = null;
+									}
+								}
+								dispatchWebSocketEvent(EVENT_CLOSE, reason != null ? reason : "");
+							}
+						});
+					} catch (IllegalArgumentException e) {
+						sWebSocket = null;
+						sIsConnected = false;
+						Log.e(TAG, "wsConnect: bad url string", e);
+						dispatchWebSocketEvent(EVENT_ERROR,
+								e.getMessage() != null ? e.getMessage() : e.toString());
+					} catch (Exception e) {
+						sWebSocket = null;
+						sIsConnected = false;
+						Log.e(TAG, "wsConnect: failed to create WebSocket url=" + trimmed, e);
+						dispatchWebSocketEvent(EVENT_ERROR,
+								e.getMessage() != null ? e.getMessage() : e.toString());
 					}
-				});
-				return true;
-			} catch (Exception e) {
-				sWebSocket = null;
-				sIsConnected = false;
-				dispatchWebSocketEvent(EVENT_ERROR, e.getMessage() != null ? e.getMessage() : "failed to create websocket");
-				return false;
+				}
+			}
+		});
+		return true;
+	}
+
+	private static String formatWsFailureMessage(Throwable t, Response response) {
+		String base = "unknown websocket error";
+		if (t != null) {
+			base = t.getMessage();
+			if (base == null || base.trim().isEmpty()) {
+				base = t.toString();
 			}
 		}
+		if (response == null) {
+			return base;
+		}
+		StringBuilder sb = new StringBuilder(base);
+		sb.append(" (HTTP ").append(response.code()).append(")");
+		if (response.message() != null && !response.message().isEmpty()) {
+			sb.append(": ").append(response.message());
+		}
+		return sb.toString();
 	}
 
 	public static void wsSend(final String message) {

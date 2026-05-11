@@ -89,6 +89,11 @@ protected:
     virtual void deleteBackward() {}
 
     /**
+    @brief    Select all / mark full replacement (platform shortcuts e.g. Cmd+A on macOS).
+    */
+    virtual void selectAll() {}
+
+    /**
     @brief    Called by CCIMEDispatcher for text stored in delegate.
     */
     virtual const char * getContentText() { return 0; }

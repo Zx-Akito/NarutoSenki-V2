@@ -159,6 +159,8 @@ public:
     virtual bool isSecureTextEntry();
 protected:
     bool m_bSecureTextEntry;
+    /** Cmd+A / select all: next typed character replaces whole field; next delete clears all. */
+    bool m_bSelectAllPending;
 protected:
 
     virtual void draw();
@@ -171,6 +173,8 @@ protected:
     virtual bool canDetachWithIME();
     virtual void insertText(const char * text, int len);
     virtual void deleteBackward();
+    virtual void selectAll();
+    virtual void didDetachWithIME();
     virtual const char * getContentText();
 private:
     class LengthStack;

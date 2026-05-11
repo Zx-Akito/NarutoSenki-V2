@@ -56,6 +56,7 @@ CCTextFieldTTF::CCTextFieldTTF()
 , m_pInputText(new std::string)
 , m_pPlaceHolder(new std::string)   // prevent CCLabelTTF initWithString assertion
 , m_bSecureTextEntry(false)
+, m_bSelectAllPending(false)
 {
     m_ColorSpaceHolder.r = m_ColorSpaceHolder.g = m_ColorSpaceHolder.b = 127;
 }
@@ -189,6 +190,13 @@ void CCTextFieldTTF::insertText(const char * text, int len)
             return;
         }
 
+        if (m_bSelectAllPending)
+        {
+            m_bSelectAllPending = false;
+            setString(sInsert.c_str());
+            return;
+        }
+
         m_nCharCount += _calcCharCount(sInsert.c_str());
         std::string sText(*m_pInputText);
         sText.append(sInsert);
@@ -211,6 +219,13 @@ void CCTextFieldTTF::insertText(const char * text, int len)
 
 void CCTextFieldTTF::deleteBackward()
 {
+    if (m_bSelectAllPending)
+    {
+        m_bSelectAllPending = false;
+        setString("");
+        return;
+    }
+
     int nStrLen = m_pInputText->length();
     if (! nStrLen)
     {
@@ -250,6 +265,16 @@ void CCTextFieldTTF::deleteBackward()
 const char * CCTextFieldTTF::getContentText()
 {
     return m_pInputText->c_str();
+}
+
+void CCTextFieldTTF::selectAll()
+{
+    m_bSelectAllPending = true;
+}
+
+void CCTextFieldTTF::didDetachWithIME()
+{
+    m_bSelectAllPending = false;
 }
 
 void CCTextFieldTTF::draw()

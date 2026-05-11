@@ -2,8 +2,21 @@
 #include "HudLayer.h"
 #include <string>
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 extern "C" bool MacWsIsConnected();
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+extern "C" bool NativeBridgeWsIsConnected(void);
+#endif
+
+static inline bool hpBarOnlineWsConnected()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	return MacWsIsConnected();
+#else
+	return NativeBridgeWsIsConnected();
+#endif
+}
 #endif
 
 bool HPBar::init(const char *szImage)
@@ -440,8 +453,8 @@ void HPBar::loseHP(float percent)
 					uint32_t realKillNum = currentSlayer->getKillNum() + 1;
 					currentSlayer->setKillNum(realKillNum);
 					getGameLayer()->setReport(currentSlayer->getName(), _delegate->getName(), currentSlayer->getKillNum());
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-					if (MacWsIsConnected() && currentSlayer == getGameLayer()->currentPlayer)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+					if (hpBarOnlineWsConnected() && currentSlayer == getGameLayer()->currentPlayer)
 						getGameLayer()->syncOnlineBattleStatsToPeer(true);
 #endif
 

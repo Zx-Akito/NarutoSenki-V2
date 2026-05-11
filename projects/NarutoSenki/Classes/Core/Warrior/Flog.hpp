@@ -1,15 +1,28 @@
 #pragma once
 #include "CharacterBase.h"
 #include "HPBar.h"
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #include <cmath>
 #endif
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 extern "C"
 {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 bool MacWsIsConnected();
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+bool NativeBridgeWsIsConnected(void);
+#endif
 int GetNetworkForcedTeam();
+}
+
+static inline bool flogOnlineFollowerMirrorActive()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+	return MacWsIsConnected() && GetNetworkForcedTeam() != 0;
+#else
+	return NativeBridgeWsIsConnected() && GetNetworkForcedTeam() != 0;
+#endif
 }
 #endif
 
@@ -25,7 +38,7 @@ public:
 	/** Last authority state applied on follower (Akatsuki) for mirror visuals. */
 	State _lastMirrorAuthState = State::IDLE;
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	/** Follower client: smooth toward network snap target instead of teleporting every ~100ms (reduces stutter). */
 	Vec2 _followNetTargetPos{};
 	bool _followNetSmoothActive = false;
@@ -200,8 +213,8 @@ public:
 
 	void update(float dt) override
 	{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-		if (MacWsIsConnected() && GetNetworkForcedTeam() != 0 && _followNetSmoothActive &&
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+		if (flogOnlineFollowerMirrorActive() && _followNetSmoothActive &&
 			getState() != State::DEAD)
 		{
 			const Vec2 cur = getPosition();
@@ -247,8 +260,8 @@ protected:
 
 	void setAI(float dt)
 	{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-		if (MacWsIsConnected() && GetNetworkForcedTeam() != 0)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+		if (flogOnlineFollowerMirrorActive())
 			return;
 #endif
 		if (isFreeState())

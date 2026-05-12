@@ -200,6 +200,101 @@ GameLoginResult GameLoginHttp::postLogin(const std::string &apiBase, const std::
 		r.errorMessage = "Unexpected server response.";
 		return r;
 	}
+	if (!extractJsonStringValue(responseBody, "coin", &r.coin))
+	{
+		r.coin = "0";
+	}
+
+	r.ok = true;
+	return r;
+#endif
+}
+
+GameSyncCoinResult GameLoginHttp::postSyncCoin(const std::string &apiBase, const std::string &usernameOrEmail,
+	const std::string &password, uint32_t sqliteCoin, const std::string &apiKey)
+{
+	GameSyncCoinResult r;
+
+#if !(CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	r.errorMessage = "Sync coin HTTP is only enabled on Mac and iOS builds.";
+	return r;
+#else
+	std::string base = trimCopy(apiBase);
+	if (base.empty())
+	{
+		r.errorMessage = "Missing API base URL.";
+		return r;
+	}
+
+	const std::string url = base + "/api/auth/sync-coin";
+
+	CURL *curl = curl_easy_init();
+	if (!curl)
+	{
+		r.errorMessage = "Network init failed.";
+		return r;
+	}
+
+	std::string responseBody;
+	struct curl_slist *headers = nullptr;
+	headers = curl_slist_append(headers, "Content-Type: application/json");
+	std::string keyHeader;
+	if (!trimCopy(apiKey).empty())
+	{
+		keyHeader = std::string("X-Game-Login-Key: ") + trimCopy(apiKey);
+		headers = curl_slist_append(headers, keyHeader.c_str());
+	}
+
+	std::ostringstream payload;
+	payload << "{\"identifier\":\"" << jsonEscape(usernameOrEmail) << "\",\"password\":\"" << jsonEscape(password)
+			<< "\",\"coin\":" << static_cast<unsigned long>(sqliteCoin) << "}";
+
+	const std::string bodyStr = payload.str();
+
+	curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, bodyStr.c_str());
+	curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, static_cast<long>(bodyStr.size()));
+	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlWriteCallback);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &responseBody);
+	curl_easy_setopt(curl, CURLOPT_TIMEOUT, 20L);
+	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+	curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 5L);
+
+	const CURLcode res = curl_easy_perform(curl);
+	long httpCode = 0;
+	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
+	curl_slist_free_all(headers);
+	curl_easy_cleanup(curl);
+
+	if (res != CURLE_OK)
+	{
+		r.errorMessage = curl_easy_strerror(res);
+		return r;
+	}
+
+	if (httpCode != 200)
+	{
+		std::string err;
+		if (extractJsonStringValue(responseBody, "error", &err))
+		{
+			r.errorMessage = err;
+		}
+		else
+		{
+			std::ostringstream oss;
+			oss << "HTTP " << httpCode;
+			r.errorMessage = oss.str();
+		}
+		CCLOG("Sync coin HTTP %ld body: %.300s", httpCode, responseBody.c_str());
+		return r;
+	}
+
+	if (!extractJsonStringValue(responseBody, "coin", &r.coin))
+	{
+		r.errorMessage = "Unexpected server response.";
+		return r;
+	}
 
 	r.ok = true;
 	return r;

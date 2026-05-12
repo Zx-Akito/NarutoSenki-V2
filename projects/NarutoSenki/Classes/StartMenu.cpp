@@ -5,6 +5,7 @@
 #include "Constants/GameAuthConfig.h"
 #include "Constants/UiFlowKeys.hpp"
 #include "GameLoginHttp.h"
+#include "MyUtils/KTools.h"
 #include "GUI/CCControlExtension/CCScale9Sprite.h"
 
 USING_NS_CC_EXT;
@@ -471,10 +472,12 @@ void StartMenu::onProfileBtn(Ref *sender)
 	const std::string user = trimmedUserDefaultString("ns_account_username");
 	const std::string id = trimmedUserDefaultString("ns_account_game_id");
 	const std::string pt = trimmedUserDefaultString("ns_account_point");
+	const std::string cn = trimmedUserDefaultString("ns_account_coin");
 	const std::string gr = trimmedUserDefaultString("ns_account_group_id");
 
 	char infoBuf[512];
-	std::snprintf(infoBuf, sizeof(infoBuf), "ID: %s\nUser: %s\nPoints: %s\nGroup: %s", id.c_str(), user.c_str(), pt.c_str(),
+	std::snprintf(infoBuf, sizeof(infoBuf),
+		"ID: %s\nUser: %s\nPoints: %s\nCoins: %s\nGroup: %s", id.c_str(), user.c_str(), pt.c_str(), cn.c_str(),
 		gr.c_str());
 	auto *info = CCLabelTTF::create(infoBuf, FONT_NAME, 11);
 	info->setHorizontalAlignment(kCCTextAlignmentLeft);
@@ -516,6 +519,7 @@ void StartMenu::onProfileLogout(Ref *sender)
 	UserDefault::sharedUserDefault()->setStringForKey("ns_account_username", "");
 	UserDefault::sharedUserDefault()->setStringForKey("ns_account_game_id", "");
 	UserDefault::sharedUserDefault()->setStringForKey("ns_account_point", "");
+	UserDefault::sharedUserDefault()->setStringForKey("ns_account_coin", "");
 	UserDefault::sharedUserDefault()->setStringForKey("ns_account_group_id", "");
 	UserDefault::sharedUserDefault()->flush();
 
@@ -688,9 +692,27 @@ void StartMenu::onLoginLayerSubmit(Ref *sender)
 		return;
 	}
 
+	const int sqliteCoinRaw = KTools::readCoinFromSQL();
+	int sqliteCoin = sqliteCoinRaw < 0 ? 0 : sqliteCoinRaw;
+	if (sqliteCoin > 999999999)
+		sqliteCoin = 999999999;
+	const GameSyncCoinResult syncRes =
+		GameLoginHttp::postSyncCoin(apiBase, user, pw, static_cast<uint32_t>(sqliteCoin), apiKey);
+	std::string coinStored = res.coin;
+	if (syncRes.ok)
+	{
+		coinStored = syncRes.coin;
+	}
+	else
+	{
+		CCLOG("Convex sync-coin (SQLite): %s", syncRes.errorMessage.c_str());
+		coinStored = std::to_string(sqliteCoin);
+	}
+
 	UserDefault::sharedUserDefault()->setStringForKey("ns_account_username", user);
 	UserDefault::sharedUserDefault()->setStringForKey("ns_account_game_id", res.id);
 	UserDefault::sharedUserDefault()->setStringForKey("ns_account_point", res.point);
+	UserDefault::sharedUserDefault()->setStringForKey("ns_account_coin", coinStored);
 	UserDefault::sharedUserDefault()->setStringForKey("ns_account_group_id", res.groupId);
 	UserDefault::sharedUserDefault()->flush();
 

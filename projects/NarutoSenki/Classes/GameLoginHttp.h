@@ -7,7 +7,15 @@ struct GameLoginResult
 	bool ok = false;
 	std::string id;
 	std::string point;
+	std::string coin;
 	std::string groupId;
+	std::string errorMessage;
+};
+
+struct GameSyncCoinResult
+{
+	bool ok = false;
+	std::string coin;
 	std::string errorMessage;
 };
 
@@ -20,4 +28,10 @@ namespace GameLoginHttp
  */
 GameLoginResult postLogin(const std::string &apiBase, const std::string &usernameOrEmail, const std::string &password,
 	const std::string &apiKey);
+
+/**
+ * POST /api/auth/sync-coin — writes SQLite coin total to Convex `users.coin` (same auth as login). Does not touch `point`.
+ */
+GameSyncCoinResult postSyncCoin(const std::string &apiBase, const std::string &usernameOrEmail,
+	const std::string &password, uint32_t sqliteCoin, const std::string &apiKey);
 } // namespace GameLoginHttp

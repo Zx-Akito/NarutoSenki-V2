@@ -56,7 +56,7 @@
 			<p type="cd">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/suiryudan.ogg</e>
+			<e type="setSound">Audio/Effect/suiryudan.wav</e>
 			<f>Shark_Move_01</f>
 			<e type="setAttackBox">c_hit</e>
 			<f>Shark_Move_02</f>

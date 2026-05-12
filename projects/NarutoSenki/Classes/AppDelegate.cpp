@@ -31,6 +31,8 @@ static std::string s_networkEnemyHeroName;
 static std::string s_networkYourTeamCsv;
 static std::string s_networkEnemyTeamCsv;
 static bool s_networkOpponentIsBot = false;
+static std::string s_networkYourNickname;
+static std::string s_networkEnemyNickname;
 
 extern "C" void SetNativeWsEventCallback(NativeWsEventCallback callback)
 {
@@ -70,6 +72,16 @@ extern "C" const char *GetNetworkEnemyTeamCsv()
 extern "C" bool GetNetworkOpponentIsBot()
 {
 	return s_networkOpponentIsBot;
+}
+
+extern "C" const char *GetNetworkYourNickname()
+{
+	return s_networkYourNickname.c_str();
+}
+
+extern "C" const char *GetNetworkEnemyNickname()
+{
+	return s_networkEnemyNickname.c_str();
 }
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
@@ -380,6 +392,10 @@ static int luaWsSetMatchConfig(lua_State *L)
 	s_networkYourTeamCsv = yourTeamCsv ? yourTeamCsv : "";
 	s_networkEnemyTeamCsv = enemyTeamCsv ? enemyTeamCsv : "";
 	s_networkOpponentIsBot = lua_gettop(L) >= 7 && lua_toboolean(L, 7);
+	const char *yourNick = (lua_gettop(L) >= 8) ? lua_tostring(L, 8) : nullptr;
+	const char *enemyNick = (lua_gettop(L) >= 9) ? lua_tostring(L, 9) : nullptr;
+	s_networkYourNickname = yourNick ? yourNick : "";
+	s_networkEnemyNickname = enemyNick ? enemyNick : "";
 	return 0;
 }
 
@@ -392,6 +408,8 @@ static int luaWsClearMatchConfig(lua_State *L)
 	s_networkYourTeamCsv.clear();
 	s_networkEnemyTeamCsv.clear();
 	s_networkOpponentIsBot = false;
+	s_networkYourNickname.clear();
+	s_networkEnemyNickname.clear();
 	return 0;
 }
 

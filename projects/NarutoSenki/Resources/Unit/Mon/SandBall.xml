@@ -72,7 +72,7 @@
 			<f>SandBall_Move_12</f>
 			<f>SandBall_Move_13</f>
 			<f>SandBall_Move_14</f>
-			<e type="setSound">Audio/Effect/stick_damage.ogg</e>
+			<e type="setSound">Audio/Effect/stick_damage.wav</e>
 			<f>SandBall_Move_15</f>
 			<e type="setDetonation">0</e>
 		</frame>

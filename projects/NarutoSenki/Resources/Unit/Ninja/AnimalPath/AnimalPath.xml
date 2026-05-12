@@ -64,7 +64,7 @@
 			<e type="setMove">16</e>
 			<e type="setDelay">10</e>
 			<f>AnimalPath_NAttack_03</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>AnimalPath_NAttack_04</f>
 			<e type="setDelay">10</e>
@@ -81,7 +81,7 @@
 		</data>
 		<frame>
 			<f>AnimalPath_Skill01_01</f>
-			<e type="setSound">Audio/Pain/AnimalPath_skill1.ogg</e>
+			<e type="setSound">Audio/Pain/AnimalPath_skill1.wav</e>
 			<e type="setDelay">10</e>
 			<f>AnimalPath_Skill01_02</f>
 			<e type="setDelay">10</e>

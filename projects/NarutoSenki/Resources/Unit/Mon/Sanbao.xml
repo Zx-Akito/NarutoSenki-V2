@@ -75,7 +75,7 @@
 			<f>Sanbao_Move_005</f>
 			<e type="setAttackBox">o2_hit</e>
 			<f>Sanbao_Move_006</f>
-			<e type="setSound">Audio/Effect/poof.ogg</e>
+			<e type="setSound">Audio/Effect/poof.wav</e>
 			<f>Sanbao_Move_007</f>
 			<e type="setDetonation">0</e>
 		</frame>

@@ -6,2440 +6,1881 @@
         <dict>
             <key>1p.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{751,224},{41,71}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{41,71}</string>
-                <key>spriteSourceSize</key>
-                <string>{41,71}</string>
-                <key>textureRect</key>
-                <string>{{1426,804},{41,71}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{41,71}}</string>
+                <key>sourceSize</key>
+                <string>{41,71}</string>
             </dict>
             <key>2p.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{792,224},{41,71}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{41,71}}</string>
+                <key>sourceSize</key>
                 <string>{41,71}</string>
-                <key>spriteSourceSize</key>
-                <string>{41,71}</string>
-                <key>textureRect</key>
-                <string>{{1468,820},{41,71}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Asuma_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{933,98},{200,60}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{200,60}</string>
-                <key>spriteSourceSize</key>
-                <string>{200,60}</string>
-                <key>textureRect</key>
-                <string>{{62,863},{200,60}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{200,60}}</string>
+                <key>sourceSize</key>
+                <string>{200,60}</string>
             </dict>
             <key>Asuma_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1596,793},{223,201}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{223,201}</string>
-                <key>spriteSourceSize</key>
-                <string>{223,201}</string>
-                <key>textureRect</key>
-                <string>{{216,19},{223,201}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{223,201}}</string>
+                <key>sourceSize</key>
+                <string>{223,201}</string>
             </dict>
             <key>Asuma_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1168,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{62,924},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Black_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1449,0},{48,39}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{48,39}</string>
-                <key>spriteSourceSize</key>
-                <string>{48,39}</string>
-                <key>textureRect</key>
-                <string>{{1801,528},{48,39}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{48,39}}</string>
+                <key>sourceSize</key>
+                <string>{48,39}</string>
             </dict>
             <key>Blink_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1203,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{128,924},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Chiyo_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{226,40},{156,57}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{156,57}</string>
-                <key>spriteSourceSize</key>
-                <string>{156,57}</string>
-                <key>textureRect</key>
-                <string>{{1388,686},{156,57}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{156,57}}</string>
+                <key>sourceSize</key>
+                <string>{156,57}</string>
             </dict>
             <key>Chiyo_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1304,994},{201,214}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{201,214}}</string>
+                <key>sourceSize</key>
                 <string>{201,214}</string>
-                <key>spriteSourceSize</key>
-                <string>{201,214}</string>
-                <key>textureRect</key>
-                <string>{{894,20},{201,214}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Chiyo_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1238,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{194,924},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Choji_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{382,40},{165,57}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{165,57}</string>
-                <key>spriteSourceSize</key>
-                <string>{165,57}</string>
-                <key>textureRect</key>
-                <string>{{1635,528},{165,57}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{165,57}}</string>
+                <key>sourceSize</key>
+                <string>{165,57}</string>
             </dict>
             <key>Choji_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{993,994},{143,209}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{143,209}</string>
-                <key>spriteSourceSize</key>
-                <string>{143,209}</string>
-                <key>textureRect</key>
-                <string>{{1109,20},{143,209}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{143,209}}</string>
+                <key>sourceSize</key>
+                <string>{143,209}</string>
             </dict>
             <key>Choji_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1273,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1360,804},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Deidara_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{319,159},{124,62}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{124,62}}</string>
+                <key>sourceSize</key>
                 <string>{124,62}</string>
-                <key>spriteSourceSize</key>
-                <string>{124,62}</string>
-                <key>textureRect</key>
-                <string>{{1943,586},{124,62}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Deidara_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{0,597},{166,192}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{166,192}}</string>
+                <key>sourceSize</key>
                 <string>{166,192}</string>
-                <key>spriteSourceSize</key>
-                <string>{166,192}</string>
-                <key>textureRect</key>
-                <string>{{72,696},{166,192}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Deidara_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1308,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1612,824},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Gaara_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1485,98},{122,61}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{122,61}}</string>
+                <key>sourceSize</key>
                 <string>{122,61}</string>
-                <key>spriteSourceSize</key>
-                <string>{122,61}</string>
-                <key>textureRect</key>
-                <string>{{0,839},{122,61}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Gaara_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{0,994},{164,202}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{164,202}}</string>
+                <key>sourceSize</key>
                 <string>{164,202}</string>
-                <key>spriteSourceSize</key>
-                <string>{164,202}</string>
-                <key>textureRect</key>
-                <string>{{216,221},{164,202}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Gaara_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1343,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{201,386},{35,65}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
+                <string>{35,65}</string>
             </dict>
             <key>Hidan_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{547,40},{80,57}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{80,57}</string>
-                <key>spriteSourceSize</key>
-                <string>{80,57}</string>
-                <key>textureRect</key>
-                <string>{{1551,565},{80,57}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{80,57}}</string>
+                <key>sourceSize</key>
+                <string>{80,57}</string>
             </dict>
             <key>Hidan_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{676,793},{233,200}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{233,200}}</string>
+                <key>sourceSize</key>
                 <string>{233,200}</string>
-                <key>spriteSourceSize</key>
-                <string>{233,200}</string>
-                <key>textureRect</key>
-                <string>{{0,248},{233,200}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Hidan_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1378,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1374,887},{35,65}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
+                <string>{35,65}</string>
             </dict>
             <key>Hinata_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{152,98},{152,59}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{152,59}</string>
-                <key>spriteSourceSize</key>
-                <string>{152,59}</string>
-                <key>textureRect</key>
-                <string>{{1790,586},{152,59}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{152,59}}</string>
+                <key>sourceSize</key>
+                <string>{152,59}</string>
             </dict>
             <key>Hinata_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{884,407},{208,189}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{208,189}</string>
-                <key>spriteSourceSize</key>
-                <string>{208,189}</string>
-                <key>textureRect</key>
-                <string>{{1466,0},{208,189}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{208,189}}</string>
+                <key>sourceSize</key>
+                <string>{208,189}</string>
             </dict>
             <key>Hinata_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1413,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1410,887},{35,65}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
+                <string>{35,65}</string>
             </dict>
             <key>Hiruzen_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1607,98},{160,61}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{160,61}}</string>
+                <key>sourceSize</key>
                 <string>{160,61}</string>
-                <key>spriteSourceSize</key>
-                <string>{160,61}</string>
-                <key>textureRect</key>
-                <string>{{1167,523},{160,61}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Hiruzen_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{536,407},{175,188}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{175,188}}</string>
+                <key>sourceSize</key>
                 <string>{175,188}</string>
-                <key>spriteSourceSize</key>
-                <string>{175,188}</string>
-                <key>textureRect</key>
-                <string>{{265,786},{175,188}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Hiruzen_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1448,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1468,862},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>HokageMinato_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{909,793},{157,200}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{157,200}</string>
-                <key>spriteSourceSize</key>
-                <string>{157,200}</string>
-                <key>textureRect</key>
-                <string>{{1870,204},{157,200}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{157,200}}</string>
+                <key>sourceSize</key>
+                <string>{157,200}</string>
             </dict>
             <key>ImmortalSasuke_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{0,793},{146,197}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{146,197}}</string>
+                <key>sourceSize</key>
                 <string>{146,197}</string>
-                <key>spriteSourceSize</key>
-                <string>{146,197}</string>
-                <key>textureRect</key>
-                <string>{{1455,359},{146,197}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Ino_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{304,98},{159,59}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{159,59}</string>
-                <key>spriteSourceSize</key>
-                <string>{159,59}</string>
-                <key>textureRect</key>
-                <string>{{1229,536},{159,59}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{159,59}}</string>
+                <key>sourceSize</key>
+                <string>{159,59}</string>
             </dict>
             <key>Ino_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{842,994},{151,206}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{151,206}}</string>
+                <key>sourceSize</key>
                 <string>{151,206}</string>
-                <key>spriteSourceSize</key>
-                <string>{151,206}</string>
-                <key>textureRect</key>
-                <string>{{1253,190},{151,206}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Ino_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1483,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1534,874},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Itachi_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1026,40},{155,58}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{155,58}</string>
-                <key>spriteSourceSize</key>
-                <string>{155,58}</string>
-                <key>textureRect</key>
-                <string>{{1609,647},{155,58}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{155,58}}</string>
+                <key>sourceSize</key>
+                <string>{155,58}</string>
             </dict>
             <key>Itachi_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{162,407},{141,185}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{141,185}</string>
-                <key>spriteSourceSize</key>
-                <string>{141,185}</string>
-                <key>textureRect</key>
-                <string>{{981,770},{141,185}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{141,185}}</string>
+                <key>sourceSize</key>
+                <string>{141,185}</string>
             </dict>
             <key>Itachi_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1518,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1612,860},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Jiraiya_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1767,98},{118,61}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{118,61}</string>
-                <key>spriteSourceSize</key>
-                <string>{118,61}</string>
-                <key>textureRect</key>
-                <string>{{1241,780},{118,61}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{118,61}}</string>
+                <key>sourceSize</key>
+                <string>{118,61}</string>
             </dict>
             <key>Jiraiya_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{166,597},{177,192}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{177,192}}</string>
+                <key>sourceSize</key>
                 <string>{177,192}</string>
-                <key>spriteSourceSize</key>
-                <string>{177,192}</string>
-                <key>textureRect</key>
-                <string>{{458,784},{177,192}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Jiraiya_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1553,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1446,898},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Jugo_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1181,40},{158,58}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{158,58}</string>
-                <key>spriteSourceSize</key>
-                <string>{158,58}</string>
-                <key>textureRect</key>
-                <string>{{1229,658},{158,58}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{158,58}}</string>
+                <key>sourceSize</key>
+                <string>{158,58}</string>
             </dict>
             <key>Jugo_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1092,407},{156,189}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{156,189}}</string>
+                <key>sourceSize</key>
                 <string>{156,189}</string>
-                <key>spriteSourceSize</key>
-                <string>{156,189}</string>
-                <key>textureRect</key>
-                <string>{{1063,230},{156,189}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Jugo_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1588,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1678,824},{35,65}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
+                <string>{35,65}</string>
             </dict>
             <key>Kakashi_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1339,40},{201,58}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{201,58}</string>
-                <key>spriteSourceSize</key>
-                <string>{201,58}</string>
-                <key>textureRect</key>
-                <string>{{1253,342},{201,58}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{201,58}}</string>
+                <key>sourceSize</key>
+                <string>{201,58}</string>
             </dict>
             <key>Kakashi_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{343,597},{140,192}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{140,192}</string>
-                <key>spriteSourceSize</key>
-                <string>{140,192}</string>
-                <key>textureRect</key>
-                <string>{{964,577},{140,192}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{140,192}}</string>
+                <key>sourceSize</key>
+                <string>{140,192}</string>
             </dict>
             <key>Kakashi_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1623,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1714,821},{35,65}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
+                <string>{35,65}</string>
             </dict>
             <key>Kakuzu_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1133,98},{75,60}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{75,60}}</string>
+                <key>sourceSize</key>
                 <string>{75,60}</string>
-                <key>spriteSourceSize</key>
-                <string>{75,60}</string>
-                <key>textureRect</key>
-                <string>{{1479,744},{75,60}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Kakuzu_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1168,597},{171,195}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{171,195}}</string>
+                <key>sourceSize</key>
                 <string>{171,195}</string>
-                <key>spriteSourceSize</key>
-                <string>{171,195}</string>
-                <key>textureRect</key>
-                <string>{{671,214},{171,195}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Kakuzu_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1658,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1750,821},{35,65}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
+                <string>{35,65}</string>
             </dict>
             <key>Kankuro_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{443,159},{119,62}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{119,62}</string>
-                <key>spriteSourceSize</key>
-                <string>{119,62}</string>
-                <key>textureRect</key>
-                <string>{{1241,717},{119,62}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{119,62}}</string>
+                <key>sourceSize</key>
+                <string>{119,62}</string>
             </dict>
             <key>Kankuro_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1460,407},{194,190}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{194,190}</string>
-                <key>spriteSourceSize</key>
-                <string>{194,190}</string>
-                <key>textureRect</key>
-                <string>{{616,386},{194,190}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{194,190}}</string>
+                <key>sourceSize</key>
+                <string>{194,190}</string>
             </dict>
             <key>Kankuro_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1693,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1600,896},{35,65}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
+                <string>{35,65}</string>
             </dict>
             <key>Karin_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{562,159},{164,62}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{164,62}}</string>
+                <key>sourceSize</key>
                 <string>{164,62}</string>
-                <key>spriteSourceSize</key>
-                <string>{164,62}</string>
-                <key>textureRect</key>
-                <string>{{419,221},{164,62}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Karin_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{483,597},{174,192}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{174,192}</string>
-                <key>spriteSourceSize</key>
-                <string>{174,192}</string>
-                <key>textureRect</key>
-                <string>{{630,577},{174,192}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{174,192}}</string>
+                <key>sourceSize</key>
+                <string>{174,192}</string>
             </dict>
             <key>Karin_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1728,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1636,896},{35,65}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
+                <string>{35,65}</string>
             </dict>
             <key>Kiba_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1540,40},{115,58}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{115,58}</string>
-                <key>spriteSourceSize</key>
-                <string>{115,58}</string>
-                <key>textureRect</key>
-                <string>{{1181,903},{115,58}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{115,58}}</string>
+                <key>sourceSize</key>
+                <string>{115,58}</string>
             </dict>
             <key>Kiba_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{657,597},{158,192}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{158,192}</string>
-                <key>spriteSourceSize</key>
-                <string>{158,192}</string>
-                <key>textureRect</key>
-                <string>{{805,577},{158,192}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{158,192}}</string>
+                <key>sourceSize</key>
+                <string>{158,192}</string>
             </dict>
             <key>Kiba_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1763,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1672,896},{35,65}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
+                <string>{35,65}</string>
             </dict>
             <key>Kimimaro_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{463,98},{117,59}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{117,59}</string>
-                <key>spriteSourceSize</key>
-                <string>{117,59}</string>
-                <key>textureRect</key>
-                <string>{{1361,744},{117,59}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{117,59}}</string>
+                <key>sourceSize</key>
+                <string>{117,59}</string>
             </dict>
             <key>Kimimaro_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1066,793},{200,200}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{200,200}</string>
-                <key>spriteSourceSize</key>
-                <string>{200,200}</string>
-                <key>textureRect</key>
-                <string>{{241,386},{200,200}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{200,200}}</string>
+                <key>sourceSize</key>
+                <string>{200,200}</string>
             </dict>
             <key>Kimimaro_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1798,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1714,887},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Kisame_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{627,40},{161,57}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{161,57}</string>
-                <key>spriteSourceSize</key>
-                <string>{161,57}</string>
-                <key>textureRect</key>
-                <string>{{1389,565},{161,57}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{161,57}}</string>
+                <key>sourceSize</key>
+                <string>{161,57}</string>
             </dict>
             <key>Kisame_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{164,994},{191,202}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{191,202}}</string>
+                <key>sourceSize</key>
                 <string>{191,202}</string>
-                <key>spriteSourceSize</key>
-                <string>{191,202}</string>
-                <key>textureRect</key>
-                <string>{{1675,0},{191,202}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Kisame_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1833,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1708,923},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Konan_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1655,40},{76,58}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{76,58}</string>
-                <key>spriteSourceSize</key>
-                <string>{76,58}</string>
-                <key>textureRect</key>
-                <string>{{1297,903},{76,58}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{76,58}}</string>
+                <key>sourceSize</key>
+                <string>{76,58}</string>
             </dict>
             <key>Konan_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1230,224},{206,168}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{206,168}</string>
-                <key>spriteSourceSize</key>
-                <string>{206,168}</string>
-                <key>textureRect</key>
-                <string>{{1460,190},{206,168}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{206,168}}</string>
+                <key>sourceSize</key>
+                <string>{206,168}</string>
             </dict>
             <key>Konan_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1868,159},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1512,910},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Lee_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1047,159},{121,63}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{121,63}}</string>
+                <key>sourceSize</key>
                 <string>{121,63}</string>
-                <key>spriteSourceSize</key>
-                <string>{121,63}</string>
-                <key>textureRect</key>
-                <string>{{1545,623},{121,63}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Lee_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{292,793},{192,198}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{192,198}</string>
-                <key>spriteSourceSize</key>
-                <string>{192,198}</string>
-                <key>textureRect</key>
-                <string>{{265,587},{192,198}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{192,198}}</string>
+                <key>sourceSize</key>
+                <string>{192,198}</string>
             </dict>
             <key>Lee_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{0,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1786,705},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Minato_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{788,40},{159,57}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{159,57}}</string>
+                <key>sourceSize</key>
                 <string>{159,57}</string>
-                <key>spriteSourceSize</key>
-                <string>{159,57}</string>
-                <key>textureRect</key>
-                <string>{{1123,769},{159,57}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Minato_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1266,793},{157,200}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{157,200}</string>
-                <key>spriteSourceSize</key>
-                <string>{157,200}</string>
-                <key>textureRect</key>
-                <string>{{1870,204},{157,200}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{157,200}}</string>
+                <key>sourceSize</key>
+                <string>{157,200}</string>
             </dict>
             <key>Minato_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{35,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1852,705},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Nagato_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1505,994},{215,228}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{215,228}</string>
-                <key>spriteSourceSize</key>
-                <string>{215,228}</string>
-                <key>textureRect</key>
-                <string>{{0,19},{215,228}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{215,228}}</string>
+                <key>sourceSize</key>
+                <string>{215,228}</string>
             </dict>
             <key>NarutoRikudo_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{548,994},{147,203}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{147,203}</string>
-                <key>spriteSourceSize</key>
-                <string>{147,203}</string>
-                <key>textureRect</key>
-                <string>{{1878,0},{147,203}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{147,203}}</string>
+                <key>sourceSize</key>
+                <string>{147,203}</string>
             </dict>
             <key>Naruto_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{726,159},{165,62}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{165,62}}</string>
+                <key>sourceSize</key>
                 <string>{165,62}</string>
-                <key>spriteSourceSize</key>
-                <string>{165,62}</string>
-                <key>textureRect</key>
-                <string>{{995,407},{165,62}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Naruto_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1654,407},{166,190}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{166,190}</string>
-                <key>spriteSourceSize</key>
-                <string>{166,190}</string>
-                <key>textureRect</key>
-                <string>{{651,770},{166,190}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{166,190}}</string>
+                <key>sourceSize</key>
+                <string>{166,190}</string>
             </dict>
             <key>Naruto_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{70,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1918,711},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Neji_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1208,98},{157,60}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{157,60}</string>
-                <key>spriteSourceSize</key>
-                <string>{157,60}</string>
-                <key>textureRect</key>
-                <string>{{1632,586},{157,60}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{157,60}}</string>
+                <key>sourceSize</key>
+                <string>{157,60}</string>
             </dict>
             <key>Neji_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{711,407},{173,188}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{173,188}}</string>
+                <key>sourceSize</key>
                 <string>{173,188}</string>
-                <key>spriteSourceSize</key>
-                <string>{173,188}</string>
-                <key>textureRect</key>
-                <string>{{482,207},{173,188}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Neji_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{105,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1786,741},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>None2_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{140,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
+            </dict>
+            <key>None3_select.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{175,224},{35,65}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1852,741},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>None_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{210,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1918,747},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Orochimaru_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{580,98},{120,59}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{120,59}}</string>
+                <key>sourceSize</key>
                 <string>{120,59}</string>
-                <key>spriteSourceSize</key>
-                <string>{120,59}</string>
-                <key>textureRect</key>
-                <string>{{1181,766},{120,59}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Orochimaru_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1573,224},{135,183}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{135,183}}</string>
+                <key>sourceSize</key>
                 <string>{135,183}</string>
-                <key>spriteSourceSize</key>
-                <string>{135,183}</string>
-                <key>textureRect</key>
-                <string>{{1063,387},{135,183}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Orochimaru_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{245,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1984,711},{35,65}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
+                <string>{35,65}</string>
             </dict>
             <key>Pain_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{144,40},{82,56}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{82,56}}</string>
+                <key>sourceSize</key>
                 <string>{82,56}</string>
-                <key>spriteSourceSize</key>
-                <string>{82,56}</string>
-                <key>textureRect</key>
-                <string>{{1105,686},{82,56}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Pain_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1708,224},{169,183}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{169,183}}</string>
+                <key>sourceSize</key>
                 <string>{169,183}</string>
-                <key>spriteSourceSize</key>
-                <string>{169,183}</string>
-                <key>textureRect</key>
-                <string>{{811,407},{169,183}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Pain_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{280,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1771,777},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>RikudoNaruto_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{695,994},{147,203}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{147,203}</string>
-                <key>spriteSourceSize</key>
-                <string>{147,203}</string>
-                <key>textureRect</key>
-                <string>{{1878,0},{147,203}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{147,203}}</string>
+                <key>sourceSize</key>
+                <string>{147,203}</string>
             </dict>
             <key>RockLee_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{484,793},{192,198}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{192,198}</string>
-                <key>spriteSourceSize</key>
-                <string>{192,198}</string>
-                <key>textureRect</key>
-                <string>{{265,587},{192,198}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{192,198}}</string>
+                <key>sourceSize</key>
+                <string>{192,198}</string>
             </dict>
             <key>SageJiraiya_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{303,407},{233,186}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{233,186}</string>
-                <key>spriteSourceSize</key>
-                <string>{233,186}</string>
-                <key>textureRect</key>
-                <string>{{440,20},{233,186}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{233,186}}</string>
+                <key>sourceSize</key>
+                <string>{233,186}</string>
             </dict>
             <key>SageNaruto_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1423,793},{173,200}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{173,200}</string>
-                <key>spriteSourceSize</key>
-                <string>{173,200}</string>
-                <key>textureRect</key>
-                <string>{{442,386},{173,200}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{173,200}}</string>
+                <key>sourceSize</key>
+                <string>{173,200}</string>
             </dict>
             <key>Sai_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{700,98},{79,59}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{79,59}}</string>
+                <key>sourceSize</key>
                 <string>{79,59}</string>
-                <key>spriteSourceSize</key>
-                <string>{79,59}</string>
-                <key>textureRect</key>
-                <string>{{1162,686},{79,59}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Sai_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{0,407},{162,184}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{162,184}</string>
-                <key>spriteSourceSize</key>
-                <string>{162,184}</string>
-                <key>textureRect</key>
-                <string>{{818,770},{162,184}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{162,184}}</string>
+                <key>sourceSize</key>
+                <string>{162,184}</string>
             </dict>
             <key>Sai_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{315,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1837,777},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Sakura_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1365,98},{120,60}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{120,60}</string>
-                <key>spriteSourceSize</key>
-                <string>{120,60}</string>
-                <key>textureRect</key>
-                <string>{{1241,842},{120,60}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{120,60}}</string>
+                <key>sourceSize</key>
+                <string>{120,60}</string>
             </dict>
             <key>Sakura_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{815,597},{134,192}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{134,192}}</string>
+                <key>sourceSize</key>
                 <string>{134,192}</string>
-                <key>spriteSourceSize</key>
-                <string>{134,192}</string>
-                <key>textureRect</key>
-                <string>{{1247,401},{134,192}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Sakura_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{350,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1786,813},{35,65}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
+                <string>{35,65}</string>
             </dict>
             <key>SasukeImmortal_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{146,793},{146,197}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{146,197}}</string>
+                <key>sourceSize</key>
                 <string>{146,197}</string>
-                <key>spriteSourceSize</key>
-                <string>{146,197}</string>
-                <key>textureRect</key>
-                <string>{{1455,359},{146,197}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Sasuke_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1731,40},{194,58}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{194,58}</string>
-                <key>spriteSourceSize</key>
-                <string>{194,58}</string>
-                <key>textureRect</key>
-                <string>{{1440,506},{194,58}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{194,58}}</string>
+                <key>sourceSize</key>
+                <string>{194,58}</string>
             </dict>
             <key>Sasuke_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1523,597},{141,196}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{141,196}}</string>
+                <key>sourceSize</key>
                 <string>{141,196}</string>
-                <key>spriteSourceSize</key>
-                <string>{141,196}</string>
-                <key>textureRect</key>
-                <string>{{1653,386},{141,196}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Sasuke_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{385,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1822,813},{35,65}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
+                <string>{35,65}</string>
             </dict>
             <key>Shikamaru_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{0,159},{162,61}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{162,61}}</string>
+                <key>sourceSize</key>
                 <string>{162,61}</string>
-                <key>spriteSourceSize</key>
-                <string>{162,61}</string>
-                <key>textureRect</key>
-                <string>{{1105,523},{162,61}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Shikamaru_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1136,994},{168,213}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{168,213}</string>
-                <key>spriteSourceSize</key>
-                <string>{168,213}</string>
-                <key>textureRect</key>
-                <string>{{72,482},{168,213}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{168,213}}</string>
+                <key>sourceSize</key>
+                <string>{168,213}</string>
             </dict>
             <key>Shikamaru_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{420,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1858,813},{35,65}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
+                <string>{35,65}</string>
             </dict>
             <key>Shino_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{162,159},{157,61}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{157,61}</string>
-                <key>spriteSourceSize</key>
-                <string>{157,61}</string>
-                <key>textureRect</key>
-                <string>{{1229,596},{157,61}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{157,61}}</string>
+                <key>sourceSize</key>
+                <string>{157,61}</string>
             </dict>
             <key>Shino_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1436,224},{137,180}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{137,180}</string>
-                <key>spriteSourceSize</key>
-                <string>{137,180}</string>
-                <key>textureRect</key>
-                <string>{{1850,405},{137,180}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{137,180}}</string>
+                <key>sourceSize</key>
+                <string>{137,180}</string>
             </dict>
             <key>Shino_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{455,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1903,783},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Suigetsu_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{779,98},{154,59}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{154,59}</string>
-                <key>spriteSourceSize</key>
-                <string>{154,59}</string>
-                <key>textureRect</key>
-                <string>{{1609,706},{154,59}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{154,59}}</string>
+                <key>sourceSize</key>
+                <string>{154,59}</string>
             </dict>
             <key>Suigetsu_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{949,597},{219,193}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{219,193}</string>
-                <key>spriteSourceSize</key>
-                <string>{219,193}</string>
-                <key>textureRect</key>
-                <string>{{674,20},{219,193}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{219,193}}</string>
+                <key>sourceSize</key>
+                <string>{219,193}</string>
             </dict>
             <key>Suigetsu_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{490,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1894,819},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Tenten_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{63,40},{81,54}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{81,54}</string>
-                <key>spriteSourceSize</key>
-                <string>{81,54}</string>
-                <key>textureRect</key>
-                <string>{{1689,766},{81,54}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{81,54}}</string>
+                <key>sourceSize</key>
+                <string>{81,54}</string>
             </dict>
             <key>Tenten_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1664,597},{171,196}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{171,196}</string>
-                <key>spriteSourceSize</key>
-                <string>{171,196}</string>
-                <key>textureRect</key>
-                <string>{{458,587},{171,196}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{171,196}}</string>
+                <key>sourceSize</key>
+                <string>{171,196}</string>
             </dict>
             <key>Tenten_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{525,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1894,855},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Tobi_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{947,40},{79,57}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{79,57}</string>
-                <key>spriteSourceSize</key>
-                <string>{79,57}</string>
-                <key>textureRect</key>
-                <string>{{1609,766},{79,57}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{79,57}}</string>
+                <key>sourceSize</key>
+                <string>{79,57}</string>
             </dict>
             <key>Tobi_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1248,407},{212,189}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{212,189}</string>
-                <key>spriteSourceSize</key>
-                <string>{212,189}</string>
-                <key>textureRect</key>
-                <string>{{1253,0},{212,189}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{212,189}}</string>
+                <key>sourceSize</key>
+                <string>{212,189}</string>
             </dict>
             <key>Tobi_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{560,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1960,819},{35,65}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
+                <string>{35,65}</string>
             </dict>
             <key>Tobirama_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{891,159},{156,62}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{156,62}</string>
-                <key>spriteSourceSize</key>
-                <string>{156,62}</string>
-                <key>textureRect</key>
-                <string>{{1388,623},{156,62}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{156,62}}</string>
+                <key>sourceSize</key>
+                <string>{156,62}</string>
             </dict>
             <key>Tobirama_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{355,994},{193,202}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{193,202}}</string>
+                <key>sourceSize</key>
                 <string>{193,202}</string>
-                <key>spriteSourceSize</key>
-                <string>{193,202}</string>
-                <key>textureRect</key>
-                <string>{{1667,192},{193,202}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Tobirama_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{595,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1786,879},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Tsunade_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{0,98},{152,58}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{152,58}</string>
-                <key>spriteSourceSize</key>
-                <string>{152,58}</string>
-                <key>textureRect</key>
-                <string>{{1790,646},{152,58}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{152,58}}</string>
+                <key>sourceSize</key>
+                <string>{152,58}</string>
             </dict>
             <key>Tsunade_half.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1339,597},{184,195}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{184,195}}</string>
+                <key>sourceSize</key>
                 <string>{184,195}</string>
-                <key>spriteSourceSize</key>
-                <string>{184,195}</string>
-                <key>textureRect</key>
-                <string>{{867,222},{184,195}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>Tsunade_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{630,224},{35,65}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{35,65}}</string>
+                <key>sourceSize</key>
                 <string>{35,65}</string>
-                <key>spriteSourceSize</key>
-                <string>{35,65}</string>
-                <key>textureRect</key>
-                <string>{{1893,891},{35,65}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>cloud_top.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{833,224},{356,71}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{356,71}}</string>
+                <key>sourceSize</key>
                 <string>{356,71}</string>
-                <key>spriteSourceSize</key>
-                <string>{356,71}</string>
-                <key>textureRect</key>
-                <string>{{0,482},{356,71}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>com.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1189,224},{41,71}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{41,71}}</string>
+                <key>sourceSize</key>
                 <string>{41,71}</string>
-                <key>spriteSourceSize</key>
-                <string>{41,71}</string>
-                <key>textureRect</key>
-                <string>{{1540,832},{41,71}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>com_label.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{16,0},{36,14}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{36,14}}</string>
+                <key>sourceSize</key>
                 <string>{36,14}</string>
-                <key>spriteSourceSize</key>
-                <string>{36,14}</string>
-                <key>textureRect</key>
-                <string>{{201,248},{36,14}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>com_label2.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{0,0},{16,11}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{16,11}}</string>
+                <key>sourceSize</key>
                 <string>{16,11}</string>
-                <key>spriteSourceSize</key>
-                <string>{16,11}</string>
-                <key>textureRect</key>
-                <string>{{1600,874},{16,11}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>loading_font.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1281,0},{72,20}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{72,20}}</string>
+                <key>sourceSize</key>
                 <string>{72,20}</string>
-                <key>spriteSourceSize</key>
-                <string>{72,20}</string>
-                <key>textureRect</key>
-                <string>{{241,587},{72,20}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>page1_off.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1677,0},{40,40}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{40,40}</string>
-                <key>spriteSourceSize</key>
-                <string>{40,40}</string>
-                <key>textureRect</key>
-                <string>{{1058,523},{40,40}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{40,40}}</string>
+                <key>sourceSize</key>
+                <string>{40,40}</string>
             </dict>
             <key>page1_on.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1717,0},{40,40}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{40,40}</string>
-                <key>spriteSourceSize</key>
-                <string>{40,40}</string>
-                <key>textureRect</key>
-                <string>{{1852,879},{40,40}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{40,40}}</string>
+                <key>sourceSize</key>
+                <string>{40,40}</string>
             </dict>
             <key>page2_off.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1757,0},{40,40}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{40,40}</string>
-                <key>spriteSourceSize</key>
-                <string>{40,40}</string>
-                <key>textureRect</key>
-                <string>{{1780,915},{40,40}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{40,40}}</string>
+                <key>sourceSize</key>
+                <string>{40,40}</string>
             </dict>
             <key>page2_on.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1797,0},{40,40}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{40,40}</string>
-                <key>spriteSourceSize</key>
-                <string>{40,40}</string>
-                <key>textureRect</key>
-                <string>{{1821,920},{40,40}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{40,40}}</string>
+                <key>sourceSize</key>
+                <string>{40,40}</string>
             </dict>
             <key>page3_off.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1837,0},{40,40}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{40,40}</string>
-                <key>spriteSourceSize</key>
-                <string>{40,40}</string>
-                <key>textureRect</key>
-                <string>{{1984,777},{40,40}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{40,40}}</string>
+                <key>sourceSize</key>
+                <string>{40,40}</string>
             </dict>
             <key>page3_on.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1877,0},{40,40}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{40,40}</string>
-                <key>spriteSourceSize</key>
-                <string>{40,40}</string>
-                <key>textureRect</key>
-                <string>{{1960,885},{40,40}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{40,40}}</string>
+                <key>sourceSize</key>
+                <string>{40,40}</string>
             </dict>
             <key>skill_btn.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{0,40},{63,46}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{63,46}</string>
-                <key>spriteSourceSize</key>
-                <string>{63,46}</string>
-                <key>textureRect</key>
-                <string>{{1362,840},{63,46}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{63,46}}</string>
+                <key>sourceSize</key>
+                <string>{63,46}</string>
             </dict>
             <key>start_btn.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{665,224},{86,68}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{86,68}}</string>
+                <key>sourceSize</key>
                 <string>{86,68}</string>
-                <key>spriteSourceSize</key>
-                <string>{86,68}</string>
-                <key>textureRect</key>
-                <string>{{1540,745},{86,68}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>team_bg.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1497,0},{180,39}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{180,39}}</string>
+                <key>sourceSize</key>
                 <string>{180,39}</string>
-                <key>spriteSourceSize</key>
-                <string>{180,39}</string>
-                <key>textureRect</key>
-                <string>{{1988,405},{180,39}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>tip1.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{52,0},{440,18}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{440,18}</string>
-                <key>spriteSourceSize</key>
-                <string>{440,18}</string>
-                <key>textureRect</key>
-                <string>{{0,0},{440,18}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{440,18}}</string>
+                <key>sourceSize</key>
+                <string>{440,18}</string>
             </dict>
             <key>tip2.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{492,0},{400,19}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{400,19}</string>
-                <key>spriteSourceSize</key>
-                <string>{400,19}</string>
-                <key>textureRect</key>
-                <string>{{441,0},{400,19}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{400,19}}</string>
+                <key>sourceSize</key>
+                <string>{400,19}</string>
             </dict>
             <key>tip3.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{892,0},{389,19}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{389,19}</string>
-                <key>spriteSourceSize</key>
-                <string>{389,19}</string>
-                <key>textureRect</key>
-                <string>{{842,0},{389,19}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{389,19}}</string>
+                <key>sourceSize</key>
+                <string>{389,19}</string>
             </dict>
             <key>unknow_select.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1353,0},{32,26}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{32,26}}</string>
+                <key>sourceSize</key>
                 <string>{32,26}</string>
-                <key>spriteSourceSize</key>
-                <string>{32,26}</string>
-                <key>textureRect</key>
-                <string>{{1123,929},{32,26}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>unknow_select2.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1385,0},{32,26}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{32,26}}</string>
+                <key>sourceSize</key>
                 <string>{32,26}</string>
-                <key>spriteSourceSize</key>
-                <string>{32,26}</string>
-                <key>textureRect</key>
-                <string>{{1150,929},{32,26}}</string>
-                <key>textureRotated</key>
-                <true/>
             </dict>
             <key>unknow_select3.png</key>
             <dict>
-                <key>aliases</key>
-                <array/>
-                <key>anchor</key>
-                <string>{0.5,0.5}</string>
-                <key>spriteOffset</key>
+                <key>frame</key>
+                <string>{{1417,0},{32,26}}</string>
+                <key>offset</key>
                 <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{32,26}</string>
-                <key>spriteSourceSize</key>
-                <string>{32,26}</string>
-                <key>textureRect</key>
-                <string>{{1389,536},{32,26}}</string>
-                <key>textureRotated</key>
+                <key>rotated</key>
                 <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{32,26}}</string>
+                <key>sourceSize</key>
+                <string>{32,26}</string>
             </dict>
         </dict>
         <key>metadata</key>
         <dict>
             <key>format</key>
-            <integer>3</integer>
+            <integer>2</integer>
             <key>pixelFormat</key>
             <string>RGBA8888</string>
             <key>premultiplyAlpha</key>
@@ -2447,9 +1888,9 @@
             <key>realTextureFileName</key>
             <string>Select.png</string>
             <key>size</key>
-            <string>{2027,961}</string>
+            <string>{1925,1222}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:e8d2410a762bfc1c08961b96da9adae8:18cabce131a83f6b4519f917bc9d87ba:e8fcdccf7b1a614db981b8c98083c967$</string>
+            <string>$TexturePacker:SmartUpdate:064d473d390ca6e859e4e17a30b6134d:8489d3070ad1499dfac4fb463b31aabe:e8fcdccf7b1a614db981b8c98083c967$</string>
             <key>textureFileName</key>
             <string>Select.png</string>
         </dict>

@@ -82,7 +82,7 @@
 			<e type="setAttackBox">ab_hit</e>
 			<e type="setDelay">10</e>
 			<f>Jibaku_Move_06</f>
-			<e type="setSound">Audio/Effect/bom.ogg</e>
+			<e type="setSound">Audio/Effect/bom.wav</e>
 			<e type="setAttackBox">c_hit</e>
 			<f>Jibaku_Move_07</f>
 			<e type="setAttackBox">c_hit</e>

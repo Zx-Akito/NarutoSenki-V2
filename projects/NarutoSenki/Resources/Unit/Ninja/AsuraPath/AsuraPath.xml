@@ -62,7 +62,7 @@
 			<f>AsuraPath_NAttack_01</f>
 			<f>AsuraPath_NAttack_02</f>
 			<f>AsuraPath_NAttack_03</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>AsuraPath_NAttack_04</f>
 			<e type="setDelay">20</e>
@@ -87,7 +87,7 @@
 			<f>AsuraPath_Skill01_03</f>
 			<e type="setDelay">10</e>
 			<f>AsuraPath_Skill01_04</f>
-			<e type="setSound">Audio/Pain/AsuraPath_skill1.ogg</e>
+			<e type="setSound">Audio/Pain/AsuraPath_skill1.wav</e>
 			<e type="setMon">Rocket</e>
 			<e type="setDelay">50</e>
 		</frame>

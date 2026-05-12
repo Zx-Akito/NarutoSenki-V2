@@ -59,7 +59,7 @@
 		</data>
 		<frame>
 			<f>BugPillar_Move_001</f>
-			<e type="setSound">Audio/Shino/Shino_skill2_1.ogg</e>
+			<e type="setSound">Audio/Shino/Shino_skill2_1.wav</e>
 			<e type="setAttackBox">f_hit</e>
 			<f>BugPillar_Move_002</f>
 			<f>BugPillar_Move_003</f>

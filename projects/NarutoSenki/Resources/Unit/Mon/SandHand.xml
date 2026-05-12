@@ -63,7 +63,7 @@
 			<f>SandHand_Move_005</f>
 			<f>SandHand_Move_006</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<e type="setDetonation">0</e>
 		</frame>
 	</action>

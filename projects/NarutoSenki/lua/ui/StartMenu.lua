@@ -3,6 +3,20 @@
 --
 ns.StartMenu = StartMenu
 
+--- Hapus state match online + konfigurasi native (tanpa ganti scene).
+--- Dipanggil saat kembali ke menu, game over, atau buka select offline (training, dll.).
+function clearStaleNetworkSessionForMenu()
+    if wsIsConnected() then
+        wsSend('{"type":"queue_leave"}')
+        wsDisconnect()
+    end
+    _G.__networkLobbyLayer = nil
+    _G.__networkSelectLayer = nil
+    _G.__networkMatchId = nil
+    _G.__networkVsBot = nil
+    wsClearMatchConfig()
+end
+
 function StartMenu:init()
     log('Initial StartMenu...')
 
@@ -67,7 +81,8 @@ function StartMenu:init()
     -- self:addChild(startmenu_title, 3)
 end
 
-function enterSelectLayer(gameMode, enableCustomSelect)
+--- @param fromNetworkMatchFlow boolean|nil Jika true, dipanggil dari lobby setelah match_found (jangan reset state WS/match).
+function enterSelectLayer(gameMode, enableCustomSelect, fromNetworkMatchFlow)
     tools.addSprites('Select.plist')
     tools.addSprites('UI.plist')
     tools.addSprites('Report.plist')
@@ -75,6 +90,10 @@ function enterSelectLayer(gameMode, enableCustomSelect)
     tools.addSprites('Ougis2.plist')
     tools.addSprites('Map.plist')
     tools.addSprites('Gears.plist')
+
+    if fromNetworkMatchFlow ~= true then
+        clearStaleNetworkSessionForMenu()
+    end
 
     _G.mode = gameMode
     _G.enableCustomSelect = enableCustomSelect
@@ -89,7 +108,7 @@ function enterSelectLayer(gameMode, enableCustomSelect)
 end
 
 function onGameOver()
-    wsClearMatchConfig()
+    clearStaleNetworkSessionForMenu()
     local menuScene = CCScene:create()
     local menuLayer = StartMenu:create()
 

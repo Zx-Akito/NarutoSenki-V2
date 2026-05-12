@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Sakura_Hurt_01</f>
 			<f>Sakura_Hurt_02</f>
-			<e type="setSound">Audio/Sakura/sakura_hurt.ogg</e>
+			<e type="setSound">Audio/Sakura/sakura_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -70,7 +70,7 @@
 			<f>Sakura_KnockDown_01</f>
 			<f>Sakura_KnockDown_02</f>
 			<f>Sakura_KnockDown_03</f>
-			<e type="setSound">Audio/Sakura/sakura_dead.ogg</e>
+			<e type="setSound">Audio/Sakura/sakura_dead.wav</e>
 		</frame>
 	</action>
 
@@ -86,22 +86,22 @@
 			<f>Sakura_NAttack_01</f>
 			<f>Sakura_NAttack_02</f>
 			<f>Sakura_NAttack_03</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Sakura_NAttack_04</f>
 			<f>Sakura_NAttack_05</f>
 			<f>Sakura_NAttack_06</f>
 			<e type="setMove">8</e>
 			<f>Sakura_NAttack_07</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Sakura_NAttack_04</f>
 			<f>Sakura_NAttack_08</f>
 			<f>Sakura_NAttack_09</f>
-			<e type="setSound">Audio/Sakura/sakura_combo.ogg</e>
+			<e type="setSound">Audio/Sakura/sakura_combo.wav</e>
 			<f>Sakura_NAttack_10</f>
 			<e type="setMove">16</e>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<e type="setAttackBox">l_hit</e>
 			<f>Sakura_NAttack_11</f>
 			<f>Sakura_NAttack_12</f>
@@ -120,7 +120,7 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Sakura/sakura_skill1.ogg</e>
+			<e type="setSound">Audio/Sakura/sakura_skill1.wav</e>
 			<f>Sakura_Skill01_03</f>
 			<f>Sakura_Skill01_05</f>
 			<e type="setBuff">600</e>
@@ -142,9 +142,9 @@
 		</data>
 		<frame>
 			<f>Sakura_Skill02_01</f>
-			<e type="setSound">Audio/Sakura/sakura_skill2.ogg</e>
+			<e type="setSound">Audio/Sakura/sakura_skill2.wav</e>
 			<f>Sakura_Skill02_02</f>
-			<e type="setSound">Audio/Effect/break_sound.ogg</e>
+			<e type="setSound">Audio/Effect/break_sound.wav</e>
 			<e type="setAttackBox">a_hit</e>
 			<f>Sakura_Skill02_03</f>
 			<f>Sakura_Skill02_04</f>
@@ -165,7 +165,7 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Sakura/sakura_skill3.ogg</e>
+			<e type="setSound">Audio/Sakura/sakura_skill3.wav</e>
 			<f>Sakura_Skill03_02</f>
 			<f>Sakura_Skill03_04</f>
 			<f>Sakura_Skill03_05</f>
@@ -187,9 +187,9 @@
 
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Sakura_Skill04_01</f>
-			<e type="setSound">Audio/Sakura/sakura_skill4_1.ogg</e>
+			<e type="setSound">Audio/Sakura/sakura_skill4_1.wav</e>
 			<f>Sakura_Skill04_02</f>
 			<f>Sakura_Skill04_03</f>
 			<f>Sakura_Skill04_04</f>
@@ -199,7 +199,7 @@
 			<f>Sakura_Skill04_06</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setSound">Audio/Effect/damage_o.ogg</e>
+			<e type="setSound">Audio/Effect/damage_o.wav</e>
 			<f>Sakura_Skill04_07</f>
 			<e type="setAttackBox">c_hit</e>
 			<e type="setDelay">10</e>
@@ -208,7 +208,7 @@
 			<f>Sakura_Skill04_09</f>
 			<e type="setDelay">10</e>
 			<e type="setAttackBox">f_hit</e>
-			<e type="setSound">Audio/Effect/damage_o2.ogg</e>
+			<e type="setSound">Audio/Effect/damage_o2.wav</e>
 			<e type="setJump">true</e>
 			<f>Sakura_Skill04_10</f>
 			<e type="setShadow">10</e>
@@ -223,11 +223,11 @@
 			<e type="setAttackBox">c_hit</e>
 			<f>Sakura_Skill04_13</f>
 			<e type="setShadow">10</e>
-			<e type="setSound">Audio/Sakura/sakura_skill4_2.ogg</e>
+			<e type="setSound">Audio/Sakura/sakura_skill4_2.wav</e>
 			<f>Sakura_Skill04_14</f>
 			<f>Sakura_Skill04_15</f>
 			<e type="setMon">Tuji</e>
-			<e type="setSound">Audio/Effect/break_sound2.ogg</e>
+			<e type="setSound">Audio/Effect/break_sound2.wav</e>
 			<e type="setDelay">20</e>
 		</frame>
 	</action>
@@ -243,7 +243,7 @@
 			<p type="combatPoint">9020</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<e type="setCommand">setInvincible</e>
 			<f>Sakura_Skill05_04</f>
 			<e type="setOugis">10</e>
@@ -251,12 +251,12 @@
 			<f>Sakura_Skill05_06</f>
 			<e type="setShadow">10</e>
 			<f>Sakura_Skill05_06</f>
-			<e type="setSound">Audio/Sakura/sakura_skill5.ogg</e>
+			<e type="setSound">Audio/Sakura/sakura_skill5.wav</e>
 			<f>Sakura_Skill05_07</f>
 			<e type="setMove">32</e>
 			<f>Sakura_Skill05_08</f>
 			<f>Sakura_Skill05_09</f>
-			<e type="setSound">Audio/Effect/damage_o.ogg</e>
+			<e type="setSound">Audio/Effect/damage_o.wav</e>
 			<e type="setAttackBox">c_hit</e>
 			<e type="setDelay">10</e>
 			<f>Sakura_Skill05_10</f>
@@ -267,20 +267,20 @@
 			<e type="setMove">32</e>
 			<f>Sakura_Skill05_12</f>
 			<e type="setShadow">10</e>
-			<e type="setSound">Audio/Effect/rush.ogg</e>
+			<e type="setSound">Audio/Effect/rush.wav</e>
 			<f>Sakura_Skill05_13</f>
 			<e type="setShadow">10</e>
 			<f>Sakura_Skill05_14</f>
 			<e type="setShadow">10</e>
 			<f>Sakura_Skill05_15</f>
-			<e type="setSound">Audio/Sakura/sakura_skill5_1.ogg</e>
+			<e type="setSound">Audio/Sakura/sakura_skill5_1.wav</e>
 			<e type="setAttackBox">c_hit</e>
 			<f>Sakura_Skill05_16</f>
 			<e type="setAttackBox">f_hit</e>
 			<e type="setJump">true</e>
 			<e type="setDelay">10</e>
 			<f>Sakura_Skill05_17</f>
-			<e type="setSound">Audio/Sakura/sakura_skill5_2.ogg</e>
+			<e type="setSound">Audio/Sakura/sakura_skill5_2.wav</e>
 			<e type="setAttackBox">ac_hit</e>
 			<e type="setDelay">10</e>
 			<f>Sakura_Skill05_18</f>
@@ -297,16 +297,16 @@
 			<f>Sakura_Skill05_23</f>
 			<e type="setDelay">10</e>
 			<f>Sakura_Skill05_24</f>
-			<e type="setSound">Audio/Sakura/sakura_skill2.ogg</e>
+			<e type="setSound">Audio/Sakura/sakura_skill2.wav</e>
 			<e type="setDelay">10</e>
 			<f>Sakura_Skill05_25</f>
-			<e type="setSound">Audio/Sakura/sakura_skill5_3.ogg</e>
+			<e type="setSound">Audio/Sakura/sakura_skill5_3.wav</e>
 			<e type="setMon">SakuraBom</e>
 			<e type="setDelay">20</e>
 			<f>Sakura_Skill05_26</f>
 			<e type="setDelay">20</e>
 			<e type="setCommand">reTransport</e>
-			<e type="setSound">Audio/Sakura/sakura_skill5_4.ogg</e>
+			<e type="setSound">Audio/Sakura/sakura_skill5_4.wav</e>
 			<f>Sakura_Skill05_27</f>
 			<e type="setDelay">10</e>
 			<f>Sakura_Skill05_28</f>
@@ -341,20 +341,20 @@
 			<f>Sakura_Skill10_001</f>
 			<f>Sakura_Skill10_002</f>
 			<f>Sakura_Skill10_003</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">l_hit</e>
 			<f>Sakura_Skill10_004</f>
 			<f>Sakura_Skill10_005</f>
 			<e type="setMove">8</e>
 			<f>Sakura_Skill10_006</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">l_hit</e>
 			<f>Sakura_Skill10_007</f>
 			<f>Sakura_Skill10_008</f>
-			<e type="setSound">Audio/Sakura/sakura_combo2.ogg</e>
+			<e type="setSound">Audio/Sakura/sakura_combo2.wav</e>
 			<e type="setMove">8</e>
 			<f>Sakura_Skill10_009</f>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<e type="setAttackBox">l_hit</e>
 			<f>Sakura_Skill10_010</f>
 			<f>Sakura_Skill10_011</f>

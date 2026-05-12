@@ -60,7 +60,7 @@
 			<f>DeidaraBom_Move_02</f>
 			<f>DeidaraBom_Move_03</f>
 			<f>DeidaraBom_Move_04</f>
-			<e type="setSound">Audio/Effect/bom.ogg</e>
+			<e type="setSound">Audio/Effect/bom.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>DeidaraBom_Move_05</f>
 			<f>DeidaraBom_Move_06</f>

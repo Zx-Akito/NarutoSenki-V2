@@ -61,7 +61,7 @@
 			<f>KageFeng_Move_002</f>
 			<f>KageFeng_Move_003</f>
 			<e type="setAttackBox">sl_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage2.wav</e>
 			<f>KageFeng_Move_004</f>
 			<f>KageFeng_Move_002</f>
 			<f>KageFeng_Move_001</f>

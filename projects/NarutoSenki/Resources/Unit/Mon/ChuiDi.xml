@@ -58,7 +58,7 @@
 		<frame>
 			<f>ChuiDi_Move_01</f>
 			<e type="setAttackBox">b_hit</e>
-			<e type="setSound">Audio/Effect/damage_k.ogg</e>
+			<e type="setSound">Audio/Effect/damage_k.wav</e>
 			<f>ChuiDi_Move_02</f>
 			<f>ChuiDi_Move_03</f>
 			<e type="setAttackBox">b_hit</e>

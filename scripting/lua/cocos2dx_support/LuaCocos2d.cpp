@@ -67960,6 +67960,36 @@ static int tolua_Cocos2d_KTools_readWinNumFromSQL00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: readLoseNumFromSQL of class  KTools */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_KTools_readLoseNumFromSQL00
+static int tolua_Cocos2d_KTools_readLoseNumFromSQL00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"KTools",0,&tolua_err) ||
+     !tolua_isstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  const char* heroName = ((const char*)  tolua_tostring(tolua_S,2,0));
+  {
+   int tolua_ret = (int)  KTools::readLoseNumFromSQL(heroName);
+   tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'readLoseNumFromSQL'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: readCoinFromSQL of class  KTools */
 #ifndef TOLUA_DISABLE_tolua_Cocos2d_KTools_readCoinFromSQL00
 static int tolua_Cocos2d_KTools_readCoinFromSQL00(lua_State* tolua_S)
@@ -72080,6 +72110,7 @@ TOLUA_API int tolua_Cocos2d_open (lua_State* tolua_S)
    tolua_function(tolua_S,"readSQLite",tolua_Cocos2d_KTools_readSQLite00);
    tolua_function(tolua_S,"saveSQLite",tolua_Cocos2d_KTools_saveSQLite00);
    tolua_function(tolua_S,"readWinNumFromSQL",tolua_Cocos2d_KTools_readWinNumFromSQL00);
+   tolua_function(tolua_S,"readLoseNumFromSQL",tolua_Cocos2d_KTools_readLoseNumFromSQL00);
    tolua_function(tolua_S,"readCoinFromSQL",tolua_Cocos2d_KTools_readCoinFromSQL00);
    tolua_function(tolua_S,"readRecordTimeFromSQL",tolua_Cocos2d_KTools_readRecordTimeFromSQL00);
    tolua_function(tolua_S,"encodeData",tolua_Cocos2d_KTools_encodeData00);

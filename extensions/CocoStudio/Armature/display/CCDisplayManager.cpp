@@ -203,7 +203,9 @@ void CCDisplayManager::removeDisplay(int index)
         m_iDisplayIndex = -1;
     }
 
-    m_pDecoDisplayList->removeObjectAtIndex(index);
+    if (m_pDecoDisplayList->count() > 0 && index < m_pDecoDisplayList->count()) {
+        m_pDecoDisplayList->removeObjectAtIndex(index);
+    }
 }
 
 CCArray *CCDisplayManager::getDecorativeDisplayList()
@@ -265,7 +267,21 @@ void CCDisplayManager::changeDisplayWithName(const char *name, bool force)
 
 void CCDisplayManager::setCurrentDecorativeDisplay(CCDecorativeDisplay *decoDisplay)
 {
+#if ENABLE_PHYSICS_BOX2D_DETECT || ENABLE_PHYSICS_CHIPMUNK_DETECT || ENABLE_PHYSICS_SAVE_CALCULATED_VERTEX
+    if (m_pCurrentDecoDisplay && m_pCurrentDecoDisplay->getColliderDetector())
+    {
+        m_pCurrentDecoDisplay->getColliderDetector()->setActive(false);
+    }
+#endif
+
     m_pCurrentDecoDisplay = decoDisplay;
+
+#if ENABLE_PHYSICS_BOX2D_DETECT || ENABLE_PHYSICS_CHIPMUNK_DETECT || ENABLE_PHYSICS_SAVE_CALCULATED_VERTEX
+    if (m_pCurrentDecoDisplay && m_pCurrentDecoDisplay->getColliderDetector())
+    {
+        m_pCurrentDecoDisplay->getColliderDetector()->setActive(true);
+    }
+#endif
 
     CCNode *displayRenderNode = m_pCurrentDecoDisplay == NULL ? NULL : m_pCurrentDecoDisplay->getDisplay();
     if (m_pDisplayRenderNode)

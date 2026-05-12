@@ -29,7 +29,7 @@
 			<e type="setMove">32</e>
 			<f>Konan_Hurt_01</f>
 			<f>Konan_Hurt_02</f>
-			<e type="setSound">Audio/Konan/konan_hurt.ogg</e>
+			<e type="setSound">Audio/Konan/konan_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -68,7 +68,7 @@
 			<f>Konan_KnockDown_01</f>
 			<f>Konan_KnockDown_02</f>
 			<f>Konan_KnockDown_03</f>
-			<e type="setSound">Audio/Konan/konan_dead.ogg</e>
+			<e type="setSound">Audio/Konan/konan_dead.wav</e>
 
 		</frame>
 	</action>
@@ -86,19 +86,19 @@
 			<f>Konan_NAttack_02</f>
 			<f>Konan_NAttack_03</f>
 			<f>Konan_NAttack_04</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Konan_NAttack_01</f>
 			<f>Konan_NAttack_05</f>
 			<f>Konan_NAttack_06</f>
 			<f>Konan_NAttack_07</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Konan_NAttack_08</f>
 			<f>Konan_NAttack_09</f>
 			<f>Konan_NAttack_10</f>
 			<e type="setMove">16</e>
-			<e type="setSound">Audio/Konan/konan_combo.ogg</e>
+			<e type="setSound">Audio/Konan/konan_combo.wav</e>
 			<f>Konan_NAttack_11</f>
 			<e type="setAttackBox">bl_hit</e>
 			<f>Konan_NAttack_12</f>
@@ -119,7 +119,7 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Konan/konan_skill1.ogg</e>
+			<e type="setSound">Audio/Konan/konan_skill1.wav</e>
 			<f>Konan_Skill01_02</f>
 			<f>Konan_Skill01_03</f>
 			<f>Konan_Skill01_04</f>
@@ -138,7 +138,7 @@
 			<p type="combatPoint">2600</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Konan/konan_skill2.ogg</e>
+			<e type="setSound">Audio/Konan/konan_skill2.wav</e>
 			<f>Konan_Skill02_001</f>
 			<f>Konan_Skill02_002</f>
 			<f>Konan_Skill02_003</f>
@@ -160,7 +160,7 @@
 		</data>
 		<frame>
 			<f>Konan_Skill03_001</f>
-			<e type="setSound">Audio/Konan/konan_skill3.ogg</e>
+			<e type="setSound">Audio/Konan/konan_skill3.wav</e>
 			<f>Konan_Skill03_002</f>
 			<f>Konan_Skill03_003</f>
 			<e type="setBullet">PaperSrk</e>
@@ -169,7 +169,7 @@
 			<f>Konan_Skill03_006</f>
 			<f>Konan_Skill03_007</f>
 			<f>Konan_Skill03_008</f>
-			<e type="setSound">Audio/Konan/konan_skill3_1.ogg</e>
+			<e type="setSound">Audio/Konan/konan_skill3_1.wav</e>
 			<e type="setBullet">PaperSrk</e>
 		</frame>
 	</action>
@@ -185,8 +185,8 @@
 		</data>
 		<frame>
 			<e type="setCommand">setInvincible</e>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
-			<e type="setSound">Audio/Konan/konan_skill4.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
+			<e type="setSound">Audio/Konan/konan_skill4.wav</e>
 			<f>Konan_Skill04_04</f>
 			<f>Konan_Skill04_05</f>
 			<e type="setSkillEffect">smk</e>
@@ -205,9 +205,9 @@
 			<p type="combatPoint">8400</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Konan_Skill05_02</f>
-			<e type="setSound">Audio/Konan/konan_skill5.ogg</e>
+			<e type="setSound">Audio/Konan/konan_skill5.wav</e>
 			<f>Konan_Skill05_03</f>
 			<e type="setCommand">setInvincible</e>
 			<f>Konan_Skill05_04</f>
@@ -223,12 +223,12 @@
 			<e type="setChargeB">280</e>
 			<f>Konan_Skill05_12</f>
 			<e type="setShadow">10</e>
-			<e type="setSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setSound">Audio/Effect/blade_damage.wav</e>
 			<e type="setAttackBox">ac_hit</e>
 			<f>Konan_Skill05_13</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setSound">Audio/Effect/blade_damage.wav</e>
 			<f>Konan_Skill05_14</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">ac_hit</e>
@@ -252,7 +252,7 @@
 			<f>Konan_Skill05_23</f>
 			<e type="setShadow">10</e>
 			<f>Konan_Skill05_24</f>
-			<e type="setSound">Audio/Konan/konan_skill5_1.ogg</e>
+			<e type="setSound">Audio/Konan/konan_skill5_1.wav</e>
 			<f>Konan_Skill05_25</f>
 			<e type="setMon">PaperRain</e>
 			<e type="stopJump">180</e>

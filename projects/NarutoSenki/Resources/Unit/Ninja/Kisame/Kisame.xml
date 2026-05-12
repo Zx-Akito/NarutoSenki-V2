@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Kisame_Hurt_01</f>
 			<f>Kisame_Hurt_02</f>
-			<e type="setSound">Audio/Kisame/Kisame_hurt.ogg</e>
+			<e type="setSound">Audio/Kisame/Kisame_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -69,7 +69,7 @@
 		<frame>
 			<f>Kisame_KnockDown_02</f>
 			<f>Kisame_KnockDown_03</f>
-			<e type="setSound">Audio/Kisame/Kisame_dead.ogg</e>
+			<e type="setSound">Audio/Kisame/Kisame_dead.wav</e>
 		</frame>
 	</action>
 
@@ -86,7 +86,7 @@
 			<f>Kisame_NAttack_02</f>
 			<e type="setDelay">10</e>
 			<f>Kisame_NAttack_03</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Kisame_NAttack_04</f>
 			<f>Kisame_NAttack_05</f>
@@ -94,17 +94,17 @@
 			<e type="setMove">8</e>
 			<e type="setDelay">10</e>
 			<f>Kisame_NAttack_07</f>
-			<!-- <e type="setSound">Audio/Effect/.ogg</e> -->
+			<!-- <e type="setSound">Audio/Effect/.wav</e> -->
 			<e type="setAttackBox">n_hit</e>
 			<e type="setDelay">10</e>
 			<f>Kisame_NAttack_08</f>
 			<f>Kisame_NAttack_09</f>
-			<e type="setSound">Audio/Kisame/Kisame_combo.ogg</e>
+			<e type="setSound">Audio/Kisame/Kisame_combo.wav</e>
 			<e type="setMove">16</e>
 			<e type="setDelay">10</e>
 			<f>Kisame_NAttack_10</f>
 			<e type="setAttackBox">l_hit</e>
-			<e type="setSound">Audio/Effect/kong.ogg</e>
+			<e type="setSound">Audio/Effect/kong.wav</e>
 			<e type="setDelay">10</e>
 		</frame>
 	</action>
@@ -119,7 +119,7 @@
 			<p type="combatPoint">1040</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Kisame/Kisame_skill1.ogg</e>
+			<e type="setSound">Audio/Kisame/Kisame_skill1.wav</e>
 			<f>Kisame_Skill01_001</f>
 			<e type="setMon">Shark2</e>
 			<e type="setDelay">40</e>
@@ -136,7 +136,7 @@
 			<p type="combatPoint">1840</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Kisame/Kisame_skill2.ogg</e>
+			<e type="setSound">Audio/Kisame/Kisame_skill2.wav</e>
 			<f>Kisame_Skill02_004</f>
 			<e type="setMon">Shark</e>
 			<f>Kisame_Skill02_005</f>
@@ -153,7 +153,7 @@
 			<p type="combatPoint">3440</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Kisame/Kisame_skill3.ogg</e>
+			<e type="setSound">Audio/Kisame/Kisame_skill3.wav</e>
 			<f>Kisame_Skill03_001</f>
 			<e type="setDelay">10</e>
 			<f>Kisame_Skill03_002</f>
@@ -174,15 +174,15 @@
 			<p type="combatPoint">3440</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Kisame_Skill04_001</f>
 			<e type="setJump">true</e>
-			<e type="setSound">Audio/Kisame/Kisame_skill4.ogg</e>
+			<e type="setSound">Audio/Kisame/Kisame_skill4.wav</e>
 			<f>Kisame_Skill04_001</f>
 			<e type="setDelay">10</e>
 			<e type="setMon">Steam</e>
 			<e type="setDelay">10</e>
-			<e type="setSound">Audio/Effect/water_effect.ogg</e>
+			<e type="setSound">Audio/Effect/water_effect.wav</e>
 			<e type="stopJump">40</e>
 			<f>Kisame_Skill04_002</f>
 			<f>Kisame_Skill04_003</f>
@@ -201,7 +201,7 @@
 			<p type="combatPoint">9280</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<e type="setCommand">setInvincible</e>
 			<f>Kisame_Skill05_02</f>
 			<e type="setOugis">10</e>
@@ -211,7 +211,7 @@
 			<f>Kisame_Skill05_05</f>
 			<e type="setChargeB">280</e>
 			<f>Kisame_Skill05_06</f>
-			<e type="setSound">Audio/Kisame/Kisame_skill5.ogg</e>
+			<e type="setSound">Audio/Kisame/Kisame_skill5.wav</e>
 			<e type="setAttackBox">o_hit</e>
 			<f>Kisame_Skill05_07</f>
 			<f>Kisame_Skill05_08</f>
@@ -236,7 +236,7 @@
 			<f>Kisame_Skill05_09</f>
 			<f>Kisame_Skill05_10</f>
 			<e type="setAttackBox">f_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o2.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o2.wav</e>
 			<e type="setChargeB">192</e>
 			<f>Kisame_Skill05_05</f>
 			<f>Kisame_Skill05_04</f>
@@ -302,14 +302,14 @@
 		</data>
 		<frame>
 			<f>Kisame_Skill12_001</f>
-			<e type="setSound">Audio/Kisame/Kisame_skill10.ogg</e>
+			<e type="setSound">Audio/Kisame/Kisame_skill10.wav</e>
 			<f>Kisame_Skill12_002</f>
 			<e type="setCharge">280</e>
 			<f>Kisame_Skill12_003</f>
 			<e type="setAttackBox">o_hit</e>
 			<f>Kisame_Skill12_004</f>
 			<f>Kisame_Skill12_005</f>
-			<e type="setSound">Audio/Kisame/Kisame_skill10_1.ogg</e>
+			<e type="setSound">Audio/Kisame/Kisame_skill10_1.wav</e>
 			<e type="setAttackBox">ab_hit</e>
 			<f>Kisame_Skill12_006</f>
 			<f>Kisame_Skill12_007</f>

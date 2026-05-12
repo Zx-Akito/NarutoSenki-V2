@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>ImmortalSasuke_Hurt_01</f>
 			<f>ImmortalSasuke_Hurt_02</f>
-			<e type="setSound">Audio/Sasuke/sasuke_hurt.ogg</e>
+			<e type="setSound">Audio/Sasuke/sasuke_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -71,7 +71,7 @@
 			<f>ImmortalSasuke_KnockDown_01</f>
 			<f>ImmortalSasuke_KnockDown_02</f>
 			<f>ImmortalSasuke_KnockDown_03</f>
-			<e type="setSound">Audio/Sasuke/sasuke_dead.ogg</e>
+			<e type="setSound">Audio/Sasuke/sasuke_dead.wav</e>
 		</frame>
 	</action>
 
@@ -88,7 +88,7 @@
 			<f>ImmortalSasuke_NAttack_02</f>
 			<e type="setDelay">10</e>
 			<f>ImmortalSasuke_NAttack_03</f>
-			<e type="setSound">Audio/Effect/kong.ogg</e>
+			<e type="setSound">Audio/Effect/kong.wav</e>
 			<e type="setDelay">10</e>
 			<f>ImmortalSasuke_NAttack_04</f>
 			<e type="setAttackBox">n_hit</e>
@@ -98,16 +98,16 @@
 			<f>ImmortalSasuke_NAttack_07</f>
 			<f>ImmortalSasuke_NAttack_08</f>
 			<e type="setAttackBox">n_hit</e>
-			<e type="setSound">Audio/Effect/kong.ogg</e>
+			<e type="setSound">Audio/Effect/kong.wav</e>
 			<f>ImmortalSasuke_NAttack_09</f>
 			<f>ImmortalSasuke_NAttack_10</f>
 			<f>ImmortalSasuke_NAttack_11</f>
 			<f>ImmortalSasuke_NAttack_12</f>
-			<e type="setSound">Audio/Sasuke/sasuke_combo.ogg</e>
+			<e type="setSound">Audio/Sasuke/sasuke_combo.wav</e>
 			<e type="setMove">16</e>
 			<f>ImmortalSasuke_NAttack_13</f>
 			<e type="setAttackBox">bl_hit</e>
-			<e type="setSound">Audio/Effect/kong.ogg</e>
+			<e type="setSound">Audio/Effect/kong.wav</e>
 			<f>ImmortalSasuke_NAttack_14</f>
 			<f>ImmortalSasuke_NAttack_15</f>
 			<f>ImmortalSasuke_NAttack_16</f>
@@ -124,9 +124,9 @@
 			<p type="combatPoint">1520</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/ImmortalSasuke/ImmortalSasuke_skill1_1.ogg</e>
+			<e type="setSound">Audio/ImmortalSasuke/ImmortalSasuke_skill1_1.wav</e>
 			<f>ImmortalSasuke_Skill01_01</f>
-			<e type="setSound">Audio/ImmortalSasuke/ImmortalSasuke_skill1_2.ogg</e>
+			<e type="setSound">Audio/ImmortalSasuke/ImmortalSasuke_skill1_2.wav</e>
 			<f>ImmortalSasuke_Skill01_02</f>
 			<e type="setChargeB">196</e>
 			<f>ImmortalSasuke_Skill01_03</f>
@@ -149,10 +149,10 @@
 		</data>
 		<frame>
 			<f>ImmortalSasuke_Skill02_01</f>
-			<e type="setSound">Audio/ImmortalSasuke/ImmortalSasuke_skill2.ogg</e>
+			<e type="setSound">Audio/ImmortalSasuke/ImmortalSasuke_skill2.wav</e>
 			<f>ImmortalSasuke_Skill02_02</f>
 			<f>ImmortalSasuke_Skill02_03</f>
-			<e type="setSound">Audio/Effect/thunder_effect.ogg</e>
+			<e type="setSound">Audio/Effect/thunder_effect.wav</e>
 			<f>ImmortalSasuke_Skill02_04</f>
 			<e type="setAttackBox">bc_hit</e>
 			<e type="setDelay">10</e>
@@ -173,11 +173,11 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/ImmortalSasuke/ImmortalSasuke_skill3.ogg</e>
+			<e type="setSound">Audio/ImmortalSasuke/ImmortalSasuke_skill3.wav</e>
 			<f>ImmortalSasuke_Skill03_01</f>
 			<f>ImmortalSasuke_Skill03_02</f>
 			<e type="setSkillEffect">sharingan4</e>
-			<e type="setSound">Audio/Effect/srg2.ogg</e>
+			<e type="setSound">Audio/Effect/srg2.wav</e>
 			<f>ImmortalSasuke_Skill03_03</f>
 			<e type="setDelay">20</e>
 			<f>ImmortalSasuke_Skill03_04</f>
@@ -196,17 +196,17 @@
 			<p type="combatPoint">4560</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>ImmortalSasuke_Skill04_01</f>
 			<f>ImmortalSasuke_Skill04_02</f>
 			<e type="setSkillEffect">sharingan4</e>
 			<f>ImmortalSasuke_Skill04_03</f>
-			<e type="setSound">Audio/ImmortalSasuke/ImmortalSasuke_skill4.ogg</e>
+			<e type="setSound">Audio/ImmortalSasuke/ImmortalSasuke_skill4.wav</e>
 			<e type="setDelay">20</e>
 			<f>ImmortalSasuke_Skill04_04</f>
 			<e type="setCommand">findTarget</e>
 			<e type="setTrap">Amaterasu</e>
-			<e type="setSound">Audio/Effect/srg.ogg</e>
+			<e type="setSound">Audio/Effect/srg.wav</e>
 			<f>ImmortalSasuke_Skill04_05</f>
 			<e type="setCommand">setTransport</e>
 			<f>ImmortalSasuke_Skill04_06</f>
@@ -214,7 +214,7 @@
 			<f>ImmortalSasuke_Skill04_08</f>
 			<f>ImmortalSasuke_Skill04_09</f>
 			<e type="setAttackBox">b_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<f>ImmortalSasuke_Skill04_10</f>
 		</frame>
 	</action>
@@ -229,7 +229,7 @@
 			<p type="combatPoint">10000</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>ImmortalSasuke_Skill05_01</f>
 			<e type="setDelay">10</e>
 			<f>ImmortalSasuke_Skill05_02</f>
@@ -241,7 +241,7 @@
 			<f>ImmortalSasuke_Skill05_06</f>
 			<f>ImmortalSasuke_Skill05_07</f>
 			<e type="setBuff">18</e>
-			<e type="setSound">Audio/Itachi/itachi_skill5_1.ogg</e>
+			<e type="setSound">Audio/Itachi/itachi_skill5_1.wav</e>
 			<e type="setMon">SasukeSusano</e>
 			<e type="setCommand">reInvincible</e>
 		</frame>
@@ -292,7 +292,7 @@
 			<f>ImmortalSasuke_Skill10_01</f>
 			<e type="setAttackBox">bc_hit</e>
 			<f>ImmortalSasuke_Skill10_02</f>
-			<e type="setSound">Audio/ImmortalSasuke/ImmortalSasuke_skill10.ogg</e>
+			<e type="setSound">Audio/ImmortalSasuke/ImmortalSasuke_skill10.wav</e>
 			<f>ImmortalSasuke_Skill10_03</f>
 			<e type="setAttackBox">bc_hit</e>
 			<f>ImmortalSasuke_Skill10_04</f>
@@ -319,7 +319,7 @@
 			<f>ImmortalSasuke_Skill11_01</f>
 			<f>ImmortalSasuke_Skill11_02</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 			<e type="setDelay">10</e>
 			<f>ImmortalSasuke_Skill11_03</f>
 			<e type="setDelay">10</e>

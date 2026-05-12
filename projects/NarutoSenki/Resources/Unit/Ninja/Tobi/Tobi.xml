@@ -68,7 +68,7 @@
 		<frame>
 			<f>Tobi_Float_003</f>
 			<f>Tobi_KnockDown_001</f>
-			<e type="setSound">Audio/Tobi/Tobi_dead.ogg</e>
+			<e type="setSound">Audio/Tobi/Tobi_dead.wav</e>
 		</frame>
 	</action>
 
@@ -85,24 +85,24 @@
 			<f>Tobi_NAttack_002</f>
 			<f>Tobi_NAttack_003</f>
 			<e type="setAttackBox">n_hit</e>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<f>Tobi_NAttack_004</f>
 			<f>Tobi_NAttack_005</f>
 			<f>Tobi_NAttack_006</f>
 			<e type="setMove">8</e>
 			<f>Tobi_NAttack_007</f>
-			<e type="setSound">Audio/Effect/kong.ogg</e>
+			<e type="setSound">Audio/Effect/kong.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<e type="setDelay">10</e>
 			<f>Tobi_NAttack_008</f>
 			<f>Tobi_NAttack_009</f>
 			<f>Tobi_NAttack_010</f>
 			<f>Tobi_NAttack_011</f>
-			<e type="setSound">Audio/Tobi/Tobi_combo.ogg</e>
+			<e type="setSound">Audio/Tobi/Tobi_combo.wav</e>
 			<f>Tobi_NAttack_012</f>
 			<e type="setMove">16</e>
 			<e type="setAttackBox">l_hit</e>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<f>Tobi_NAttack_013</f>
 			<e type="setDelay">20</e>
 		</frame>
@@ -120,7 +120,7 @@
 		<frame>
 			<f>Tobi_Skill02_001</f>
 			<f>Tobi_Skill02_002</f>
-			<e type="setSound">Audio/Tobi/Tobi_skill1.ogg</e>
+			<e type="setSound">Audio/Tobi/Tobi_skill1.wav</e>
 			<e type="setChargeB">96</e>
 			<e type="setAttackBox">c_hit</e>
 			<f>Tobi_Skill02_003</f>
@@ -147,7 +147,7 @@
 		</data>
 		<frame>
 			<f>Tobi_Skill01_001</f>
-			<e type="setSound">Audio/Tobi/Tobi_skill2.ogg</e>
+			<e type="setSound">Audio/Tobi/Tobi_skill2.wav</e>
 			<e type="setMon">TamaBomb</e>
 			<f>Tobi_Skill01_002</f>
 			<f>Tobi_Skill01_003</f>
@@ -158,7 +158,7 @@
 			<f>Tobi_Skill01_006</f>
 			<e type="setDelay">10</e>
 			<f>Tobi_Skill01_007</f>
-			<e type="setSound">Audio/Tobi/Tobi_skill2_1.ogg</e>
+			<e type="setSound">Audio/Tobi/Tobi_skill2_1.wav</e>
 			<f>Tobi_Skill01_008</f>
 			<e type="setDelay">40</e>
 		</frame>
@@ -175,14 +175,14 @@
 		<frame>
 			<f>Tobi_Skill03_001</f>
 			<f>Tobi_Skill03_002</f>
-			<e type="setSound">Audio/Tobi/Tobi_skill3.ogg</e>
+			<e type="setSound">Audio/Tobi/Tobi_skill3.wav</e>
 			<f>Tobi_Skill03_003</f>
 			<f>Tobi_Skill03_004</f>
 			<f>Tobi_Skill03_005</f>
 			<f>Tobi_Skill03_006</f>
 			<e type="setSkillEffect">sharingan2</e>
 			<f>Tobi_Skill03_007</f>
-			<e type="setSound">Audio/Effect/srg2.ogg</e>
+			<e type="setSound">Audio/Effect/srg2.wav</e>
 			<e type="setDelay">40</e>
 			<e type="setBuff">17</e>
 		</frame>
@@ -197,9 +197,9 @@
 			<p type="combatPoint">3480</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Tobi_Skill04_001</f>
-			<e type="setSound">Audio/Tobi/Tobi_skill4.ogg</e>
+			<e type="setSound">Audio/Tobi/Tobi_skill4.wav</e>
 			<f>Tobi_Skill04_002</f>
 			<e type="setCommand">findTarget</e>
 			<e type="setCommand">setTransport</e>
@@ -221,7 +221,7 @@
 			<p type="combatPoint">9220</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Tobi_Skill05_001</f>
 			<f>Tobi_Skill05_002</f>
 			<e type="setOugis">10</e>
@@ -232,10 +232,10 @@
 			<f>Tobi_Skill05_006</f>
 			<f>Tobi_Skill05_007</f>
 			<f>Tobi_Skill05_008</f>
-			<e type="setSound">Audio/Tobi/Tobi_skill5_1.ogg</e>
+			<e type="setSound">Audio/Tobi/Tobi_skill5_1.wav</e>
 			<e type="setAttackBox">o_hit</e>
 			<f>Tobi_Skill05_009</f>
-			<e type="setSound">Audio/Effect/goukakyu.ogg</e>
+			<e type="setSound">Audio/Effect/goukakyu.wav</e>
 			<f>Tobi_Skill05_010</f>
 			<e type="setAttackBox">c_hit</e>
 			<f>Tobi_Skill05_011</f>
@@ -256,7 +256,7 @@
 			<e type="setMon">FireRain</e>
 			<f>Tobi_Skill05_019</f>
 			<e type="setShadow">10</e>
-			<e type="setSound">Audio/Effect/goukakyu.ogg</e>
+			<e type="setSound">Audio/Effect/goukakyu.wav</e>
 			<f>Tobi_Skill05_019</f>
 			<e type="setShadow">10</e>
 			<f>Tobi_Skill05_019</f>
@@ -270,7 +270,7 @@
 			<e type="setDelay">10</e>
 			<f>Tobi_Skill05_026</f>
 			<f>Tobi_Skill05_027</f>
-			<e type="setSound">Audio/Effect/goukakyu.ogg</e>
+			<e type="setSound">Audio/Effect/goukakyu.wav</e>
 			<e type="setAttackBox">b_hit</e>
 			<f>Tobi_Skill05_028</f>
 			<f>Tobi_Skill05_029</f>
@@ -279,7 +279,7 @@
 			<e type="setAttackBox">c_hit</e>
 			<f>Tobi_Skill05_031</f>
 			<f>Tobi_Skill05_033</f>
-			<e type="setSound">Audio/Tobi/Tobi_skill5_2.ogg</e>
+			<e type="setSound">Audio/Tobi/Tobi_skill5_2.wav</e>
 			<e type="setSkillEffect">sharingan3</e>
 			<e type="setDelay">10</e>
 			<f>Tobi_Skill05_034</f>

@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Tenten_Hurt_01</f>
 			<f>Tenten_Hurt_02</f>
-			<e type="setSound">Audio/Tenten/tenten_hurt.ogg</e>
+			<e type="setSound">Audio/Tenten/tenten_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -69,7 +69,7 @@
 		<frame>
 			<f>Tenten_KnockDown_01</f>
 			<f>Tenten_KnockDown_02</f>
-			<e type="setSound">Audio/Tenten/tenten_dead.ogg</e>
+			<e type="setSound">Audio/Tenten/tenten_dead.wav</e>
 		</frame>
 	</action>
 
@@ -84,7 +84,7 @@
 		<frame>
 			<f>Tenten_NAttack_01</f>
 			<f>Tenten_NAttack_02</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<f>Tenten_NAttack_03</f>
 			<e type="setAttackBox">n_hit</e>
 			<f>Tenten_NAttack_04</f>
@@ -92,14 +92,14 @@
 			<e type="setMove">8</e>
 			<f>Tenten_NAttack_06</f>
 			<e type="setDelay">10</e>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Tenten_NAttack_07</f>
 			<f>Tenten_NAttack_08</f>
-			<e type="setSound">Audio/Tenten/tenten_combo.ogg</e>
+			<e type="setSound">Audio/Tenten/tenten_combo.wav</e>
 			<f>Tenten_NAttack_09</f>
 			<f>Tenten_NAttack_10</f>
-			<e type="setSound">Audio/Effect/kong.ogg</e>
+			<e type="setSound">Audio/Effect/kong.wav</e>
 			<e type="setAttackBox">bl_hit</e>
 			<e type="setMove">16</e>
 			<f>Tenten_NAttack_11</f>
@@ -119,7 +119,7 @@
 			<p type="combatPoint">1260</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Tenten/tenten_skill1.ogg</e>
+			<e type="setSound">Audio/Tenten/tenten_skill1.wav</e>
 			<f>Tenten_Skill01_02</f>
 			<f>Tenten_Skill01_04</f>
 			<e type="setMon">Mine</e>
@@ -141,14 +141,14 @@
 			<f>Tenten_Skill02_01</f>
 			<e type="setDelay">10</e>
 			<f>Tenten_Skill02_02</f>
-			<e type="setSound">Audio/Tenten/tenten_skill2.ogg</e>
+			<e type="setSound">Audio/Tenten/tenten_skill2.wav</e>
 			<e type="setBullet">FlyKnife</e>
 			<f>Tenten_Skill02_03</f>
 			<f>Tenten_Skill02_05</f>
 			<f>Tenten_Skill02_06</f>
 			<e type="setMove">8</e>
 			<f>Tenten_Skill02_07</f>
-			<e type="setSound">Audio/Tenten/tenten_skill2_1.ogg</e>
+			<e type="setSound">Audio/Tenten/tenten_skill2_1.wav</e>
 			<e type="setBullet">FlyKnife</e>
 			<e type="setDelay">10</e>
 		</frame>
@@ -165,7 +165,7 @@
 		</data>
 		<frame>
 			<f>Tenten_Skill03_01</f>
-			<e type="setSound">Audio/Tenten/tenten_skill3.ogg</e>
+			<e type="setSound">Audio/Tenten/tenten_skill3.wav</e>
 			<f>Tenten_Skill03_02</f>
 			<e type="setDelay">10</e>
 			<f>Tenten_Skill03_03</f>
@@ -184,8 +184,8 @@
 			<p type="combatPoint">3200</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
-			<e type="setSound">Audio/Tenten/tenten_skill4.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
+			<e type="setSound">Audio/Tenten/tenten_skill4.wav</e>
 			<f>Tenten_Skill04_07</f>
 			<e type="setShadow">10</e>
 			<f>Tenten_Skill04_08</f>
@@ -193,13 +193,13 @@
 			<f>Tenten_Skill04_09</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<f>Tenten_Skill04_10</f>
 			<e type="setChargeB">96</e>
 			<f>Tenten_Skill04_11</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<f>Tenten_Skill04_12</f>
 			<e type="setChargeB">96</e>
 			<f>Tenten_Skill04_13</f>
@@ -209,28 +209,28 @@
 			<f>Tenten_Skill04_15</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">bf_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<f>Tenten_Skill04_10</f>
 			<f>Tenten_Skill04_11</f>
 			<e type="setShadow">10</e>
 			<e type="setJump">true</e>
 			<f>Tenten_Skill04_12</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<f>Tenten_Skill04_13</f>
 			<e type="setShadow">10</e>
 			<f>Tenten_Skill04_14</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<f>Tenten_Skill04_15</f>
 			<e type="setShadow">10</e>
-			<e type="setSound">Audio/Tenten/tenten_skill4_1.ogg</e>
+			<e type="setSound">Audio/Tenten/tenten_skill4_1.wav</e>
 			<f>Tenten_Skill04_16</f>
 			<f>Tenten_Skill04_17</f>
 			<e type="setAttackBox">c_hit</e>
 			<f>Tenten_Skill04_18</f>
 			<f>Tenten_Skill04_19</f>
-			<e type="setDSound">Audio/Effect/damage_o2.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o2.wav</e>
 			<f>Tenten_Skill04_20</f>
 			<e type="setAttackBox">b_hit</e>
 			<f>Tenten_Skill04_21</f>
@@ -247,7 +247,7 @@
 			<p type="combatPoint">8760</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Tenten_Skill05_10</f>
 			<e type="setCommand">setInvincible</e>
 			<f>Tenten_Skill06_001</f>
@@ -267,14 +267,14 @@
 			<f>Tenten_Skill05_01</f>
 			<e type="setDelay">10</e>
 			<e type="setJump">true</e>
-			<e type="setSound">Audio/Tenten/Tenten_skill5_2.ogg</e>
+			<e type="setSound">Audio/Tenten/Tenten_skill5_2.wav</e>
 			<f>Tenten_Skill05_02</f>
 			<e type="setShadow">10</e>
 			<e type="setDelay">10</e>
 			<f>Tenten_Skill05_03</f>
 			<e type="setShadow">10</e>
 			<f>Tenten_Skill05_04</f>
-			<e type="setSound">Audio/Tenten/Tenten_skill5_3.ogg</e>
+			<e type="setSound">Audio/Tenten/Tenten_skill5_3.wav</e>
 			<e type="stopJump">90</e>
 			<e type="setCommand">addExtern</e>
 			<e type="setMon">Shoryu</e>

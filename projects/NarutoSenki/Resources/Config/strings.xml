@@ -13,4 +13,12 @@
 	<string>Naruto Senki has officially returned and is currently being redeveloped by ZxAkito. For more information, please click the news button.</string>
 	<key>ServerMainten</key>
 	<string>服务器维护中，请稍后再试</string>
+	<key>LoginEmpty</key>
+	<string>请输入用户名和密码</string>
+	<key>LoginFail</key>
+	<string>登录失败，请检查账号或网络</string>
+	<key>LoginSuccess</key>
+	<string>登录成功</string>
+	<key>ProfileLoggedOut</key>
+	<string>已退出登录</string>
 </dict>

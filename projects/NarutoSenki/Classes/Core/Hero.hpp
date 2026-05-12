@@ -328,6 +328,7 @@ public:
 		_hpBar->setPositionY(getHeight());
 		_hpBar->setDelegate(this);
 		addChild(_hpBar);
+		tryCreateNetworkBattleNicknameLabel();
 		changeHPbar();
 	}
 

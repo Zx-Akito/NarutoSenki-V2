@@ -172,7 +172,7 @@ void PauseLayer::onBackToMenu(Ref *sender)
 {
 	pauseMenu->setVisible(false);
 	soundMenu->setVisible(false);
-	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/select.ogg");
+	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/select.wav");
 	exitLayer = Layer::create();
 
 	Sprite *exit_bg = Sprite::createWithSpriteFrameName("confirm_bg.png");
@@ -200,7 +200,7 @@ void PauseLayer::onBackToMenu(Ref *sender)
 
 void PauseLayer::onLeft(Ref *sender)
 {
-	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.ogg");
+	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.wav");
 	GameLayer *g = getGameLayer();
 	if (!g)
 		return;
@@ -214,7 +214,7 @@ void PauseLayer::onCancel(Ref *sender)
 {
 	pauseMenu->setVisible(true);
 	soundMenu->setVisible(true);
-	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/cancel.ogg");
+	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/cancel.wav");
 	exitLayer->removeFromParent();
 }
 

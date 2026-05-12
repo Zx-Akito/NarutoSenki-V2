@@ -58,7 +58,7 @@
 		<frame>
 			<f>Wave_Move_01</f>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<e type="setDelay">10</e>
 			<f>Wave_Move_02</f>
 			<f>Wave_Move_03</f>

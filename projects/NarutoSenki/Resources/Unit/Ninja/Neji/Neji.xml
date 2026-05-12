@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Neji_Hurt_01</f>
 			<f>Neji_Hurt_02</f>
-			<e type="setSound">Audio/Neji/Neji_hurt.ogg</e>
+			<e type="setSound">Audio/Neji/Neji_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -70,7 +70,7 @@
 			<f>Neji_KnockDown_01</f>
 			<f>Neji_KnockDown_02</f>
 			<f>Neji_KnockDown_03</f>
-			<e type="setSound">Audio/Neji/Neji_dead.ogg</e>
+			<e type="setSound">Audio/Neji/Neji_dead.wav</e>
 		</frame>
 	</action>
 
@@ -87,7 +87,7 @@
 			<f>Neji_NAttack_02</f>
 			<f>Neji_NAttack_03</f>
 			<f>Neji_NAttack_04</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Neji_NAttack_05</f>
 			<f>Neji_NAttack_06</f>
@@ -95,16 +95,16 @@
 			<f>Neji_NAttack_08</f>
 			<e type="setMove">8</e>
 			<f>Neji_NAttack_09</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Neji_NAttack_10</f>
 			<f>Neji_NAttack_11</f>
 			<f>Neji_NAttack_12</f>
-			<e type="setSound">Audio/Neji/Neji_combo.ogg</e>
+			<e type="setSound">Audio/Neji/Neji_combo.wav</e>
 			<f>Neji_NAttack_13</f>
 			<e type="setMove">16</e>
 			<f>Neji_NAttack_14</f>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<e type="setAttackBox">l_hit</e>
 			<f>Neji_NAttack_15</f>
 		</frame>
@@ -120,12 +120,12 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Neji/Neji_skill01.ogg</e>
+			<e type="setSound">Audio/Neji/Neji_skill01.wav</e>
 			<f>Neji_Skill01_01</f>
 			<f>Neji_Skill01_02</f>
 			<f>Neji_Skill01_03</f>
 			<f>Neji_Skill01_04</f>
-			<e type="setSound">Audio/Effect/baiyan.ogg</e>
+			<e type="setSound">Audio/Effect/baiyan.wav</e>
 			<f>Neji_Skill01_05</f>
 			<f>Neji_Skill01_06</f>
 			<e type="setBuff">200</e>
@@ -143,7 +143,7 @@
 		</data>
 		<frame>
 			<f>Neji_Skill02_02</f>
-			<e type="setSound">Audio/Neji/Neji_skill02_1.ogg</e>
+			<e type="setSound">Audio/Neji/Neji_skill02_1.wav</e>
 			<f>Neji_Skill02_03</f>
 			<e type="setMove">16</e>
 			<f>Neji_Skill02_04</f>
@@ -153,7 +153,7 @@
 			<f>Neji_Skill02_07</f>
 			<e type="setChargeB">128</e>
 			<f>Neji_Skill02_08</f>
-			<e type="setSound">Audio/Neji/Neji_skill02_2.ogg</e>
+			<e type="setSound">Audio/Neji/Neji_skill02_2.wav</e>
 			<e type="setAttackBox">c_hit</e>
 			<f>Neji_Skill02_09</f>
 		</frame>
@@ -169,7 +169,7 @@
 			<p type="combatPoint">2340</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Neji/Neji_skill03.ogg</e>
+			<e type="setSound">Audio/Neji/Neji_skill03.wav</e>
 			<f>Neji_Skill03_02</f>
 			<f>Neji_Skill03_03</f>
 			<e type="setSkillEffect">Bagua</e>
@@ -177,44 +177,44 @@
 			<f>Neji_Skill03_04</f>
 			<e type="setMove">16</e>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Neji_Skill03_05</f>
 			<f>Neji_Skill03_06</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Neji_Skill03_07</f>
 			<e type="setMove">8</e>
 			<f>Neji_Skill03_08</f>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Neji_Skill03_09</f>
 			<f>Neji_Skill03_10</f>
 			<e type="setMove">8</e>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Neji_Skill03_11</f>
 			<f>Neji_Skill03_12</f>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Neji_Skill03_04</f>
 			<e type="setMove">8</e>
 			<f>Neji_Skill03_05</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Neji_Skill03_06</f>
 			<f>Neji_Skill03_07</f>
 			<e type="setMove">8</e>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Neji_Skill03_08</f>
 			<f>Neji_Skill03_09</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Neji_Skill03_10</f>
 			<e type="setMove">8</e>
 			<f>Neji_Skill03_11</f>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Neji_Skill03_13</f>
 			<f>Neji_Skill03_14</f>
 		</frame>
@@ -230,13 +230,13 @@
 			<p type="combatPoint">3040</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 
 			<e type="setCommand">setInvincible</e>
 			<f>Neji_Skill04_02</f>
 			<f>Neji_Skill04_03</f>
 			<e type="setMon">Kaiten</e>
-			<e type="setSound">Audio/Neji/Neji_skill04.ogg</e>
+			<e type="setSound">Audio/Neji/Neji_skill04.wav</e>
 			<f>Neji_Skill04_04</f>
 			<e type="setDelay">90</e>
 			<f>Neji_Skill04_05</f>
@@ -256,7 +256,7 @@
 			<p type="combatPoint">8540</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<e type="setOugis">10</e>
 			<f>Neji_Skill05_13</f>
 			<e type="setSkillEffect">Bagua</e>
@@ -264,12 +264,12 @@
 			<e type="setCommand">setInvincible</e>
 			<e type="setDelay">10</e>
 			<f>Neji_Skill05_001</f>
-			<e type="setSound">Audio/Neji/Neji_skill5_1.ogg</e>
+			<e type="setSound">Audio/Neji/Neji_skill5_1.wav</e>
 			<f>Neji_Skill05_002</f>
 			<e type="setShadow">10</e>
 			<e type="setChargeB">128</e>
 			<e type="setAttackBox">f_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o2.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o2.wav</e>
 			<f>Neji_Skill05_003</f>
 			<f>Neji_Skill05_004</f>
 			<e type="setShadow">10</e>
@@ -278,24 +278,24 @@
 			<f>Neji_Skill05_006</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Neji_Skill05_007</f>
 			<f>Neji_Skill05_008</f>
 			<f>Neji_Skill05_18</f>
 			<e type="setMove">16</e>
 			<f>Neji_Skill05_19</f>
 			<e type="setShadow">10</e>
-			<e type="setSound">Audio/Neji/Neji_skill5_3.ogg</e>
+			<e type="setSound">Audio/Neji/Neji_skill5_3.wav</e>
 			<f>Neji_Skill05_20</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">ac_hit</e>
 			<f>Neji_Skill05_21</f>
 			<e type="setShadow">10</e>
-			<e type="setDSound">Audio/Effect/damage_haken.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_haken.wav</e>
 			<f>Neji_Skill05_22</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_haken.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_haken.wav</e>
 			<f>Neji_Skill05_23</f>
 			<e type="setShadow">10</e>
 			<f>Neji_Skill05_20</f>
@@ -303,16 +303,16 @@
 			<e type="setAttackBox">ac_hit</e>
 			<f>Neji_Skill05_21</f>
 			<e type="setShadow">10</e>
-			<e type="setDSound">Audio/Effect/damage_haken.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_haken.wav</e>
 			<f>Neji_Skill05_22</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_haken.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_haken.wav</e>
 			<f>Neji_Skill05_23</f>
 			<e type="setShadow">10</e>
 			<f>Neji_Skill05_34</f>
 			<e type="setShadow">10</e>
-			<e type="setSound">Audio/Neji/Neji_skill04_1.ogg</e>
+			<e type="setSound">Audio/Neji/Neji_skill04_1.wav</e>
 			<f>Neji_Skill05_35</f>
 			<e type="setShadow">10</e>
 			<f>Neji_Skill05_36</f>
@@ -320,7 +320,7 @@
 			<f>Neji_Skill05_37</f>
 			<e type="setShadow">10</e>
 			<f>Neji_Skill05_40</f>
-			<e type="setSound">Audio/Neji/Neji_skill5_4.ogg</e>
+			<e type="setSound">Audio/Neji/Neji_skill5_4.wav</e>
 			<e type="setMon">Hasan</e>
 			<f>Neji_Skill05_41</f>
 			<f>Neji_Skill05_40</f>

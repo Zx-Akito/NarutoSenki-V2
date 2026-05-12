@@ -1,6 +1,25 @@
 --
 -- NetworkLobbyLayer
 --
+-- WebSocket: narutosenki-server (`npm run dev`, default PORT=3003). Production: wss://…
+local NS_NETWORK_WS_URL = 'ws://127.0.0.1:3003'
+
+-- utils.save sets global `save` and does not historically return a table; do not bind require() to a local.
+require('utils.save')
+
+local function jsonEscapeForWire(s)
+    s = tostring(s or '')
+    s = string.gsub(s, '\\', '\\\\')
+    s = string.gsub(s, '"', '\\"')
+    return s
+end
+
+local function buildQueueJoinMessage()
+    local nick = save.getString('ns_account_username', '')
+    if nick == '' then nick = 'Player' end
+    return '{"type":"queue_join","nickname":"' .. jsonEscapeForWire(nick) .. '"}'
+end
+
 NetworkLobbyLayer = class('NetworkLobbyLayer', function() return display.newLayer() end)
 
 function NetworkLobbyLayer:ctor()
@@ -162,7 +181,7 @@ function NetworkLobbyLayer:onConnectPressed()
         end
         if not self.isInQueue then
             self:setStatus('Queueing...')
-            wsSend('{"type":"queue_join"}')
+            wsSend(buildQueueJoinMessage())
             self.isInQueue = true
         else
             self:setStatus('Queueing...')
@@ -172,7 +191,7 @@ function NetworkLobbyLayer:onConnectPressed()
 
     self.isConnecting = true
     self:setStatus('Connecting...')
-    local ok = wsConnect('wss://ws.cheetoz.xyz')
+    local ok = wsConnect(NS_NETWORK_WS_URL)
     if not ok then
         self.isConnecting = false
         self:setStatus('Connect failed')
@@ -224,7 +243,7 @@ function NetworkLobbyLayer:handleWebSocketEvent(eventName, payload)
         self:setWaitSubtitle(0)
         self:setStatus('Queueing...')
         wsSend('{"type":"ping"}')
-        wsSend('{"type":"queue_join"}')
+        wsSend(buildQueueJoinMessage())
     elseif eventName == 'message' then
         local messageType = extractJsonStringField(payload, 'type')
         if messageType == 'queue_waiting' then
@@ -237,7 +256,7 @@ function NetworkLobbyLayer:handleWebSocketEvent(eventName, payload)
             _G.__networkVsBot = extractJsonBoolField(payload, 'opponentIsBot') == true
             self:setStatus('Match found: ' .. tostring(self.matchId or '?'))
             _G.__networkLobbyLayer = nil
-            enterSelectLayer(GameMode.Classic, false)
+            enterSelectLayer(GameMode.Classic, false, true)
         elseif messageType == 'opponent_left' then
             self:setStatus('Opponent left')
             self:setWaitSubtitle(0)

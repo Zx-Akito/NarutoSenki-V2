@@ -27,6 +27,8 @@ public:
 	static void saveSQLite(const char *table, const char *relatedColumn, const char *value, const char *targetColumn, const string &targetValue, bool isPlus);
 
 	static int readWinNumFromSQL(const char *heroName);
+	/** CharRecord.column2 — jumlah kalah per hero (di-update saat game over kalah). */
+	static int readLoseNumFromSQL(const char *heroName);
 	static int readCoinFromSQL();
 	static const char *readRecordTimeFromSQL(const char *heroName);
 

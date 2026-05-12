@@ -114,6 +114,7 @@ public:
 
 
 	HPBar*				_hpBar;
+	CCLabelBMFont*		_networkNicknameLabel;
 	Sprite*				_shadow;
 	float				_originY;
 	float				_backY;
@@ -267,6 +268,8 @@ public:
 
 	void				update(float dt);
 	void				updateHpBarPosition(float dt);
+	void				tryCreateNetworkBattleNicknameLabel();
+	void				syncNetworkNicknameLabelLayout();
 	void				acceptAttack(Ref* object);
 
 	float				getHpPercent();

@@ -91,6 +91,34 @@ void CCDisplayFactory::updateDisplay(CCBone *bone, float dt, bool dirty)
         display->setAdditionalTransform(bone->nodeToArmatureTransform());
         break;
     }
+
+#if ENABLE_PHYSICS_BOX2D_DETECT || ENABLE_PHYSICS_CHIPMUNK_DETECT || ENABLE_PHYSICS_SAVE_CALCULATED_VERTEX
+    if (dirty)
+    {
+        CCDecorativeDisplay *decoDisplay = bone->getDisplayManager()->getCurrentDecorativeDisplay();
+        CCColliderDetector *detector = decoDisplay->getColliderDetector();
+        if (detector)
+        {
+            do
+            {
+#if ENABLE_PHYSICS_BOX2D_DETECT
+                CC_BREAK_IF(!detector->getBody());
+#elif ENABLE_PHYSICS_CHIPMUNK_DETECT
+                CC_BREAK_IF(!detector->getBody());
+#endif
+
+                CCAffineTransform displayTransform = display->nodeToParentTransform();
+                CCPoint anchorPoint =  display->getAnchorPointInPoints();
+                anchorPoint = CCPointApplyAffineTransform(anchorPoint, displayTransform);
+                displayTransform.tx = anchorPoint.x;
+                displayTransform.ty = anchorPoint.y;
+                CCAffineTransform t = CCAffineTransformConcat(displayTransform, bone->getArmature()->nodeToParentTransform());
+                detector->updateTransform(t);
+            }
+            while (0);
+        }
+    }
+#endif
 }
 
 
@@ -163,12 +191,25 @@ void CCDisplayFactory::initSpriteDisplay(CCBone *bone, CCDecorativeDisplay *deco
         textureName = textureName.erase(startPos);
     }
 
-    CCTextureData *textureData = CCArmatureDataManager::sharedArmatureDataManager()->getTextureData(textureName.c_str());
+    CCTextureData *textureData = CCArmatureDataManager::getInstance()->getTextureData(textureName.c_str());
     if(textureData)
     {
         //! Init display anchorPoint, every Texture have a anchor point
         skin->setAnchorPoint(ccp( textureData->pivotX, textureData->pivotY));
     }
+
+
+#if ENABLE_PHYSICS_BOX2D_DETECT || ENABLE_PHYSICS_CHIPMUNK_DETECT || ENABLE_PHYSICS_SAVE_CALCULATED_VERTEX
+    if (textureData && textureData->contourDataList.count() > 0)
+    {
+
+        //! create ContourSprite
+        CCColliderDetector *colliderDetector = CCColliderDetector::create(bone);
+        colliderDetector->addContourDataList(&textureData->contourDataList);
+
+        decoDisplay->setColliderDetector(colliderDetector);
+    }
+#endif
 }
 
 

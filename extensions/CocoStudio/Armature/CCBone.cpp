@@ -456,7 +456,42 @@ void CCBone::changeDisplayWithName(const char *name, bool force)
 
 CCArray *CCBone::getColliderBodyList()
 {
+    if (CCDecorativeDisplay *decoDisplay = m_pDisplayManager->getCurrentDecorativeDisplay())
+    {
+        if (CCColliderDetector *detector = decoDisplay->getColliderDetector())
+        {
+            return detector->getColliderBodyList();
+        }
+    }
     return NULL;
 }
+
+#if ENABLE_PHYSICS_BOX2D_DETECT || ENABLE_PHYSICS_CHIPMUNK_DETECT
+void CCBone::setColliderFilter(CCColliderFilter *filter)
+{
+    CCArray *array = m_pDisplayManager->getDecorativeDisplayList();
+    CCObject *object = NULL;
+    CCARRAY_FOREACH(array, object)
+    {
+        CCDecorativeDisplay *decoDisplay = static_cast<CCDecorativeDisplay *>(object);
+        if (CCColliderDetector *detector = decoDisplay->getColliderDetector())
+        {
+            detector->setColliderFilter(filter);
+        }
+    }
+}
+CCColliderFilter *CCBone::getColliderFilter()
+{
+    if (CCDecorativeDisplay *decoDisplay = m_pDisplayManager->getCurrentDecorativeDisplay())
+    {
+        if (CCColliderDetector *detector = decoDisplay->getColliderDetector())
+        {
+            return detector->getColliderFilter();
+        }
+    }
+    return NULL;
+}
+#endif
+
 
 NS_CC_EXT_END

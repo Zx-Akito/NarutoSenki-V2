@@ -37,7 +37,7 @@
 			<e type="setMove">32</e>
 			<f>Roshi_Hurt_01</f>
 			<f>Roshi_Hurt_02</f>
-			<!-- <e type="setSound">Audio/Roshi/Roshi_hurt.ogg</e> -->
+			<!-- <e type="setSound">Audio/Roshi/Roshi_hurt.wav</e> -->
 		</frame>
 	</action>
 
@@ -85,12 +85,12 @@
 		</data>
 		<frame>
 			<f>Roshi_NAttack_001</f>
-			<e type="setSound">Audio/Roshi/Roshi_combo.ogg</e>
+			<e type="setSound">Audio/Roshi/Roshi_combo.wav</e>
 			<f>Roshi_NAttack_002</f>
 			<e type="setDelay">10</e>
 			<f>Roshi_NAttack_003</f>
 			<f>Roshi_NAttack_004</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">l_hit</e>
 			<e type="setDelay">10</e>
 		</frame>
@@ -105,7 +105,7 @@
 			<p type="cd">1</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<e type="setCommand">setInvincible</e>
 			<f>Roshi_Skill01_001</f>
 			<e type="setOugis">10</e>
@@ -138,7 +138,7 @@
 			<f>Roshi_Skill02_001</f>
 			<f>Roshi_Skill02_002</f>
 			<f>Roshi_Skill02_003</f>
-			<e type="setSound">Audio/Effect/weishoupao.ogg</e>
+			<e type="setSound">Audio/Effect/weishoupao.wav</e>
 			<f>Roshi_Skill02_004</f>
 			<e type="setAttackBox">b_hit</e>
 			<f>Roshi_Skill02_005</f>
@@ -215,7 +215,7 @@
 		</data>
 		<frame>
 			<f>Roshi_Skill11_001</f>
-			<e type="setSound">Audio/Roshi/Roshi_combo2.ogg</e>
+			<e type="setSound">Audio/Roshi/Roshi_combo2.wav</e>
 			<e type="setDelay">20</e>
 			<f>Roshi_Skill11_002</f>
 			<e type="setMove">8</e>

@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Shino_Hurt_01</f>
 			<f>Shino_Hurt_02</f>
-			<e type="setSound">Audio/Shino/Shino_hurt.ogg</e>
+			<e type="setSound">Audio/Shino/Shino_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -69,7 +69,7 @@
 		<frame>
 			<f>Shino_KnockDown_001</f>
 			<f>Shino_KnockDown_002</f>
-			<e type="setSound">Audio/Shino/Shino_dead.ogg</e>
+			<e type="setSound">Audio/Shino/Shino_dead.wav</e>
 		</frame>
 	</action>
 
@@ -86,7 +86,7 @@
 			<f>Shino_NAttack_002</f>
 			<f>Shino_NAttack_003</f>
 			<e type="setAttackBox">n_hit</e>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<f>Shino_NAttack_004</f>
 			<f>Shino_NAttack_005</f>
 			<f>Shino_NAttack_006</f>
@@ -95,14 +95,14 @@
 			<e type="setDelay">10</e>
 			<f>Shino_NAttack_008</f>
 			<f>Shino_NAttack_009</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<f>Shino_NAttack_010</f>
-			<e type="setSound">Audio/Shino/Shino_combo.ogg</e>
+			<e type="setSound">Audio/Shino/Shino_combo.wav</e>
 			<e type="setMove">16</e>
 			<f>Shino_NAttack_011</f>
 			<f>Shino_NAttack_012</f>
 			<e type="setAttackBox">l_hit</e>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<e type="setDelay">10</e>
 		</frame>
 	</action>
@@ -117,7 +117,7 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Shino/Shino_skill1.ogg</e>
+			<e type="setSound">Audio/Shino/Shino_skill1.wav</e>
 			<f>Shino_Skill01_001</f>
 			<f>Shino_Skill01_002</f>
 			<f>Shino_Skill01_003</f>
@@ -137,7 +137,7 @@
 			<p type="combatPoint">1520</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Shino/Shino_skill2.ogg</e>
+			<e type="setSound">Audio/Shino/Shino_skill2.wav</e>
 			<f>Shino_Skill02_001</f>
 			<f>Shino_Skill02_002</f>
 			<e type="setMon">FakeShino</e>
@@ -154,7 +154,7 @@
 			<p type="combatPoint">1840</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Shino/Shino_skill3.ogg</e>
+			<e type="setSound">Audio/Shino/Shino_skill3.wav</e>
 			<f>Shino_Skill03_001</f>
 			<e type="setMon">BugPillar</e>
 			<f>Shino_Skill03_002</f>
@@ -173,25 +173,25 @@
 			<p type="combatPoint">3040</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Shino_Skill05_001</f>
-			<e type="setSound">Audio/Shino/Shino_skill4.ogg</e>
+			<e type="setSound">Audio/Shino/Shino_skill4.wav</e>
 			<f>Shino_Skill05_002</f>
 			<f>Shino_Skill05_003</f>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 			<f>Shino_Skill05_004</f>
 			<f>Shino_Skill05_005</f>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 			<f>Shino_Skill05_006</f>
 			<f>Shino_Skill05_007</f>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 			<f>Shino_Skill05_008</f>
 			<f>Shino_Skill05_009</f>
 			<e type="setAttackBox">f_hit</e>
-			<e type="setDSound">Audio/Effect/damage_h.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_h.wav</e>
 			<f>Shino_Skill05_010</f>
 			<f>Shino_Skill05_011</f>
 			<f>Shino_Skill05_012</f>
@@ -213,7 +213,7 @@
 			<e type="setOugis">10</e>
 			<f>Shino_Skill04_002</f>
 			<e type="setMon">BugTomado</e>
-			<e type="setSound">Audio/Shino/Shino_skill5.ogg</e>
+			<e type="setSound">Audio/Shino/Shino_skill5.wav</e>
 			<e type="setDelay">20</e>
 			<e type="setCommand">reInvincible</e>
 		</frame>
@@ -244,7 +244,7 @@
 			<f>Shino_Skill10_001</f>
 			<f>Shino_Skill10_002</f>
 			<e type="setMon">Bug</e>
-			<e type="setSound">Audio/Shino/Shino_skill1_1.ogg</e>
+			<e type="setSound">Audio/Shino/Shino_skill1_1.wav</e>
 			<e type="setDelay">10</e>
 		</frame>
 	</action>

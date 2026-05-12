@@ -34,7 +34,7 @@
 			<e type="setMove">32</e>
 			<f>Chiyo_Hurt_01</f>
 			<f>Chiyo_Hurt_02</f>
-			<!-- <e type="setSound">Audio/Chiyo/Chiyo_hurt.ogg</e> -->
+			<!-- <e type="setSound">Audio/Chiyo/Chiyo_hurt.wav</e> -->
 		</frame>
 	</action>
 
@@ -70,7 +70,7 @@
 		<frame>
 			<f>Chiyo_KnockDown_01</f>
 			<f>Chiyo_KnockDown_02</f>
-			<e type="setSound">Audio/Chiyo/Chiyo_dead.ogg</e>
+			<e type="setSound">Audio/Chiyo/Chiyo_dead.wav</e>
 		</frame>
 	</action>
 
@@ -86,22 +86,22 @@
 			<f>Chiyo_NAttack_01</f>
 			<f>Chiyo_NAttack_02</f>
 			<e type="setDelay">10</e>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Chiyo_NAttack_03</f>
 			<e type="setDelay">10</e>
 			<f>Chiyo_NAttack_04</f>
 			<e type="setMove">8</e>
 			<f>Chiyo_NAttack_05</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<e type="setDelay">10</e>
 			<f>Chiyo_NAttack_06</f>
 			<f>Chiyo_NAttack_07</f>
 			<e type="setMove">16</e>
 			<f>Chiyo_NAttack_08</f>
-			<e type="setSound">Audio/Chiyo/Chiyo_combo.ogg</e>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Chiyo/Chiyo_combo.wav</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<e type="setAttackBox">l_hit</e>
 			<e type="setDelay">10</e>
 		</frame>
@@ -118,7 +118,7 @@
 		</data>
 		<frame>
 			<f>Chiyo_Skill01_01</f>
-			<e type="setSound">Audio/Chiyo/Chiyo_skill1.ogg</e>
+			<e type="setSound">Audio/Chiyo/Chiyo_skill1.wav</e>
 			<f>Chiyo_Skill01_02</f>
 			<f>Chiyo_Skill01_03</f>
 			<f>Chiyo_Skill01_04</f>
@@ -138,7 +138,7 @@
 		</data>
 		<frame>
 
-			<e type="setSound">Audio/Chiyo/Chiyo_skill2.ogg</e>
+			<e type="setSound">Audio/Chiyo/Chiyo_skill2.wav</e>
 			<e type="setMonAttack">1</e>
 			<f>Chiyo_Skill02_01</f>
 			<f>Chiyo_Skill02_02</f>
@@ -158,10 +158,10 @@
 			<p type="combatPoint">2460</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Chiyo/Chiyo_skill3.ogg</e>
+			<e type="setSound">Audio/Chiyo/Chiyo_skill3.wav</e>
 			<e type="setMonAttack">2</e>
 			<f>Chiyo_Skill03_01</f>
-			<e type="setSound">Audio/Effect/kuilei.ogg</e>
+			<e type="setSound">Audio/Effect/kuilei.wav</e>
 			<f>Chiyo_Skill03_02</f>
 			<f>Chiyo_Skill03_03</f>
 			<f>Chiyo_Skill03_04</f>
@@ -178,10 +178,10 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<e type="setCommand">setInvincible</e>
 			<f>Chiyo_Skill04_001</f>
-			<e type="setSound">Audio/Chiyo/Chiyo_skill4.ogg</e>
+			<e type="setSound">Audio/Chiyo/Chiyo_skill4.wav</e>
 			<e type="setBuff">1000</e>
 			<f>Chiyo_Skill04_002</f>
 			<f>Chiyo_Skill04_003</f>
@@ -200,15 +200,15 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Chiyo_Skill05_001</f>
 			<f>Chiyo_Skill05_002</f>
 			<f>Chiyo_Skill05_003</f>
-			<e type="setSound">Audio/Effect/poof.ogg</e>
+			<e type="setSound">Audio/Effect/poof.wav</e>
 			<f>Chiyo_Skill05_004</f>
 			<e type="setOugis">10</e>
 			<f>Chiyo_Skill05_005</f>
-			<e type="setSound">Audio/Chiyo/Chiyo_skill5.ogg</e>
+			<e type="setSound">Audio/Chiyo/Chiyo_skill5.wav</e>
 			<f>Chiyo_Skill05_006</f>
 			<f>Chiyo_Skill05_007</f>
 			<f>Chiyo_Skill05_008</f>
@@ -232,59 +232,59 @@
 			<f>Chiyo_Skill05_016</f>
 			<f>Chiyo_Skill05_017</f>
 			<e type="setAttackBox">o2_hit</e>
-			<e type="setDSound">Audio/Effect/damage_h.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_h.wav</e>
 			<f>Chiyo_Skill05_018</f>
 			<f>Chiyo_Skill05_019</f>
-			<e type="setSound">Audio/Effect/poof.ogg</e>
+			<e type="setSound">Audio/Effect/poof.wav</e>
 			<f>Chiyo_Skill05_020</f>
 			<f>Chiyo_Skill05_021</f>
-			<e type="setSound">Audio/Chiyo/Chiyo_skill5_1.ogg</e>
+			<e type="setSound">Audio/Chiyo/Chiyo_skill5_1.wav</e>
 			<f>Chiyo_Skill05_022</f>
 			<f>Chiyo_Skill05_023</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Chiyo_Skill05_024</f>
 			<f>Chiyo_Skill05_025</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Chiyo_Skill05_024</f>
 			<f>Chiyo_Skill05_025</f>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Chiyo_Skill05_026</f>
-			<e type="setSound">Audio/Effect/poof.ogg</e>
+			<e type="setSound">Audio/Effect/poof.wav</e>
 			<f>Chiyo_Skill05_027</f>
 			<f>Chiyo_Skill05_028</f>
 			<f>Chiyo_Skill05_029</f>
 			<e type="setAttackBox">f_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o2.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o2.wav</e>
 			<f>Chiyo_Skill05_030</f>
 			<f>Chiyo_Skill05_031</f>
-			<e type="setSound">Audio/Effect/poof.ogg</e>
+			<e type="setSound">Audio/Effect/poof.wav</e>
 			<f>Chiyo_Skill05_032</f>
 			<f>Chiyo_Skill05_033</f>
 			<f>Chiyo_Skill05_034</f>
 			<f>Chiyo_Skill05_035</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<f>Chiyo_Skill05_036</f>
 			<f>Chiyo_Skill05_037</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setSound">Audio/Effect/poof.ogg</e>
+			<e type="setSound">Audio/Effect/poof.wav</e>
 			<f>Chiyo_Skill05_038</f>
 			<f>Chiyo_Skill05_039</f>
 			<f>Chiyo_Skill05_040</f>
 			<f>Chiyo_Skill05_041</f>
-			<e type="setSound">Audio/Chiyo/Chiyo_skill5_2.ogg</e>
+			<e type="setSound">Audio/Chiyo/Chiyo_skill5_2.wav</e>
 			<f>Chiyo_Skill05_042</f>
 			<f>Chiyo_Skill05_043</f>
 			<f>Chiyo_Skill05_044</f>
 			<e type="setAttackBox">f_hit</e>
-			<e type="setDSound">Audio/Effect/damage_h.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_h.wav</e>
 			<f>Chiyo_Skill05_045</f>
 			<f>Chiyo_Skill05_046</f>
 			<f>Chiyo_Skill05_047</f>
-			<e type="setSound">Audio/Effect/poof.ogg</e>
+			<e type="setSound">Audio/Effect/poof.wav</e>
 			<f>Chiyo_Skill05_048</f>
 			<e type="setCommand">reInvincible</e>
 		</frame>

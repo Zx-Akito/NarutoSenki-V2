@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Tobirama_Hurt_01</f>
 			<f>Tobirama_Hurt_02</f>
-			<e type="setSound">Audio/Tobirama/Tobirama_hurt.ogg</e>
+			<e type="setSound">Audio/Tobirama/Tobirama_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -69,7 +69,7 @@
 		<frame>
 			<f>Tobirama_KnockDown_01</f>
 			<f>Tobirama_KnockDown_02</f>
-			<e type="setSound">Audio/Tobirama/Tobirama_dead.ogg</e>
+			<e type="setSound">Audio/Tobirama/Tobirama_dead.wav</e>
 		</frame>
 	</action>
 
@@ -88,7 +88,7 @@
 			<f>Tobirama_NAttack_04</f>
 			<f>Tobirama_NAttack_05</f>
 			<e type="setAttackBox">n_hit</e>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<f>Tobirama_NAttack_06</f>
 			<f>Tobirama_NAttack_07</f>
 			<f>Tobirama_NAttack_08</f>
@@ -98,7 +98,7 @@
 			<e type="setMove">8</e>
 			<f>Tobirama_NAttack_11</f>
 			<e type="setAttackBox">n_hit</e>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<f>Tobirama_NAttack_12</f>
 			<f>Tobirama_NAttack_13</f>
 			<f>Tobirama_NAttack_14</f>
@@ -106,7 +106,7 @@
 			<e type="setMove">16</e>
 			<f>Tobirama_NAttack_16</f>
 			<f>Tobirama_NAttack_17</f>
-			<e type="setSound">Audio/Tobirama/Tobirama_combo.ogg</e>
+			<e type="setSound">Audio/Tobirama/Tobirama_combo.wav</e>
 			<e type="setAttackBox">l_hit</e>
 			<f>Tobirama_NAttack_18</f>
 			<f>Tobirama_NAttack_19</f>
@@ -123,7 +123,7 @@
 			<p type="combatPoint">960</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Tobirama/Tobirama_skill1.ogg</e>
+			<e type="setSound">Audio/Tobirama/Tobirama_skill1.wav</e>
 			<f>Tobirama_Skill05_01</f>
 			<f>Tobirama_Skill05_02</f>
 			<f>Tobirama_Skill05_03</f>
@@ -141,7 +141,7 @@
 			<p type="combatPoint">1680</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Tobirama/Tobirama_skill2.ogg</e>
+			<e type="setSound">Audio/Tobirama/Tobirama_skill2.wav</e>
 			<f>Tobirama_Skill02_03</f>
 			<f>Tobirama_Skill02_04</f>
 			<f>Tobirama_Skill02_05</f>
@@ -168,7 +168,7 @@
 			<p type="combatPoint">2580</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Tobirama/Tobirama_skill3.ogg</e>
+			<e type="setSound">Audio/Tobirama/Tobirama_skill3.wav</e>
 			<f>Tobirama_Skill03_03</f>
 			<f>Tobirama_Skill03_04</f>
 			<f>Tobirama_Skill03_05</f>
@@ -188,15 +188,15 @@
 			<p type="combatPoint">3360</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Tobirama_Skill04_01</f>
-			<e type="setSound">Audio/Tobirama/Tobirama_skill4.ogg</e>
+			<e type="setSound">Audio/Tobirama/Tobirama_skill4.wav</e>
 			<f>Tobirama_Skill04_02</f>
 			<e type="setMove">64</e>
 			<f>Tobirama_Skill04_03</f>
 			<f>Tobirama_Skill04_04</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o.wav</e>
 			<f>Tobirama_Skill04_05</f>
 			<f>Tobirama_Skill04_06</f>
 			<e type="setShadow">10</e>
@@ -204,7 +204,7 @@
 			<f>Tobirama_Skill04_07</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">bf_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o2.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o2.wav</e>
 			<f>Tobirama_Skill04_08</f>
 			<e type="setJump">true</e>
 			<f>Tobirama_Skill04_09</f>
@@ -219,8 +219,8 @@
 			<e type="setShadow">10</e>
 			<e type="setDelay">10</e>
 			<f>Tobirama_Skill04_13</f>
-			<e type="setSound">Audio/Tobirama/Tobirama_skill4_1.ogg</e>
-			<e type="setSound">Audio/Effect/water_effect.ogg</e>
+			<e type="setSound">Audio/Tobirama/Tobirama_skill4_1.wav</e>
+			<e type="setSound">Audio/Effect/water_effect.wav</e>
 			<f>Tobirama_Skill04_14</f>
 			<e type="setMon">Suiji</e>
 			<e type="setDelay">10</e>
@@ -237,7 +237,7 @@
 			<p type="combatPoint">9080</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Tobirama_Skill05_01</f>
 			<e type="setCommand">setInvincible</e>
 			<f>Tobirama_Skill05_02</f>
@@ -245,43 +245,43 @@
 			<f>Tobirama_Skill05_03</f>
 			<e type="setCommand">findTarget</e>
 			<e type="setSkillEffect">Hiraishin2</e>
-			<e type="setSound">Audio/Effect/hiraishin_effect.ogg</e>
+			<e type="setSound">Audio/Effect/hiraishin_effect.wav</e>
 			<e type="setCommand">setTransport</e>
 			<f>Tobirama_Skill05_04</f>
 			<f>Tobirama_Skill05_05</f>
 			<f>Tobirama_Skill05_06</f>
 			<f>Tobirama_Skill05_07</f>
 			<e type="setMove">16</e>
-			<e type="setSound">Audio/Tobirama/Tobirama_skill5_1.ogg</e>
+			<e type="setSound">Audio/Tobirama/Tobirama_skill5_1.wav</e>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o.wav</e>
 			<f>Tobirama_Skill05_08</f>
 			<f>Tobirama_Skill05_09</f>
 			<e type="setCommand">findTarget</e>
 			<e type="setSkillEffect">Hiraishin2</e>
-			<e type="setSound">Audio/Effect/hiraishin_effect.ogg</e>
+			<e type="setSound">Audio/Effect/hiraishin_effect.wav</e>
 			<e type="setCommand">setTransport</e>
 			<f>Tobirama_Skill05_10</f>
 			<f>Tobirama_Skill05_11</f>
 			<f>Tobirama_Skill05_12</f>
 			<f>Tobirama_Skill05_13</f>
 			<e type="setMove">16</e>
-			<e type="setSound">Audio/Tobirama/Tobirama_skill5_2.ogg</e>
+			<e type="setSound">Audio/Tobirama/Tobirama_skill5_2.wav</e>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o.wav</e>
 			<f>Tobirama_Skill05_14</f>
 			<f>Tobirama_Skill05_15</f>
 			<e type="setCommand">findTarget</e>
 			<e type="setSkillEffect">Hiraishin2</e>
-			<e type="setSound">Audio/Effect/hiraishin_effect.ogg</e>
+			<e type="setSound">Audio/Effect/hiraishin_effect.wav</e>
 			<e type="setCommand">setTransport</e>
 			<f>Tobirama_Skill05_16</f>
 			<f>Tobirama_Skill05_17</f>
 			<f>Tobirama_Skill05_18</f>
 			<f>Tobirama_Skill05_19</f>
-			<e type="setSound">Audio/Tobirama/Tobirama_skill5_3.ogg</e>
+			<e type="setSound">Audio/Tobirama/Tobirama_skill5_3.wav</e>
 			<e type="setAttackBox">f_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o2.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o2.wav</e>
 			<e type="setJump">true</e>
 			<f>Tobirama_Skill05_19_1</f>
 			<f>Tobirama_Skill05_20</f>
@@ -290,7 +290,7 @@
 			<e type="setDelay">50</e>
 			<e type="setCommand">findTarget</e>
 			<e type="setSkillEffect">Hiraishin2</e>
-			<e type="setSound">Audio/HokageMinato/HokageMinato_skill1_1.ogg</e>
+			<e type="setSound">Audio/HokageMinato/HokageMinato_skill1_1.wav</e>
 			<e type="setCommand">setTransport</e>
 			<f>Tobirama_Skill05_23</f>
 			<f>Tobirama_Skill05_24</f>
@@ -299,7 +299,7 @@
 			<f>Tobirama_Skill05_27</f>
 			<f>Tobirama_Skill05_28</f>
 			<f>Tobirama_Skill05_29</f>
-			<e type="setSound">Audio/Tobirama/Tobirama_skill5_4.ogg</e>
+			<e type="setSound">Audio/Tobirama/Tobirama_skill5_4.wav</e>
 			<f>Tobirama_Skill05_30</f>
 			<f>Tobirama_Skill05_31</f>
 			<e type="setMon">Suijin</e>

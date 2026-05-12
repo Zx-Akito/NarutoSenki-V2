@@ -64,7 +64,7 @@
 		</data>
 		<frame>
 			<f>BugClone_Move_001</f>
-			<e type="setSound">Audio/Shino/Shino_skill2_1.ogg</e>
+			<e type="setSound">Audio/Shino/Shino_skill2_1.wav</e>
 			<e type="setAttackBox">s_hit</e>
 			<f>BugClone_Move_002</f>
 			<f>BugClone_Move_003</f>

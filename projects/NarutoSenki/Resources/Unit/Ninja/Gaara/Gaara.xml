@@ -36,7 +36,7 @@
 			<e type="setMove">32</e>
 			<f>Gaara_Hurt_01</f>
 			<f>Gaara_Hurt_02</f>
-			<e type="setSound">Audio/Gaara/Gaara_hurt.ogg</e>
+			<e type="setSound">Audio/Gaara/Gaara_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -72,7 +72,7 @@
 		<frame>
 			<f>Gaara_KnockDown_01</f>
 			<f>Gaara_KnockDown_02</f>
-			<e type="setSound">Audio/Gaara/Gaara_dead.ogg</e>
+			<e type="setSound">Audio/Gaara/Gaara_dead.wav</e>
 		</frame>
 	</action>
 
@@ -89,7 +89,7 @@
 			<f>Gaara_NAttack_02</f>
 			<e type="setDelay">10</e>
 			<f>Gaara_NAttack_03</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Gaara_NAttack_04</f>
 			<f>Gaara_NAttack_05</f>
@@ -100,7 +100,7 @@
 			<e type="setAttackBox">n_hit</e>
 			<f>Gaara_NAttack_08</f>
 			<f>Gaara_NAttack_09</f>
-			<e type="setSound">Audio/Gaara/Gaara_combo.ogg</e>
+			<e type="setSound">Audio/Gaara/Gaara_combo.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Gaara_NAttack_10</f>
 			<f>Gaara_NAttack_11</f>
@@ -122,11 +122,11 @@
 		</data>
 		<frame>
 			<f>Gaara_Skill01_01</f>
-			<e type="setSound">Audio/Gaara/Gaara_skill0.ogg</e>
+			<e type="setSound">Audio/Gaara/Gaara_skill0.wav</e>
 			<e type="setMove">8</e>
 			<f>Gaara_Skill01_02</f>
 			<f>Gaara_Skill01_03</f>
-			<e type="setSound">Audio/Gaara/Gaara_skill0_1.ogg</e>
+			<e type="setSound">Audio/Gaara/Gaara_skill0_1.wav</e>
 			<f>Gaara_Skill01_04</f>
 			<e type="setAttackBox">c_hit</e>
 			<f>Gaara_Skill01_05</f>
@@ -150,7 +150,7 @@
 		</data>
 		<frame>
 			<f>Gaara_Skill03_01</f>
-			<e type="setSound">Audio/Gaara/Gaara_skill2.ogg</e>
+			<e type="setSound">Audio/Gaara/Gaara_skill2.wav</e>
 			<f>Gaara_Skill03_02</f>
 			<f>Gaara_Skill03_03</f>
 			<e type="setMon">SandHand</e>
@@ -171,7 +171,7 @@
 		</data>
 		<frame>
 			<f>Gaara_Skill02_001</f>
-			<e type="setSound">Audio/Gaara/Gaara_skill3.ogg</e>
+			<e type="setSound">Audio/Gaara/Gaara_skill3.wav</e>
 			<e type="setMon">SandBall</e>
 			<f>Gaara_Skill02_002</f>
 			<f>Gaara_Skill02_003</f>
@@ -191,7 +191,7 @@
 			<p type="combatPoint">3300</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Gaara_Skill06_01</f>
 			<e type="setDelay">10</e>
 			<f>Gaara_Skill06_02</f>
@@ -199,7 +199,7 @@
 			<f>Gaara_Skill06_04</f>
 			<e type="setMon">Sabaku</e>
 			<f>Gaara_Skill06_05</f>
-			<e type="setSound">Audio/Gaara/Gaara_skill5.ogg</e>
+			<e type="setSound">Audio/Gaara/Gaara_skill5.wav</e>
 			<f>Gaara_Skill06_06</f>
 			<f>Gaara_Skill06_07</f>
 			<f>Gaara_Skill06_08</f>
@@ -222,7 +222,7 @@
 			<p type="combatPoint">8000</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Gaara_Skill06_06</f>
 			<e type="setCommand">setInvincible</e>
 			<f>Gaara_Skill06_07</f>
@@ -293,7 +293,7 @@
 		</data>
 		<frame>
 			<f>Gaara_Skill12_001</f>
-			<e type="setSound">Audio/Gaara/Gaara_skill1.ogg</e>
+			<e type="setSound">Audio/Gaara/Gaara_skill1.wav</e>
 			<e type="setMon">SandWave</e>
 			<f>Gaara_Skill12_002</f>
 			<e type="setDelay">10</e>

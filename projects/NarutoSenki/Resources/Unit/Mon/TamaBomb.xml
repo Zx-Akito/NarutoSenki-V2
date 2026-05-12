@@ -58,7 +58,7 @@
 			<e type="setJump">true</e>
 			<e type="setDelay">80</e>
 			<f>TamaBomb_Move_002</f>
-			<e type="setSound">Audio/Effect/bom.ogg</e>
+			<e type="setSound">Audio/Effect/bom.wav</e>
 			<e type="setAttackBox">b_hit</e>
 			<f>TamaBomb_Move_003</f>
 			<f>TamaBomb_Move_004</f>

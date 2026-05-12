@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Tsunade_Hurt_01</f>
 			<f>Tsunade_Hurt_02</f>
-			<e type="setSound">Audio/Tsunade/Tsunade_hurt.ogg</e>
+			<e type="setSound">Audio/Tsunade/Tsunade_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -69,7 +69,7 @@
 			<f>Tsunade_KnockDown_01</f>
 			<f>Tsunade_KnockDown_02</f>
 			<f>Tsunade_KnockDown_03</f>
-			<e type="setSound">Audio/Tsunade/Tsunade_dead.ogg</e>
+			<e type="setSound">Audio/Tsunade/Tsunade_dead.wav</e>
 		</frame>
 	</action>
 
@@ -86,23 +86,23 @@
 			<f>Tsunade_NAttack_002</f>
 			<e type="setDelay">10</e>
 			<f>Tsunade_NAttack_003</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Tsunade_NAttack_004</f>
 			<f>Tsunade_NAttack_005</f>
 			<e type="setMove">8</e>
 			<f>Tsunade_NAttack_006</f>
 			<f>Tsunade_NAttack_007</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Tsunade_NAttack_008</f>
 			<f>Tsunade_NAttack_009</f>
-			<e type="setSound">Audio/Tsunade/Tsunade_combo.ogg</e>
+			<e type="setSound">Audio/Tsunade/Tsunade_combo.wav</e>
 			<e type="setMove">16</e>
 			<f>Tsunade_NAttack_010</f>
 			<e type="setDelay">10</e>
 			<f>Tsunade_NAttack_011</f>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<e type="setAttackBox">l_hit</e>
 
 		</frame>
@@ -119,9 +119,9 @@
 		</data>
 		<frame>
 			<f>Tsunade_Skill02_01</f>
-			<e type="setSound">Audio/Tsunade/Tsunade_skill2.ogg</e>
+			<e type="setSound">Audio/Tsunade/Tsunade_skill2.wav</e>
 			<f>Tsunade_Skill02_02</f>
-			<e type="setSound">Audio/Effect/break_sound.ogg</e>
+			<e type="setSound">Audio/Effect/break_sound.wav</e>
 			<e type="setAttackBox">a_hit</e>
 			<f>Tsunade_Skill02_03</f>
 			<f>Tsunade_Skill02_04</f>
@@ -130,10 +130,10 @@
 			<f>Tsunade_Skill02_07</f>
 			<e type="setAttackBox">a_hit</e>
 			<f>Tsunade_Skill02_08</f>
-			<e type="setSound">Audio/Tsunade/Tsunade_skill2_1.ogg</e>
+			<e type="setSound">Audio/Tsunade/Tsunade_skill2_1.wav</e>
 			<f>Tsunade_Skill02_09</f>
 			<e type="setAttackBox">a_hit</e>
-			<e type="setSound">Audio/Effect/break_sound.ogg</e>
+			<e type="setSound">Audio/Effect/break_sound.wav</e>
 			<f>Tsunade_Skill02_10</f>
 			<f>Tsunade_Skill02_11</f>
 			<e type="setAttackBox">a_hit</e>
@@ -155,13 +155,13 @@
 		</data>
 		<frame>
 			<f>Tsunade_Skill01_01</f>
-			<e type="setSound">Audio/Tsunade/Tsunade_skill1.ogg</e>
+			<e type="setSound">Audio/Tsunade/Tsunade_skill1.wav</e>
 			<e type="setCharge">280</e>
 			<f>Tsunade_Skill01_02</f>
 			<f>Tsunade_Skill01_03</f>
 			<f>Tsunade_Skill01_04</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o.wav</e>
 			<f>Tsunade_Skill01_05</f>
 			<f>Tsunade_Skill01_06</f>
 			<e type="setAttackBox">c_hit</e>
@@ -169,7 +169,7 @@
 			<f>Tsunade_Skill01_08</f>
 			<f>Tsunade_Skill01_09</f>
 			<e type="setAttackBox">sl_hit</e>
-			<e type="setSound">Audio/Effect/damage_haken.ogg</e>
+			<e type="setSound">Audio/Effect/damage_haken.wav</e>
 			<f>Tsunade_Skill01_10</f>
 			<f>Tsunade_Skill01_11</f>
 		</frame>
@@ -185,7 +185,7 @@
 		</data>
 		<frame>
 			<f>Tsunade_Skill03_01</f>
-			<e type="setSound">Audio/Tsunade/Tsunade_skill3.ogg</e>
+			<e type="setSound">Audio/Tsunade/Tsunade_skill3.wav</e>
 			<f>Tsunade_Skill03_02</f>
 			<f>Tsunade_Skill03_03</f>
 			<f>Tsunade_Skill03_04</f>
@@ -204,16 +204,16 @@
 			<p type="combatPoint">3360</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Tsunade_Skill04_01</f>
-			<e type="setSound">Audio/Tsunade/Tsunade_skill4_1.ogg</e>
+			<e type="setSound">Audio/Tsunade/Tsunade_skill4_1.wav</e>
 			<f>Tsunade_Skill04_02</f>
 			<e type="setCharge">280</e>
 			<e type="setDelay">10</e>
 			<f>Tsunade_Skill04_03</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o.wav</e>
 			<f>Tsunade_Skill04_04</f>
 			<f>Tsunade_Skill04_06</f>
 			<e type="setShadow">10</e>
@@ -221,9 +221,9 @@
 			<e type="setMove">32</e>
 			<f>Tsunade_Skill04_08</f>
 			<e type="setShadow">10</e>
-			<e type="setSound">Audio/Tsunade/Tsunade_skill4_2.ogg</e>
+			<e type="setSound">Audio/Tsunade/Tsunade_skill4_2.wav</e>
 			<e type="setAttackBox">f_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o2.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o2.wav</e>
 			<f>Tsunade_Skill04_09</f>
 			<f>Tsunade_Skill04_10</f>
 			<e type="setShadow">10</e>
@@ -243,9 +243,9 @@
 			<e type="setShadow">10</e>
 			<f>Tsunade_Skill04_17</f>
 			<f>Tsunade_Skill04_18</f>
-			<e type="setSound">Audio/Tsunade/Tsunade_skill4_3.ogg</e>
+			<e type="setSound">Audio/Tsunade/Tsunade_skill4_3.wav</e>
 			<e type="setMon">Tuji</e>
-			<e type="setSound">Audio/Effect/break_sound2.ogg</e>
+			<e type="setSound">Audio/Effect/break_sound2.wav</e>
 			<e type="setDelay">10</e>
 		</frame>
 	</action>
@@ -260,7 +260,7 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Tsunade_Skill05_01</f>
 			<e type="setCommand">setInvincible</e>
 			<f>Tsunade_Skill05_02</f>
@@ -268,7 +268,7 @@
 			<f>Tsunade_Skill05_04</f>
 			<f>Tsunade_Skill05_05</f>
 			<f>Tsunade_Skill05_06</f>
-			<e type="setSound">Audio/Tsunade/Tsunade_skill5.ogg</e>
+			<e type="setSound">Audio/Tsunade/Tsunade_skill5.wav</e>
 			<f>Tsunade_Skill05_07</f>
 			<f>Tsunade_Skill05_08</f>
 			<f>Tsunade_Skill05_09</f>
@@ -340,21 +340,21 @@
 			<f>Tsunade_Skill12_01</f>
 			<f>Tsunade_Skill12_02</f>
 			<f>Tsunade_Skill12_03</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">c_hit</e>
 			<f>Tsunade_Skill12_04</f>
 			<e type="setMove">8</e>
 			<f>Tsunade_Skill12_05</f>
 			<f>Tsunade_Skill12_06</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">c_hit</e>
 			<f>Tsunade_Skill12_07</f>
 			<f>Tsunade_Skill12_08</f>
 			<e type="setMove">16</e>
-			<e type="setSound">Audio/Tsunade/Tsunade_skill11.ogg</e>
+			<e type="setSound">Audio/Tsunade/Tsunade_skill11.wav</e>
 			<f>Tsunade_Skill12_09</f>
 			<f>Tsunade_Skill12_10</f>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<e type="setAttackBox">c_hit</e>
 		</frame>
 	</action>

@@ -65,10 +65,10 @@ bool GameOver::init(RenderTexture *snapshoot)
 void GameOver::listResult()
 {
 	if (getGameLayer()->_isHardCoreGame)
-		SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/battle_over1.ogg");
+		SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/battle_over1.wav");
 
 	else
-		SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/battle_over.ogg");
+		SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/battle_over.wav");
 
 	auto currPlayer = getGameLayer()->currentPlayer;
 	auto half = Sprite::createWithSpriteFrameName(format("{}_half.png", currPlayer->getName()).c_str());
@@ -438,6 +438,11 @@ void GameOver::listResult()
 					}
 				}
 			}
+			else
+			{
+				const int loseNum = KTools::readLoseNumFromSQL(resultChar) + 1;
+				KTools::saveSQLite("CharRecord", "name", resultChar, "column2", std::to_string(loseNum), false);
+			}
 		}
 	}
 
@@ -467,7 +472,7 @@ void GameOver::onBackToMenu(Ref *sender)
 {
 	if (!exitLayer)
 	{
-		SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/select.ogg");
+		SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/select.wav");
 		exitLayer = Layer::create();
 
 		auto exit_bg = Sprite::createWithSpriteFrameName("confirm_bg.png");
@@ -496,7 +501,7 @@ void GameOver::onBackToMenu(Ref *sender)
 
 void GameOver::onLeft(Ref *sender)
 {
-	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.ogg");
+	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.wav");
 
 	getGameLayer()->_isExiting = true;
 	Director::sharedDirector()->popScene();
@@ -504,7 +509,7 @@ void GameOver::onLeft(Ref *sender)
 
 void GameOver::onCancel(Ref *sender)
 {
-	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/cancel.ogg");
+	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/cancel.wav");
 	exitLayer->removeFromParent();
 	exitLayer = nullptr;
 }

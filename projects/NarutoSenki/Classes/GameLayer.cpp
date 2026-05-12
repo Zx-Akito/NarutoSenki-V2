@@ -634,7 +634,7 @@ void GameLayer::playGameOpeningAnimation(float dt)
 	getHudLayer()->playGameOpeningAnimation();
 
 	setRand();
-	auto path = random(2) == 0 ? "Audio/Menu/battle_start1.ogg" : "Audio/Menu/battle_start.ogg";
+	auto path = random(2) == 0 ? "Audio/Menu/battle_start1.wav" : "Audio/Menu/battle_start.wav";
 	SimpleAudioEngine::sharedEngine()->playEffect(path);
 
 	scheduleOnce(schedule_selector(GameLayer::onGameStart), 0.75f);
@@ -1391,17 +1391,17 @@ void GameLayer::checkBackgroundMusic(float dt)
 				int id = (mapId - 1) > 4 ? 4 : (mapId - 1);
 				if (_playNum == 0)
 				{
-					SimpleAudioEngine::sharedEngine()->playBackgroundMusic(format("Audio/Music/Battle{}.ogg", 2 + id * 3).c_str(), false);
+					SimpleAudioEngine::sharedEngine()->playBackgroundMusic(format("Audio/Music/Battle{}.m4a", 2 + id * 3).c_str(), false);
 					_playNum++;
 				}
 				else if (_playNum == 1)
 				{
-					SimpleAudioEngine::sharedEngine()->playBackgroundMusic(format("Audio/Music/Battle{}.ogg", 3 + id * 3).c_str(), false);
+					SimpleAudioEngine::sharedEngine()->playBackgroundMusic(format("Audio/Music/Battle{}.m4a", 3 + id * 3).c_str(), false);
 					_playNum++;
 				}
 				else if (_playNum == 2)
 				{
-					SimpleAudioEngine::sharedEngine()->playBackgroundMusic(format("Audio/Music/Battle{}.ogg", 1 + id * 3).c_str(), false);
+					SimpleAudioEngine::sharedEngine()->playBackgroundMusic(format("Audio/Music/Battle{}.m4a", 1 + id * 3).c_str(), false);
 					_playNum = 0;
 				}
 			}
@@ -1433,7 +1433,7 @@ void GameLayer::setOugis(CharacterBase *sender)
 
 		if (UserDefault::sharedUserDefault()->getBoolForKey("isVoice"))
 		{
-			SimpleAudioEngine::sharedEngine()->playEffect(format("Audio/Ougis/{}_ougis.ogg", ougisChar->getName()).c_str());
+			SimpleAudioEngine::sharedEngine()->playEffect(format("Audio/Ougis/{}_ougis.wav", ougisChar->getName()).c_str());
 		}
 
 		_hudLayer->setOugis(ougisChar->getName(), ougisChar->getGroup());

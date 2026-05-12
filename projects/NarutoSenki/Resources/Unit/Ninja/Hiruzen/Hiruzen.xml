@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Hiruzen_Hurt_01</f>
 			<f>Hiruzen_Hurt_02</f>
-			<e type="setSound">Audio/Hiruzen/Hiruzen_hurt.ogg</e>
+			<e type="setSound">Audio/Hiruzen/Hiruzen_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -70,7 +70,7 @@
 			<f>Hiruzen_KnockDown_001</f>
 			<f>Hiruzen_KnockDown_002</f>
 			<f>Hiruzen_KnockDown_003</f>
-			<e type="setSound">Audio/Hiruzen/Hiruzen_dead.ogg</e>
+			<e type="setSound">Audio/Hiruzen/Hiruzen_dead.wav</e>
 		</frame>
 	</action>
 
@@ -86,23 +86,23 @@
 			<f>Hiruzen_NAttack_001</f>
 			<f>Hiruzen_NAttack_002</f>
 			<f>Hiruzen_NAttack_003</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Hiruzen_NAttack_004</f>
 			<e type="setDelay">10</e>
 			<f>Hiruzen_NAttack_005</f>
 			<e type="setMove">8</e>
 			<f>Hiruzen_NAttack_006</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<e type="setDelay">10</e>
 			<f>Hiruzen_NAttack_007</f>
 			<f>Hiruzen_NAttack_008</f>
-			<e type="setSound">Audio/Hiruzen/Hiruzen_combo.ogg</e>
+			<e type="setSound">Audio/Hiruzen/Hiruzen_combo.wav</e>
 			<f>Hiruzen_NAttack_009</f>
 			<e type="setMove">16</e>
 			<f>Hiruzen_NAttack_010</f>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<e type="setAttackBox">l_hit</e>
 			<e type="setDelay">10</e>
 		</frame>
@@ -118,7 +118,7 @@
 			<p type="combatPoint">1120</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Hiruzen/Hiruzen_skill1.ogg</e>
+			<e type="setSound">Audio/Hiruzen/Hiruzen_skill1.wav</e>
 			<f>Hiruzen_Skill01_001</f>
 			<e type="setMon">DotonPillar</e>
 			<f>Hiruzen_Skill01_002</f>
@@ -137,14 +137,14 @@
 		<frame>
 			<f>Hiruzen_Skill02_001</f>
 			<f>Hiruzen_Skill02_002</f>
-			<e type="setSound">Audio/Effect/poof.ogg</e>
+			<e type="setSound">Audio/Effect/poof.wav</e>
 			<f>Hiruzen_Skill02_004</f>
 			<f>Hiruzen_Skill02_006</f>
 			<f>Hiruzen_Skill02_007</f>
 			<f>Hiruzen_Skill02_008</f>
-			<e type="setSound">Audio/Effect/kong.ogg</e>
+			<e type="setSound">Audio/Effect/kong.wav</e>
 			<e type="setBullet">HugeSRK</e>
-			<e type="setSound">Audio/Hiruzen/Hiruzen_skill2.ogg</e>
+			<e type="setSound">Audio/Hiruzen/Hiruzen_skill2.wav</e>
 			<e type="setDelay">20</e>
 			<f>Hiruzen_Skill02_009</f>
 			<e type="setDelay">10</e>
@@ -165,7 +165,7 @@
 			<f>Hiruzen_Skill03_001</f>
 			<f>Hiruzen_Skill03_003</f>
 			<e type="setSkillEffect">Kujiyose</e>
-			<e type="setSound">Audio/Effect/poof.ogg</e>
+			<e type="setSound">Audio/Effect/poof.wav</e>
 			<f>Hiruzen_Skill03_005</f>
 			<f>Hiruzen_Skill03_006</f>
 			<f>Hiruzen_Skill03_007</f>
@@ -183,21 +183,21 @@
 			<p type="combatPoint">3180</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Hiruzen_Skill04_001</f>
 			<e type="setDelay">10</e>
 			<f>Hiruzen_Skill04_002</f>
-			<e type="setSound">Audio/Hiruzen/Hiruzen_skill4_1.ogg</e>
+			<e type="setSound">Audio/Hiruzen/Hiruzen_skill4_1.wav</e>
 			<e type="setMove">8</e>
 			<f>Hiruzen_Skill04_003</f>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o.wav</e>
 			<e type="setDelay">10</e>
 			<f>Hiruzen_Skill04_004</f>
 			<e type="setDelay">10</e>
 			<f>Hiruzen_Skill04_005</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setSound">Audio/Effect/stick_damage.ogg</e>
+			<e type="setSound">Audio/Effect/stick_damage.wav</e>
 			<f>Hiruzen_Skill04_006</f>
 			<f>Hiruzen_Skill04_007</f>
 			<e type="setAttackBox">c_hit</e>
@@ -206,7 +206,7 @@
 			<e type="setAttackBox">c_hit</e>
 			<e type="setDelay">10</e>
 			<f>Hiruzen_Skill04_010</f>
-			<e type="setSound">Audio/Hiruzen/Hiruzen_skill4_2.ogg</e>
+			<e type="setSound">Audio/Hiruzen/Hiruzen_skill4_2.wav</e>
 			<f>Hiruzen_Skill04_011</f>
 			<e type="setAttackBox">f_hit</e>
 			<f>Hiruzen_Skill04_012</f>
@@ -220,7 +220,7 @@
 			<f>Hiruzen_Skill04_017</f>
 			<e type="setDelay">10</e>
 			<f>Hiruzen_Skill04_018</f>
-			<e type="setSound">Audio/Hiruzen/Hiruzen_skill4_3.ogg</e>
+			<e type="setSound">Audio/Hiruzen/Hiruzen_skill4_3.wav</e>
 			<e type="setMon">Tuji2</e>
 			<f>Hiruzen_Skill04_019</f>
 			<e type="setDelay">30</e>
@@ -236,7 +236,7 @@
 			<p type="combatPoint">11840</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<e type="setCommand">setInvincible</e>
 			<f>Hiruzen_Skill05_002</f>
 			<f>Hiruzen_Skill05_003</f>
@@ -245,14 +245,14 @@
 			<f>Hiruzen_Skill05_005</f>
 			<f>Hiruzen_Skill05_006</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 			<e type="setDelay">10</e>
 			<f>Hiruzen_Skill05_007</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 			<e type="setDelay">10</e>
 			<f>Hiruzen_Skill05_008</f>
-			<e type="setSound">Audio/Hiruzen/Hiruzen_skill5.ogg</e>
+			<e type="setSound">Audio/Hiruzen/Hiruzen_skill5.wav</e>
 			<e type="setAttackBox">c_hit</e>
 			<e type="setDelay">10</e>
 			<f>Hiruzen_Skill05_009</f>
@@ -319,19 +319,19 @@
 			<p type="cd">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Hiruzen/Hiruzen_skill3_1.ogg</e>
+			<e type="setSound">Audio/Hiruzen/Hiruzen_skill3_1.wav</e>
 			<f>Hiruzen_Skill12_001</f>
 			<f>Hiruzen_Skill12_002</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<e type="setActionResume">20</e>
 			<f>Hiruzen_Skill12_003</f>
 			<f>Hiruzen_Skill12_002</f>
 			<f>Hiruzen_Skill12_001</f>
 			<e type="setAttackBox">ab_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Hiruzen_Skill12_004</f>
-			<e type="setSound">Audio/Hiruzen/Hiruzen_skill3_2.ogg</e>
+			<e type="setSound">Audio/Hiruzen/Hiruzen_skill3_2.wav</e>
 			<f>Hiruzen_Skill12_005</f>
 			<f>Hiruzen_Skill12_006</f>
 			<e type="setAttackBox">c_hit</e>
@@ -339,7 +339,7 @@
 			<f>Hiruzen_Skill12_008</f>
 			<f>Hiruzen_Skill12_009</f>
 			<e type="setAttackBox">b_hit</e>
-			<e type="setDSound">Audio/Effect/damage_h.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_h.wav</e>
 
 		</frame>
 	</action>

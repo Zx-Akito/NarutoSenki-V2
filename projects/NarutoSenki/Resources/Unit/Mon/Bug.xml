@@ -60,7 +60,7 @@
 		<frame>
 			<f>Bug_Move_004</f>
 			<e type="setAttackBox">a_hit</e>
-			<e type="setSound">Audio/Effect/stick_damage.ogg</e>
+			<e type="setSound">Audio/Effect/stick_damage.wav</e>
 			<e type="setDetonation">0</e>
 		</frame>
 	</action>

@@ -105,7 +105,7 @@ bool GameModeLayer::init()
 
 void GameModeLayer::backToMenu(Ref *sender)
 {
-	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/cancel.ogg");
+	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/cancel.wav");
 
 	auto menuScene = Scene::create();
 	auto menuLayer = StartMenu::create();

@@ -25,6 +25,7 @@ THE SOFTWARE.
 
 #include "CCArmatureDataManager.h"
 #include "CCTransformHelp.h"
+#include "CCDataReaderHelper.h"
 #include "CCSpriteFrameCacheHelper.h"
 
 
@@ -33,6 +34,11 @@ NS_CC_EXT_BEGIN
 static CCArmatureDataManager *s_sharedArmatureDataManager = NULL;
 
 CCArmatureDataManager *CCArmatureDataManager::sharedArmatureDataManager()
+{
+    return CCArmatureDataManager::getInstance();
+}
+
+CCArmatureDataManager *CCArmatureDataManager::getInstance()
 {
     if (s_sharedArmatureDataManager == NULL)
     {
@@ -47,7 +53,13 @@ CCArmatureDataManager *CCArmatureDataManager::sharedArmatureDataManager()
 
 void CCArmatureDataManager::purge()
 {
-    CCSpriteFrameCacheHelper::purge();
+    CCArmatureDataManager::destroyInstance();
+}
+
+void CCArmatureDataManager::destroyInstance()
+{
+    CCSpriteFrameCacheHelper::destroyInstance();
+    CCDataReaderHelper::destroyInstance();
     CC_SAFE_RELEASE_NULL(s_sharedArmatureDataManager);
 }
 
@@ -134,6 +146,7 @@ void CCArmatureDataManager::removeArmatureFileInfo(const char *configFilePath)
         }
 
         m_sRelativeDatas.erase(configFilePath);
+        CCDataReaderHelper::getInstance()->removeConfigFile(configFilePath);
     }
 }
 
@@ -237,6 +250,7 @@ void CCArmatureDataManager::addArmatureFileInfo(const char *configFilePath)
     addRelativeData(configFilePath);
 
     m_bAutoLoadSpriteFile = true;
+    CCDataReaderHelper::getInstance()->addDataFromFile(configFilePath);
 }
 
 void CCArmatureDataManager::addArmatureFileInfoAsync(const char *configFilePath, CCObject *target, SEL_SCHEDULE selector)
@@ -244,6 +258,7 @@ void CCArmatureDataManager::addArmatureFileInfoAsync(const char *configFilePath,
     addRelativeData(configFilePath);
 
     m_bAutoLoadSpriteFile = true;
+    CCDataReaderHelper::getInstance()->addDataFromFileAsync("", "", configFilePath, target, selector);
 }
 
 void CCArmatureDataManager::addArmatureFileInfo(const char *imagePath, const char *plistPath, const char *configFilePath)
@@ -251,6 +266,7 @@ void CCArmatureDataManager::addArmatureFileInfo(const char *imagePath, const cha
     addRelativeData(configFilePath);
 
     m_bAutoLoadSpriteFile = false;
+    CCDataReaderHelper::getInstance()->addDataFromFile(configFilePath);
 
     addSpriteFrameFromFile(plistPath, imagePath, configFilePath);
 }
@@ -260,6 +276,7 @@ void CCArmatureDataManager::addArmatureFileInfoAsync(const char *imagePath, cons
     addRelativeData(configFilePath);
 
     m_bAutoLoadSpriteFile = false;
+    CCDataReaderHelper::getInstance()->addDataFromFileAsync(imagePath, plistPath, configFilePath, target, selector);
 }
 
 void CCArmatureDataManager::addSpriteFrameFromFile(const char *plistPath, const char *imagePath, const char *configFilePath)
@@ -269,7 +286,7 @@ void CCArmatureDataManager::addSpriteFrameFromFile(const char *plistPath, const 
         data->plistFiles.push_back(plistPath);
     }
 
-    CCSpriteFrameCacheHelper::sharedSpriteFrameCacheHelper()->addSpriteFrameFromFile(plistPath, imagePath);
+    CCSpriteFrameCacheHelper::getInstance()->addSpriteFrameFromFile(plistPath, imagePath);
 }
 
 bool CCArmatureDataManager::isAutoLoadSpriteFile()

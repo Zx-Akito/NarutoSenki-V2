@@ -57,7 +57,7 @@
 			<f>Kuroari_Move_02</f>
 			<f>Kuroari_Move_03</f>
 			<e type="setDelay">10</e>
-			<e type="setSound">Audio/Effect/kuroari.ogg</e>
+			<e type="setSound">Audio/Effect/kuroari.wav</e>
 			<e type="setAttackBox">ct_hit</e>
 			<f>Kuroari_Move_04</f>
 			<e type="setDelay">310</e>

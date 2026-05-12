@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Hidan_Hurt_01</f>
 			<f>Hidan_Hurt_02</f>
-			<!-- <e type="setSound">Audio/Hidan/Hidan_hurt.ogg</e> -->
+			<!-- <e type="setSound">Audio/Hidan/Hidan_hurt.wav</e> -->
 		</frame>
 	</action>
 
@@ -69,7 +69,7 @@
 		<frame>
 			<f>Hidan_KnockDown_001</f>
 			<f>Hidan_KnockDown_002</f>
-			<e type="setSound">Audio/Hidan/Hidan_dead.ogg</e>
+			<e type="setSound">Audio/Hidan/Hidan_dead.wav</e>
 		</frame>
 	</action>
 
@@ -86,7 +86,7 @@
 			<f>Hidan_NAttack_002</f>
 			<f>Hidan_NAttack_003</f>
 			<e type="setAttackBox">n_hit</e>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<f>Hidan_NAttack_004</f>
 			<f>Hidan_NAttack_005</f>
 			<f>Hidan_NAttack_006</f>
@@ -96,14 +96,14 @@
 			<e type="setDelay">10</e>
 			<f>Hidan_NAttack_008</f>
 			<f>Hidan_NAttack_009</f>
-			<e type="setSound">Audio/Effect/kong.ogg</e>
+			<e type="setSound">Audio/Effect/kong.wav</e>
 			<f>Hidan_NAttack_010</f>
 			<f>Hidan_NAttack_011</f>
-			<e type="setSound">Audio/Hidan/Hidan_combo.ogg</e>
+			<e type="setSound">Audio/Hidan/Hidan_combo.wav</e>
 			<e type="setMove">16</e>
 			<f>Hidan_NAttack_012</f>
 			<e type="setAttackBox">l_hit</e>
-			<e type="setSound">Audio/Effect/kong.ogg</e>
+			<e type="setSound">Audio/Effect/kong.wav</e>
 			<e type="setDelay">10</e>
 		</frame>
 	</action>
@@ -118,7 +118,7 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Hidan/Hidan_skill1.ogg</e>
+			<e type="setSound">Audio/Hidan/Hidan_skill1.wav</e>
 			<e type="setCommand">setInvincible</e>
 			<f>Hidan_Skill01_001</f>
 			<e type="setDelay">10</e>
@@ -141,13 +141,13 @@
 			<p type="combatPoint">1460</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Hidan/Hidan_skill2.ogg</e>
+			<e type="setSound">Audio/Hidan/Hidan_skill2.wav</e>
 			<f>Hidan_Skill02_001</f>
 			<f>Hidan_Skill02_002</f>
 			<f>Hidan_Skill02_003</f>
 			<f>Hidan_Skill02_004</f>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Hidan_Skill02_005</f>
 		</frame>
 	</action>
@@ -161,24 +161,24 @@
 			<p type="combatPoint">2160</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Hidan/Hidan_skill3.ogg</e>
+			<e type="setSound">Audio/Hidan/Hidan_skill3.wav</e>
 			<f>Hidan_Skill03_001</f>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<f>Hidan_Skill03_002</f>
 			<f>Hidan_Skill03_003</f>
 			<e type="setAttackBox">s_hit</e>
 			<f>Hidan_Skill03_004</f>
 			<f>Hidan_Skill03_001</f>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<f>Hidan_Skill03_002</f>
 			<f>Hidan_Skill03_003</f>
 			<e type="setAttackBox">s_hit</e>
 			<f>Hidan_Skill03_004</f>
 			<f>Hidan_Skill03_001</f>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<f>Hidan_Skill03_002</f>
 			<f>Hidan_Skill03_003</f>
 			<e type="setAttackBox">s_hit</e>
@@ -195,13 +195,13 @@
 			<p type="combatPoint">3800</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Hidan_Skill04_001</f>
 			<f>Hidan_Skill04_002</f>
 			<e type="setShadow">10</e>
 			<e type="setMove">32</e>
 			<f>Hidan_Skill04_003</f>
-			<e type="setSound">Audio/Hidan/Hidan_skill4.ogg</e>
+			<e type="setSound">Audio/Hidan/Hidan_skill4.wav</e>
 			<e type="setMon">Wave</e>
 			<f>Hidan_Skill04_004</f>
 			<e type="setShadow">10</e>
@@ -213,13 +213,13 @@
 			<f>Hidan_Skill04_009</f>
 			<f>Hidan_Skill04_010</f>
 			<e type="setAttackBox">ab_hit</e>
-			<e type="setSound">Audio/Hidan/Hidan_skill4_1.ogg</e>
+			<e type="setSound">Audio/Hidan/Hidan_skill4_1.wav</e>
 			<f>Hidan_Skill04_011</f>
 			<e type="setAttackBox">ab_hit</e>
 			<f>Hidan_Skill04_012</f>
 			<f>Hidan_Skill04_013</f>
 			<e type="setAttackBox">b_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Hidan_Skill04_014</f>
 			<f>Hidan_Skill04_015</f>
 		</frame>
@@ -234,7 +234,7 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Hidan_Skill05_001</f>
 			<e type="setCommand">setInvincible</e>
 			<f>Hidan_Skill05_002</f>

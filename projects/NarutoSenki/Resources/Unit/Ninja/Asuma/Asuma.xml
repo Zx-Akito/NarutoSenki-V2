@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Asuma_Hurt_01</f>
 			<f>Asuma_Hurt_02</f>
-			<e type="setSound">Audio/Asuma/asuma_hurt.ogg</e>
+			<e type="setSound">Audio/Asuma/asuma_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -69,7 +69,7 @@
 		<frame>
 			<f>Asuma_KnockDown_001</f>
 			<f>Asuma_KnockDown_002</f>
-			<e type="setSound">Audio/Asuma/asuma_dead.ogg</e>
+			<e type="setSound">Audio/Asuma/asuma_dead.wav</e>
 		</frame>
 	</action>
 
@@ -86,19 +86,19 @@
 			<f>Asuma_NAttack_002</f>
 			<f>Asuma_NAttack_003</f>
 			<e type="setAttackBox">n_hit</e>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<f>Asuma_NAttack_004</f>
 			<e type="setMove">8</e>
 			<f>Asuma_NAttack_005</f>
 			<e type="setAttackBox">n_hit</e>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<f>Asuma_NAttack_006</f>
 			<e type="setMove">16</e>
 			<e type="setDelay">10</e>
 			<f>Asuma_NAttack_007</f>
-			<e type="setSound">Audio/Asuma/asuma_combo.ogg</e>
+			<e type="setSound">Audio/Asuma/asuma_combo.wav</e>
 			<f>Asuma_NAttack_008</f>
-			<e type="setSound">Audio/Effect/kong.ogg</e>
+			<e type="setSound">Audio/Effect/kong.wav</e>
 			<e type="setAttackBox">l_hit</e>
 			<f>Asuma_NAttack_009</f>
 		</frame>
@@ -115,21 +115,21 @@
 		</data>
 		<frame>
 			<f>Asuma_Skill01_001</f>
-			<e type="setSound">Audio/Asuma/asuma_skill1.ogg</e>
+			<e type="setSound">Audio/Asuma/asuma_skill1.wav</e>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Asuma_Skill01_002</f>
 			<f>Asuma_Skill01_003</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Asuma_Skill01_004</f>
 			<f>Asuma_Skill01_005</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Asuma_Skill01_006</f>
 			<f>Asuma_Skill01_007</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 		</frame>
 	</action>
 	<action name="skill02">
@@ -142,20 +142,20 @@
 			<p type="combatPoint">1840</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Asuma/asuma_skill2_1.ogg</e>
+			<e type="setSound">Audio/Asuma/asuma_skill2_1.wav</e>
 			<f>Asuma_Skill02_001</f>
 			<e type="setCharge">96</e>
 			<f>Asuma_Skill02_002</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<f>Asuma_Skill02_003</f>
 			<f>Asuma_Skill02_004</f>
 			<e type="setAttackBox">ac_hit</e>
 			<f>Asuma_Skill02_005</f>
 			<f>Asuma_Skill02_006</f>
-			<e type="setSound">Audio/Asuma/asuma_skill2_2.ogg</e>
+			<e type="setSound">Audio/Asuma/asuma_skill2_2.wav</e>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<f>Asuma_Skill02_007</f>
 			<f>Asuma_Skill02_008</f>
 			<e type="setAttackBox">ac_hit</e>
@@ -172,17 +172,17 @@
 		</data>
 		<frame>
 			<f>Asuma_Skill03_001</f>
-			<e type="setSound">Audio/Asuma/asuma_skill3.ogg</e>
+			<e type="setSound">Audio/Asuma/asuma_skill3.wav</e>
 			<e type="setDelay">10</e>
 			<f>Asuma_Skill03_002</f>
 			<f>Asuma_Skill03_003</f>
-			<e type="setSound">Audio/Asuma/asuma_skill3_1.ogg</e>
+			<e type="setSound">Audio/Asuma/asuma_skill3_1.wav</e>
 			<f>Asuma_Skill03_004</f>
 			<e type="setChargeB">280</e>
 			<f>Asuma_Skill03_005</f>
 			<f>Asuma_Skill03_006</f>
 			<e type="setAttackBox">o2_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<f>Asuma_Skill03_007</f>
 			<f>Asuma_Skill03_008</f>
 			<f>Asuma_Skill03_009</f>
@@ -199,59 +199,59 @@
 			<p type="combatPoint">3360</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Asuma_Skill04_001</f>
-			<e type="setSound">Audio/Asuma/asuma_skill4.ogg</e>
+			<e type="setSound">Audio/Asuma/asuma_skill4.wav</e>
 			<f>Asuma_Skill04_002</f>
 			<f>Asuma_Skill04_000</f>
 			<e type="setCommand">findTarget</e>
 			<e type="setCommand">setTransport</e>
 			<f>Asuma_Skill04_003</f>
 			<f>Asuma_Skill04_004</f>
-			<e type="setSound">Audio/Asuma/asuma_skill4_1.ogg</e>
+			<e type="setSound">Audio/Asuma/asuma_skill4_1.wav</e>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Asuma_Skill04_000</f>
 			<e type="setCommand">findTarget</e>
 			<e type="setCommand">setTransport</e>
 			<f>Asuma_Skill04_005</f>
 			<f>Asuma_Skill04_006</f>
-			<e type="setSound">Audio/Asuma/asuma_skill4_2.ogg</e>
+			<e type="setSound">Audio/Asuma/asuma_skill4_2.wav</e>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Asuma_Skill04_000</f>
 			<e type="setCommand">findTarget</e>
 			<e type="setCommand">setTransport</e>
 			<f>Asuma_Skill04_007</f>
 			<f>Asuma_Skill04_008</f>
-			<e type="setSound">Audio/Asuma/asuma_skill4_3.ogg</e>
+			<e type="setSound">Audio/Asuma/asuma_skill4_3.wav</e>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Asuma_Skill04_000</f>
 			<e type="setCommand">findTarget</e>
 			<e type="setCommand">setTransport</e>
 			<f>Asuma_Skill04_005</f>
 			<f>Asuma_Skill04_006</f>
-			<e type="setSound">Audio/Asuma/asuma_skill4_1.ogg</e>
+			<e type="setSound">Audio/Asuma/asuma_skill4_1.wav</e>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Asuma_Skill04_000</f>
 			<e type="setCommand">findTarget</e>
 			<e type="setCommand">setTransport</e>
 			<f>Asuma_Skill04_007</f>
 			<f>Asuma_Skill04_008</f>
-			<e type="setSound">Audio/Asuma/asuma_skill4_5.ogg</e>
+			<e type="setSound">Audio/Asuma/asuma_skill4_5.wav</e>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Asuma_Skill04_000</f>
 			<e type="setCommand">findTarget</e>
 			<e type="setCommand">setTransport</e>
 			<f>Asuma_Skill04_009</f>
 			<e type="setDelay">10</e>
 			<f>Asuma_Skill04_010</f>
-			<e type="setSound">Audio/Asuma/asuma_skill4_6.ogg</e>
+			<e type="setSound">Audio/Asuma/asuma_skill4_6.wav</e>
 			<e type="setAttackBox">f_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<f>Asuma_Skill04_011</f>
 			<f>Asuma_Skill04_012</f>
 		</frame>
@@ -266,21 +266,21 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
-			<e type="setSound">Audio/Asuma/asuma_skill5.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
+			<e type="setSound">Audio/Asuma/asuma_skill5.wav</e>
 			<f>Asuma_Skill05_001</f>
 			<e type="setCommand">setInvincible</e>
 			<f>Asuma_Skill05_002</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 			<f>Asuma_Skill05_003</f>
 			<f>Asuma_Skill05_004</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 			<f>Asuma_Skill05_005</f>
 			<f>Asuma_Skill05_006</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 			<f>Asuma_Skill05_007</f>
 			<f>Asuma_Skill05_008</f>
 			<e type="setAttackBox">c_hit</e>
@@ -289,7 +289,7 @@
 			<f>Asuma_Skill05_009</f>
 			<f>Asuma_Skill05_010</f>
 			<e type="setAttackBox">ob_hit</e>
-			<e type="setSound">Audio/Effect/bom.ogg</e>
+			<e type="setSound">Audio/Effect/bom.wav</e>
 			<f>Asuma_Skill05_011</f>
 			<f>Asuma_Skill05_012</f>
 			<f>Asuma_Skill05_013</f>

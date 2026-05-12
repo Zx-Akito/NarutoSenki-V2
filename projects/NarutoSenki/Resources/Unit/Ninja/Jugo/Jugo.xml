@@ -34,7 +34,7 @@
 			<e type="setMove">32</e>
 			<f>Jugo_Hurt_01</f>
 			<f>Jugo_Hurt_02</f>
-			<e type="setSound">Audio/Jugo/Jugo_hurt.ogg</e>
+			<e type="setSound">Audio/Jugo/Jugo_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -73,7 +73,7 @@
 			<f>Jugo_KnockDown_01</f>
 			<f>Jugo_KnockDown_02</f>
 			<f>Jugo_KnockDown_03</f>
-			<e type="setSound">Audio/Jugo/Jugo_dead.ogg</e>
+			<e type="setSound">Audio/Jugo/Jugo_dead.wav</e>
 
 		</frame>
 	</action>
@@ -90,7 +90,7 @@
 			<f>Jugo_NAttack_01</f>
 			<f>Jugo_NAttack_02</f>
 			<f>Jugo_NAttack_03</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Jugo_NAttack_04</f>
 			<f>Jugo_NAttack_05</f>
@@ -99,17 +99,17 @@
 			<f>Jugo_NAttack_08</f>
 			<e type="setMove">8</e>
 			<f>Jugo_NAttack_09</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Jugo_NAttack_10</f>
 			<f>Jugo_NAttack_11</f>
 			<f>Jugo_NAttack_12</f>
 			<f>Jugo_NAttack_13</f>
-			<e type="setSound">Audio/Jugo/Jugo_combo.ogg</e>
+			<e type="setSound">Audio/Jugo/Jugo_combo.wav</e>
 			<e type="setMove">16</e>
 			<e type="setDelay">10</e>
 			<f>Jugo_NAttack_14</f>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<e type="setAttackBox">l_hit</e>
 			<f>Jugo_NAttack_15</f>
 		</frame>
@@ -126,14 +126,14 @@
 		</data>
 		<frame>
 			<f>Jugo_Skill01_01</f>
-			<e type="setSound">Audio/Jugo/Jugo_skill1.ogg</e>
+			<e type="setSound">Audio/Jugo/Jugo_skill1.wav</e>
 			<f>Jugo_Skill01_02</f>
 			<f>Jugo_Skill01_03</f>
 			<e type="setChargeB">192</e>
 			<e type="setDelay">10</e>
 			<f>Jugo_Skill01_04</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 		</frame>
 	</action>
 
@@ -147,20 +147,20 @@
 			<p type="combatPoint">1320</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Jugo/Jugo_skill2.ogg</e>
+			<e type="setSound">Audio/Jugo/Jugo_skill2.wav</e>
 			<f>Jugo_Skill02_01</f>
 			<e type="setCharge">280</e>
 			<f>Jugo_Skill02_02</f>
 			<f>Jugo_Skill02_03</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o.wav</e>
 			<f>Jugo_Skill02_04</f>
 			<f>Jugo_Skill02_06</f>
 			<f>Jugo_Skill02_07</f>
 			<e type="setMon">Crash</e>
 			<f>Jugo_Skill02_08</f>
 			<e type="setAttackBox">b_hit</e>
-			<e type="setDSound">Audio/Effect/damage_h.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_h.wav</e>
 			<f>Jugo_Skill02_10</f>
 		</frame>
 	</action>
@@ -175,7 +175,7 @@
 			<p type="combatPoint">2460</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Jugo/Jugo_skill3.ogg</e>
+			<e type="setSound">Audio/Jugo/Jugo_skill3.wav</e>
 			<f>Jugo_Skill03_02</f>
 			<f>Jugo_Skill03_04</f>
 			<e type="setDelay">10</e>
@@ -194,15 +194,15 @@
 			<p type="combatPoint">3120</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
-			<e type="setSound">Audio/Jugo/Jugo_skill4_1.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
+			<e type="setSound">Audio/Jugo/Jugo_skill4_1.wav</e>
 			<f>Jugo_Skill04_01</f>
 			<f>Jugo_Skill04_02</f>
 			<f>Jugo_Skill04_03</f>
 			<e type="setMove">32</e>
 			<f>Jugo_Skill04_04</f>
 			<e type="setAttackBox">f_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o2.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o2.wav</e>
 			<e type="setDelay">10</e>
 			<f>Jugo_Skill04_05</f>
 			<e type="setDelay">10</e>
@@ -213,10 +213,10 @@
 			<f>Jugo_Skill04_15</f>
 			<e type="setDelay">10</e>
 			<f>Jugo_Skill04_16</f>
-			<e type="setSound">Audio/Jugo/Jugo_skill4_2.ogg</e>
+			<e type="setSound">Audio/Jugo/Jugo_skill4_2.wav</e>
 			<e type="setMon">Crash2</e>
 			<e type="setAttackBox">b_hit</e>
-			<e type="setDSound">Audio/Effect/damage_k.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_k.wav</e>
 			<f>Jugo_Skill04_17</f>
 			<e type="setDelay">10</e>
 			<f>Jugo_Skill04_18</f>
@@ -232,7 +232,7 @@
 			<p type="combatPoint">7980</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Jugo_Skill05_01</f>
 			<e type="setDelay">10</e>
 			<e type="setCommand">setInvincible</e>
@@ -241,10 +241,10 @@
 			<f>Jugo_Skill05_03</f>
 			<f>Jugo_Skill05_04</f>
 			<f>Jugo_Skill05_05</f>
-			<e type="setSound">Audio/Jugo/Jugo_skill5.ogg</e>
+			<e type="setSound">Audio/Jugo/Jugo_skill5.wav</e>
 			<f>Jugo_Skill05_06</f>
 			<f>Jugo_Skill05_07</f>
-			<e type="setSound">Audio/Effect/break_sound3.ogg</e>
+			<e type="setSound">Audio/Effect/break_sound3.wav</e>
 			<e type="setAttackBox">a_hit</e>
 			<f>Jugo_Skill05_08</f>
 			<f>Jugo_Skill05_09</f>
@@ -311,10 +311,10 @@
 			<f>Jugo_Skill11_02</f>
 			<e type="setDelay">10</e>
 			<f>Jugo_Skill11_03</f>
-			<e type="setSound">Audio/Jugo/Jugo_skill10.ogg</e>
+			<e type="setSound">Audio/Jugo/Jugo_skill10.wav</e>
 			<f>Jugo_Skill11_04</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_h.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_h.wav</e>
 			<e type="setActionResume">20</e>
 			<e type="setDelay">10</e>
 			<f>Jugo_Skill11_05</f>

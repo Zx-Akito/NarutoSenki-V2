@@ -69,8 +69,12 @@ public:
 
 	void onNewsBtn(Ref *sender);
 	void onLoginBtn(Ref *sender);
+	void onProfileBtn(Ref *sender);
 	void onLoginLayerClose(Ref *sender);
 	void onLoginLayerSubmit(Ref *sender);
+	void onProfileLayerClose(Ref *sender);
+	void onProfileLogout(Ref *sender);
+	void rebuildLoginAccountMenu();
 	void updateLoginFieldHighlight(bool userActive);
 
 	void editBoxEditingDidBegin(cocos2d::extension::CCEditBox *editBox);
@@ -87,7 +91,9 @@ public:
 	bool isDrag;
 
 	MenuItem *login_btn;
+	Menu *loginAccountMenu;
 	Layer *loginLayer;
+	Layer *profileLayer;
 	cocos2d::extension::CCEditBox *loginUserEdit;
 	cocos2d::extension::CCEditBox *loginPwEdit;
 	Sprite *loginUserFieldBg;
@@ -113,4 +119,5 @@ private:
 	void onExit();
 
 	vector<MenuButton *> _menuArray;
+	static std::string trimmedUserDefaultString(const char *key);
 };

@@ -117,3 +117,5 @@ function save.isBGM() return save.getBool('isBGM') end
 function save.isVoice() return save.getBool('isVoice') end
 function save.isPreload() return save.getBool('isPreload') end
 function save.isHardCore() return save.getBool('isHardCore') end
+
+return save

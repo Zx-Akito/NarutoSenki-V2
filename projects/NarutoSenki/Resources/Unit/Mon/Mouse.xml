@@ -59,7 +59,7 @@
 		<frame>
 			<f>ink_boom01</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/stick_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/stick_damage.wav</e>
 			<f>ink_boom02</f>
 			<e type="setDetonation">0</e>
 		</frame>

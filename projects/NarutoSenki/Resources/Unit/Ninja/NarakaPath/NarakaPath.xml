@@ -80,7 +80,7 @@
 			<f>NarakaPath_NAttack_01</f>
 			<f>NarakaPath_NAttack_02</f>
 			<f>NarakaPath_NAttack_03</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>NarakaPath_NAttack_04</f>
 			<f>NarakaPath_NAttack_05</f>
@@ -88,17 +88,17 @@
 			<f>NarakaPath_NAttack_07</f>
 			<e type="setMove">8</e>
 			<f>NarakaPath_NAttack_08</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>NarakaPath_NAttack_09</f>
 			<f>NarakaPath_NAttack_10</f>
 			<f>NarakaPath_NAttack_11</f>
 			<f>NarakaPath_NAttack_12</f>
-			<e type="setSound">Audio/Pain/NarakaPath_combo.ogg</e>
+			<e type="setSound">Audio/Pain/NarakaPath_combo.wav</e>
 			<e type="setMove">16</e>
 			<f>NarakaPath_NAttack_13</f>
 			<e type="setAttackBox">l_hit</e>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<f>NarakaPath_NAttack_14</f>
 		</frame>
 	</action>
@@ -112,7 +112,7 @@
 			<p type="cd">1</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Pain/NarakaPath_skill1.ogg</e>
+			<e type="setSound">Audio/Pain/NarakaPath_skill1.wav</e>
 			<f>NarakaPath_Skill01_01</f>
 			<e type="setDelay">10</e>
 			<f>NarakaPath_Skill01_02</f>
@@ -131,7 +131,7 @@
 			<p type="cd">1</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Pain/NarakaPath_skill2.ogg</e>
+			<e type="setSound">Audio/Pain/NarakaPath_skill2.wav</e>
 			<f>NarakaPath_Skill01_01</f>
 			<e type="setDelay">10</e>
 			<f>NarakaPath_Skill01_02</f>

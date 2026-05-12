@@ -123,6 +123,7 @@ function SkillLayer:initInterface()
     self:addChild(bgSprite, -5)
 
     local winNum = tools.readWinNumFromSQL(self.selectHero)
+    local loseNum = tools.readLoseNumFromSQL(self.selectHero)
 
     local rank_src
     local isBlink = false
@@ -164,7 +165,7 @@ function SkillLayer:initInterface()
     self:addChild(goldBG, 9)
 
     local coinsNum = tools.readCoinFromSQL()
-    self.coinLabel = CCLabelBMFont:create(tostring(coinsNum), 'Fonts/1.fnt')
+    self.coinLabel = CCLabelBMFont:create(tools.formatCoinDisplay(coinsNum), 'Fonts/1.fnt')
     self.coinLabel:setScale(0.3)
     self.coinLabel:setAnchorPoint(0.5, 0)
     self.coinLabel:setPosition(goldBG:getPositionX() -
@@ -272,7 +273,8 @@ function SkillLayer:initInterface()
                               skill_bg:getContentSize().height / 2 + 74)
     self:addChild(detailBG2, 5)
 
-    local recordLabel = CCLabelBMFont:create(winNum .. ' bonds', 'Fonts/1.fnt')
+    local recordLabel = CCLabelBMFont:create(
+        string.format('%dW/%dL', winNum, loseNum), 'Fonts/1.fnt')
     recordLabel:setScale(0.3)
     recordLabel:setAnchorPoint(0, 0)
     recordLabel:setPosition(detailBG2:getPositionX() + 12,
@@ -284,7 +286,7 @@ function SkillLayer:initInterface()
 end
 
 function SkillLayer:onChangeBtn()
-    audio.playSound('Audio/Menu/chang_btn.ogg')
+    audio.playSound('Audio/Menu/chang_btn.wav')
     self.skillGroup:removeFromParent()
     self.changemenu:removeFromParent()
 
@@ -326,7 +328,7 @@ function SkillLayer:updateSkillGroup()
 end
 
 function SkillLayer:setSkillExplain(buttonType)
-    audio.playSound('Audio/Menu/select.ogg')
+    audio.playSound('Audio/Menu/select.wav')
     if self._skillExplain then self._skillExplain:removeFromParent() end
 
     local imgPath
@@ -374,7 +376,7 @@ function SkillLayer:onCancel()
     self._fengSprite2 = nil
 
     self:removeFromParent()
-    audio.playSound('Audio/Menu/cancel.ogg')
+    audio.playSound('Audio/Menu/cancel.wav')
 
     director.popScene()
 end

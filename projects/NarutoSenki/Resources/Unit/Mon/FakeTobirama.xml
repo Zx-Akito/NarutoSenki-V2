@@ -57,7 +57,7 @@
 		<frame>
 			<e type="setCommand">findTarget</e>
 			<e type="setSkillEffect">Hiraishin2</e>
-			<e type="setSound">Audio/Effect/hiraishin_effect.ogg</e>
+			<e type="setSound">Audio/Effect/hiraishin_effect.wav</e>
 			<e type="setCommand">setTransport</e>
 			<f>FakeTobirama_Move_01</f>
 			<f>FakeTobirama_Move_02</f>
@@ -66,7 +66,7 @@
 			<f>FakeTobirama_Move_05</f>
 			<e type="setAttackBox">ts_hit</e>
 			<e type="setSkillEffect">Hiraishin2</e>
-			<e type="setSound">Audio/Effect/hiraishin_effect2.ogg</e>
+			<e type="setSound">Audio/Effect/hiraishin_effect2.wav</e>
 			<e type="setCommand">setTransport</e>
 			<f>FakeTobirama_Move_06</f>
 			<f>FakeTobirama_Move_07</f>

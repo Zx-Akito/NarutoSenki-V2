@@ -112,7 +112,7 @@
 		<frame>
 			<f>Karasu_Skill02_02</f>
 			<f>Karasu_Skill02_03</f>
-			<e type="setSound">Audio/Effect/kuilei.ogg</e>
+			<e type="setSound">Audio/Effect/kuilei.wav</e>
 			<e type="setJump">true</e>
 			<e type="setDelay">30</e>
 			<f>Karasu_Skill02_04</f>

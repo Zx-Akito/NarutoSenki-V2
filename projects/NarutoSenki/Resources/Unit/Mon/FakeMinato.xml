@@ -56,37 +56,37 @@
 		</data>
 		<frame>
 			<f>FackMinato_Move_001</f>
-			<e type="setSound">Audio/Effect/poof.ogg</e>
+			<e type="setSound">Audio/Effect/poof.wav</e>
 			<f>FackMinato_Move_002</f>
 			<f>FackMinato_Move_003</f>
 			<e type="setAttackBox">o_hit</e>
 			<f>FackMinato_Move_004</f>
 			<f>FackMinato_Move_005</f>
-			<e type="setSound">Audio/Effect/hiraishin_effect.ogg</e>
+			<e type="setSound">Audio/Effect/hiraishin_effect.wav</e>
 			<e type="setAttackBox">c_hit</e>
 			<f>FackMinato_Move_006</f>
 			<f>FackMinato_Move_007</f>
-			<!--     <e type="setSound">Audio/Effect/hiraishin_effect.ogg</e> -->
+			<!--     <e type="setSound">Audio/Effect/hiraishin_effect.wav</e> -->
 			<e type="setAttackBox">o_hit</e>
 			<f>FackMinato_Move_008</f>
 			<f>FackMinato_Move_009</f>
-			<e type="setSound">Audio/Effect/hiraishin_effect.ogg</e>
+			<e type="setSound">Audio/Effect/hiraishin_effect.wav</e>
 			<e type="setAttackBox">c_hit</e>
 			<f>FackMinato_Move_010</f>
 			<f>FackMinato_Move_011</f>
-			<!--    <e type="setSound">Audio/Effect/hiraishin_effect.ogg</e> -->
+			<!--    <e type="setSound">Audio/Effect/hiraishin_effect.wav</e> -->
 			<e type="setAttackBox">o_hit</e>
 			<f>FackMinato_Move_012</f>
 			<f>FackMinato_Move_013</f>
-			<e type="setSound">Audio/Effect/hiraishin_effect.ogg</e>
+			<e type="setSound">Audio/Effect/hiraishin_effect.wav</e>
 			<e type="setAttackBox">c_hit</e>
 			<f>FackMinato_Move_014</f>
 			<f>FackMinato_Move_015</f>
-			<!--    <e type="setSound">Audio/Effect/hiraishin_effect.ogg</e> -->
+			<!--    <e type="setSound">Audio/Effect/hiraishin_effect.wav</e> -->
 			<e type="setAttackBox">o_hit</e>
 			<f>FackMinato_Move_016</f>
 			<f>FackMinato_Move_017</f>
-			<e type="setSound">Audio/Effect/hiraishin_effect.ogg</e>
+			<e type="setSound">Audio/Effect/hiraishin_effect.wav</e>
 			<e type="setAttackBox">ts_hit</e>
 			<f>FackMinato_Move_018</f>
 			<f>FackMinato_Move_019</f>

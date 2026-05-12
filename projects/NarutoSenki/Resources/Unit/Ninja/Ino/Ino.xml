@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Ino_Hurt_01</f>
 			<f>Ino_Hurt_02</f>
-			<e type="setSound">Audio/Ino/Ino_hurt.ogg</e>
+			<e type="setSound">Audio/Ino/Ino_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -69,7 +69,7 @@
 		<frame>
 			<f>Ino_KnockDown_001</f>
 			<f>Ino_KnockDown_002</f>
-			<e type="setSound">Audio/Ino/Ino_dead.ogg</e>
+			<e type="setSound">Audio/Ino/Ino_dead.wav</e>
 		</frame>
 	</action>
 
@@ -94,15 +94,15 @@
 			<f>Ino_NAttack_008</f>
 			<f>Ino_NAttack_009</f>
 			<e type="setAttackBox">n_hit</e>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<f>Ino_NAttack_010</f>
 			<f>Ino_NAttack_011</f>
-			<e type="setSound">Audio/Ino/Ino_combo.ogg</e>
+			<e type="setSound">Audio/Ino/Ino_combo.wav</e>
 			<e type="setMove">16</e>
 			<f>Ino_NAttack_012</f>
 			<f>Ino_NAttack_013</f>
 			<e type="setAttackBox">l_hit</e>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<f>Ino_NAttack_014</f>
 			<f>Ino_NAttack_015</f>
 		</frame>
@@ -118,18 +118,18 @@
 			<p type="combatPoint">1120</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Ino/Ino_skill1.ogg</e>
+			<e type="setSound">Audio/Ino/Ino_skill1.wav</e>
 			<f>Ino_Skill01_001</f>
 			<f>Ino_Skill01_003</f>
 			<f>Ino_Skill01_004</f>
 			<f>Ino_Skill01_006</f>
 			<e type="setChargeB">96</e>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 			<f>Ino_Skill01_007</f>
 			<f>Ino_Skill01_008</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 			<e type="setChargeB">96</e>
 			<f>Ino_Skill01_009</f>
 			<f>Ino_Skill01_011</f>
@@ -146,7 +146,7 @@
 			<p type="combatPoint">1520</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Ino/ino_skill2.ogg</e>
+			<e type="setSound">Audio/Ino/ino_skill2.wav</e>
 			<f>Ino_Skill02_001</f>
 			<e type="setJump">true</e>
 			<f>Ino_Skill02_002</f>
@@ -156,12 +156,12 @@
 			<f>Ino_Skill02_006</f>
 			<e type="setDelay">10</e>
 			<f>Ino_Skill02_007</f>
-			<e type="setSound">Audio/Ino/Ino_skill3_1.ogg</e>
+			<e type="setSound">Audio/Ino/Ino_skill3_1.wav</e>
 			<e type="setAttackBox">ac_hit</e>
 			<f>Ino_Skill02_008</f>
 			<f>Ino_Skill02_009</f>
 			<e type="setAttackBox">b_hit</e>
-			<e type="setDSound">Audio/Effect/damage_h.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_h.wav</e>
 		</frame>
 	</action>
 	<action name="skill03">
@@ -175,20 +175,20 @@
 		</data>
 		<frame>
 			<f>Ino_Skill03_002</f>
-			<e type="setSound">Audio/Ino/Ino_skill3.ogg</e>
+			<e type="setSound">Audio/Ino/Ino_skill3.wav</e>
 			<f>Ino_Skill03_003</f>
 			<e type="setChargeB">192</e>
 			<f>Ino_Skill03_004</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Ino_Skill03_005</f>
 			<f>Ino_Skill03_006</f>
 			<e type="setAttackBox">c_hit</e>
 			<f>Ino_Skill03_008</f>
 			<f>Ino_Skill03_010</f>
-			<e type="setSound">Audio/Ino/Ino_skill3_1.ogg</e>
+			<e type="setSound">Audio/Ino/Ino_skill3_1.wav</e>
 			<e type="setAttackBox">f_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o2.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o2.wav</e>
 			<e type="setDelay">10</e>
 			<f>Ino_Skill03_011</f>
 			<f>Ino_Skill03_012</f>
@@ -197,13 +197,13 @@
 			<f>Ino_Skill03_015</f>
 			<e type="setJump">true</e>
 			<f>Ino_Skill03_016</f>
-			<e type="setSound">Audio/Ino/Ino_skill3_2.ogg</e>
+			<e type="setSound">Audio/Ino/Ino_skill3_2.wav</e>
 			<e type="setAttackBox">ac_hit</e>
 			<f>Ino_Skill03_017</f>
 			<e type="setDelay">10</e>
 			<f>Ino_Skill03_017_1</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Ino_Skill03_018</f>
 			<f>Ino_Skill03_019</f>
 			<f>Ino_Skill03_020</f>
@@ -221,30 +221,30 @@
 			<p type="combatPoint">3120</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Ino_Skill04_001</f>
-			<e type="setSound">Audio/Ino/Ino_skill4.ogg</e>
+			<e type="setSound">Audio/Ino/Ino_skill4.wav</e>
 			<e type="setAttackBox">c_hit</e>
 			<f>Ino_Skill04_002</f>
 			<f>Ino_Skill04_003</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 			<f>Ino_Skill04_004</f>
 			<f>Ino_Skill04_005</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 			<f>Ino_Skill04_006</f>
 			<f>Ino_Skill04_007</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 			<f>Ino_Skill04_009</f>
 			<f>Ino_Skill04_011</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 			<f>Ino_Skill04_012</f>
 			<f>Ino_Skill04_013</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_l.wav</e>
 		</frame>
 	</action>
 	<action name="skill05">
@@ -257,7 +257,7 @@
 			<p type="combatPoint">8000</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Ino_Skill05_001</f>
 			<e type="setCommand">setInvincible</e>
 			<f>Ino_Skill05_002</f>

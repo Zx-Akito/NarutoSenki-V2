@@ -56,8 +56,20 @@ function tools.readCoinFromSQL()
     return coins
 end
 
+--- Coin label: below 10000 full number; from 10000 use whole thousands + K (e.g. 10000 -> 10K).
+function tools.formatCoinDisplay(n)
+    n = math.floor(tonumber(n) or 0)
+    if n < 0 then n = 0 end
+    if n < 10000 then return tostring(n) end
+    return string.format('%dK', math.floor(n / 1000))
+end
+
 function tools.readWinNumFromSQL(heroName)
     return KTools:readWinNumFromSQL(heroName)
+end
+
+function tools.readLoseNumFromSQL(heroName)
+    return KTools:readLoseNumFromSQL(heroName)
 end
 
 function tools.readRecordTimeFromSQL(heroName)

@@ -62,11 +62,11 @@
 		</data>
 		<frame>
 			<f>Kurama_NAttack_001</f>
-			<e type="setSound">Audio/RikudoNaruto/Kurama_combo.ogg</e>
+			<e type="setSound">Audio/RikudoNaruto/Kurama_combo.wav</e>
 			<e type="setDelay">10</e>
 			<f>Kurama_NAttack_002</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setSound">Audio/Effect/break_sound2.ogg</e>
+			<e type="setSound">Audio/Effect/break_sound2.wav</e>
 			<f>Kurama_NAttack_003</f>
 			<f>Kurama_NAttack_004</f>
 			<e type="setDelay">10</e>

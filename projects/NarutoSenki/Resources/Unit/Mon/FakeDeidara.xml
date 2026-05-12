@@ -55,13 +55,13 @@
 			<p type="cd">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Deidara/deidara_skill3.ogg</e>
+			<e type="setSound">Audio/Deidara/deidara_skill3.wav</e>
 			<f>Deidara_Skill03_02</f>
 			<f>Deidara_Skill03_04</f>
 			<f>Deidara_Skill03_05</f>
 			<f>Deidara_Skill03_06</f>
 			<f>Deidara_Skill03_07</f>
-			<e type="setSound">Audio/Effect/bom.ogg</e>
+			<e type="setSound">Audio/Effect/bom.wav</e>
 			<e type="setAttackBox">a_hit</e>
 			<f>Deidara_Skill03_08</f>
 			<f>Deidara_Skill03_09</f>

@@ -61,7 +61,7 @@
 			<f>KageBom_Move_04</f>
 			<e type="setDelay">280</e>
 			<f>KageBom_Move_05</f>
-			<e type="setSound">Audio/Effect/bom.ogg</e>
+			<e type="setSound">Audio/Effect/bom.wav</e>
 			<e type="setAttackBox">o2_hit</e>
 			<f>KageBom_Move_06</f>
 			<f>KageBom_Move_07</f>

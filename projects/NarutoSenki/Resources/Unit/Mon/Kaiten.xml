@@ -58,19 +58,19 @@
 		<frame>
 			<f>Kaiten_Move_01</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Kaiten_Move_02</f>
 			<f>Kaiten_Move_03</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Kaiten_Move_04</f>
 			<f>Kaiten_Move_05</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Kaiten_Move_06</f>
 			<f>Kaiten_Move_07</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Kaiten_Move_08</f>
 			<f>Kaiten_Move_09</f>
 			<f>Kaiten_Move_10</f>

@@ -25,8 +25,15 @@ THE SOFTWARE.
 #include "CCArmature.h"
 #include "utils/CCArmatureDataManager.h"
 #include "utils/CCArmatureDefine.h"
+#include "utils/CCDataReaderHelper.h"
 #include "datas/CCDatas.h"
 #include "display/CCSkin.h"
+
+#if ENABLE_PHYSICS_BOX2D_DETECT
+#include "Box2D/Box2D.h"
+#elif ENABLE_PHYSICS_CHIPMUNK_DETECT
+#include "chipmunk.h"
+#endif
 
 
 NS_CC_EXT_BEGIN
@@ -134,7 +141,7 @@ bool CCArmature::init(const char *name)
 
         m_strName = name == NULL ? "" : name;
 
-        CCArmatureDataManager *armatureDataManager = CCArmatureDataManager::sharedArmatureDataManager();
+        CCArmatureDataManager *armatureDataManager = CCArmatureDataManager::getInstance();
 
         if(m_strName.length() != 0)
         {
@@ -330,7 +337,7 @@ CCDictionary *CCArmature::getBoneDic()
     return m_pBoneDic;
 }
 
-CCAffineTransform CCArmature::nodeToParentTransform()
+CCAffineTransform CCArmature::nodeToParentTransform(void)
 {
     if (m_bTransformDirty)
     {
@@ -690,5 +697,147 @@ CCBone *CCArmature::getParentBone()
 {
     return m_pParentBone;
 }
+
+
+#if ENABLE_PHYSICS_BOX2D_DETECT || ENABLE_PHYSICS_CHIPMUNK_DETECT
+void CCArmature::setColliderFilter(CCColliderFilter *filter)
+{
+    CCDictElement *element = NULL;
+    CCDICT_FOREACH(m_pBoneDic, element)
+    {
+        CCBone *bone = static_cast<CCBone*>(element->getObject());
+        bone->setColliderFilter(filter);
+    }
+}
+#elif ENABLE_PHYSICS_SAVE_CALCULATED_VERTEX
+
+void CCArmature::drawContour()
+{
+    CCDictElement *element = NULL;
+    CCDICT_FOREACH(m_pBoneDic, element)
+    {
+        CCBone *bone = static_cast<CCBone*>(element->getObject());
+        CCArray *bodyList = bone->getColliderBodyList();
+
+        CCObject *object = NULL;
+        CCARRAY_FOREACH(bodyList, object)
+        {
+            ColliderBody *body = static_cast<ColliderBody*>(object);
+            CCArray *vertexList = body->getCalculatedVertexList();
+
+            int length = vertexList->count();
+            CCPoint *points = new CCPoint[length];
+            for (int i = 0; i<length; i++)
+            {
+                CCContourVertex2 *vertex = static_cast<CCContourVertex2*>(vertexList->objectAtIndex(i));
+                points[i].x = vertex->x;
+                points[i].y = vertex->y;
+            }
+            ccDrawPoly( points, length, true );
+            delete points;
+        }
+    }
+}
+
+#endif
+
+
+#if ENABLE_PHYSICS_BOX2D_DETECT
+b2Body *CCArmature::getBody()
+{
+    return m_pBody;
+}
+
+void CCArmature::setBody(b2Body *body)
+{
+    if (m_pBody == body)
+    {
+        return;
+    }
+
+    m_pBody = body;
+    m_pBody->SetUserData(this);
+
+    CCObject *object = NULL;
+    CCARRAY_FOREACH(m_pChildren, object)
+    {
+        if (CCBone *bone = dynamic_cast<CCBone *>(object))
+        {
+            CCArray *displayList = bone->getDisplayManager()->getDecorativeDisplayList();
+
+            CCObject *displayObject = NULL;
+            CCARRAY_FOREACH(displayList, displayObject)
+            {
+                CCColliderDetector *detector = ((CCDecorativeDisplay *)displayObject)->getColliderDetector();
+                if (detector != NULL)
+                {
+                    detector->setBody(m_pBody);
+                }
+            }
+        }
+    }
+}
+
+b2Fixture *CCArmature::getShapeList()
+{
+    if (m_pBody)
+    {
+        return m_pBody->GetFixtureList();
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+#elif ENABLE_PHYSICS_CHIPMUNK_DETECT
+cpBody *CCArmature::getBody()
+{
+    return m_pBody;
+}
+
+void CCArmature::setBody(cpBody *body)
+{
+    if (m_pBody == body)
+    {
+        return;
+    }
+
+    m_pBody = body;
+    m_pBody->data = this;
+
+    CCObject *object = NULL;
+    CCARRAY_FOREACH(m_pChildren, object)
+    {
+        if (CCBone *bone = dynamic_cast<CCBone *>(object))
+        {
+            CCArray *displayList = bone->getDisplayManager()->getDecorativeDisplayList();
+
+            CCObject *displayObject = NULL;
+            CCARRAY_FOREACH(displayList, displayObject)
+            {
+                CCColliderDetector *detector = ((CCDecorativeDisplay *)displayObject)->getColliderDetector();
+                if (detector != NULL)
+                {
+                    detector->setBody(m_pBody);
+                }
+            }
+        }
+    }
+}
+
+cpShape *CCArmature::getShapeList()
+{
+    if (m_pBody)
+    {
+        return m_pBody->shapeList_private;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+#endif
+
 
 NS_CC_EXT_END

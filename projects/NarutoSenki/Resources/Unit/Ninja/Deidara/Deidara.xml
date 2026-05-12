@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Deidara_Hurt_01</f>
 			<f>Deidara_Hurt_02</f>
-			<e type="setSound">Audio/Deidara/deidara_hurt.ogg</e>
+			<e type="setSound">Audio/Deidara/deidara_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -69,7 +69,7 @@
 		<frame>
 			<f>Deidara_KnockDown_01</f>
 			<f>Deidara_KnockDown_02</f>
-			<e type="setSound">Audio/Deidara/deidara_dead.ogg</e>
+			<e type="setSound">Audio/Deidara/deidara_dead.wav</e>
 		</frame>
 	</action>
 
@@ -86,20 +86,20 @@
 			<f>Deidara_NAttack_02</f>
 			<f>Deidara_NAttack_03</f>
 			<f>Deidara_NAttack_04</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Deidara_NAttack_05</f>
 			<e type="setMove">8</e>
 			<f>Deidara_NAttack_06</f>
 			<f>Deidara_NAttack_07</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Deidara_NAttack_08</f>
-			<e type="setSound">Audio/Deidara/deidara_combo.ogg</e>
+			<e type="setSound">Audio/Deidara/deidara_combo.wav</e>
 			<f>Deidara_NAttack_09</f>
 			<f>Deidara_NAttack_10</f>
 			<e type="setMove">16</e>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<e type="setAttackBox">l_hit</e>
 			<f>Deidara_NAttack_11</f>
 			<e type="setDelay">20</e>
@@ -116,7 +116,7 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Deidara/deidara_skill1.ogg</e>
+			<e type="setSound">Audio/Deidara/deidara_skill1.wav</e>
 			<f>Deidara_Skill01_001</f>
 			<e type="setDelay">10</e>
 			<f>Deidara_Skill01_002</f>
@@ -137,7 +137,7 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Deidara/deidara_skill2.ogg</e>
+			<e type="setSound">Audio/Deidara/deidara_skill2.wav</e>
 			<f>Deidara_Skill02_02</f>
 			<f>Deidara_Skill02_03</f>
 			<f>Deidara_Skill02_05</f>
@@ -176,9 +176,9 @@
 			<p type="combatPoint">4320</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Deidara/deidara_skill4.ogg</e>
+			<e type="setSound">Audio/Deidara/deidara_skill4.wav</e>
 			<e type="setCommand">setInvincible</e>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<e type="setSkillEffect">smk</e>
 			<f>Deidara_Skill04_01</f>
 			<e type="setBuff">18</e>
@@ -197,7 +197,7 @@
 		</data>
 		<frame>
 			<f>Deidara_Skill05_13</f>
-			<e type="setSound">Audio/Deidara/deidara_skill5.ogg</e>
+			<e type="setSound">Audio/Deidara/deidara_skill5.wav</e>
 			<e type="setCommand">setInvincible</e>
 			<f>Deidara_Skill05_14</f>
 			<e type="setDelay">10</e>

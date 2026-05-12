@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Karin_Hurt_01</f>
 			<f>Karin_Hurt_02</f>
-			<e type="setSound">Audio/Karin/Karin_hurt.ogg</e>
+			<e type="setSound">Audio/Karin/Karin_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -69,7 +69,7 @@
 		<frame>
 			<f>Karin_KnockDown_01</f>
 			<f>Karin_KnockDown_02</f>
-			<e type="setSound">Audio/Karin/Karin_dead.ogg</e>
+			<e type="setSound">Audio/Karin/Karin_dead.wav</e>
 		</frame>
 	</action>
 
@@ -85,7 +85,7 @@
 			<f>Karin_NAttack_01</f>
 			<f>Karin_NAttack_02</f>
 			<f>Karin_NAttack_03</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Karin_NAttack_04</f>
 			<f>Karin_NAttack_05</f>
@@ -93,16 +93,16 @@
 			<f>Karin_NAttack_07</f>
 			<e type="setMove">8</e>
 			<f>Karin_NAttack_08</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Karin_NAttack_09</f>
 			<f>Karin_NAttack_10</f>
 			<f>Karin_NAttack_11</f>
-			<e type="setSound">Audio/Karin/Karin_combo.ogg</e>
+			<e type="setSound">Audio/Karin/Karin_combo.wav</e>
 			<e type="setMove">16</e>
 			<f>Karin_NAttack_12</f>
 			<e type="setAttackBox">l_hit</e>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<f>Karin_NAttack_13</f>
 		</frame>
 	</action>
@@ -117,16 +117,16 @@
 			<p type="combatPoint">1120</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Karin/Karin_skill1.ogg</e>
+			<e type="setSound">Audio/Karin/Karin_skill1.wav</e>
 			<f>Karin_Skill01_02</f>
 			<e type="setChargeB">196</e>
 			<f>Karin_Skill01_03</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Karin_Skill01_05</f>
 			<f>Karin_Skill01_06</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Karin_Skill01_07</f>
 		</frame>
 	</action>
@@ -142,10 +142,10 @@
 		</data>
 		<frame>
 			<f>Karin_Skill02_01</f>
-			<e type="setSound">Audio/Karin/Karin_skill2.ogg</e>
+			<e type="setSound">Audio/Karin/Karin_skill2.wav</e>
 			<f>Karin_Skill02_02</f>
 			<f>Karin_Skill02_04</f>
-			<e type="setSound">Audio/Effect/thunder_effect.ogg</e>
+			<e type="setSound">Audio/Effect/thunder_effect.wav</e>
 			<e type="setAttackBox">c_hit</e>
 			<f>Karin_Skill02_05</f>
 			<f>Karin_Skill02_06</f>
@@ -164,20 +164,20 @@
 			<p type="combatPoint">2640</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Karin/Karin_skill3.ogg</e>
+			<e type="setSound">Audio/Karin/Karin_skill3.wav</e>
 			<f>Karin_Skill03_01</f>
 			<e type="setDelay">10</e>
 			<e type="setCharge">280</e>
 			<f>Karin_Skill03_02</f>
 			<f>Karin_Skill03_03</f>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setSound">Audio/Effect/damage_o.ogg</e>
+			<e type="setSound">Audio/Effect/damage_o.wav</e>
 			<f>Karin_Skill03_04</f>
 			<f>Karin_Skill03_06</f>
 			<e type="setCharge">280</e>
 			<f>Karin_Skill03_07</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Karin_Skill03_08</f>
 			<f>Karin_Skill03_08_1</f>
 			<e type="setAttackBox">c_hit</e>
@@ -185,7 +185,7 @@
 			<e type="setMove">8</e>
 			<f>Karin_Skill03_09_1</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Karin_Skill03_10</f>
 			<f>Karin_Skill03_14</f>
 
@@ -202,11 +202,11 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Karin_Skill04_02</f>
 			<e type="setDelay">20</e>
 			<f>Karin_Skill04_03</f>
-			<e type="setSound">Audio/Karin/Karin_skill4.ogg</e>
+			<e type="setSound">Audio/Karin/Karin_skill4.wav</e>
 			<f>Karin_Skill04_05</f>
 			<f>Karin_Skill04_06</f>
 			<f>Karin_Skill04_07</f>
@@ -224,7 +224,7 @@
 			<p type="combatPoint">9080</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Karin_Skill05_01</f>
 			<e type="setDelay">10</e>
 			<e type="setOugis">10</e>
@@ -232,36 +232,36 @@
 			<e type="setCommand">setInvincible</e>
 			<f>Karin_Skill05_02</f>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o.wav</e>
 			<e type="setDelay">10</e>
 			<f>Karin_Skill05_03</f>
-			<e type="setSound">Audio/Karin/Karin_skill5_1.ogg</e>
+			<e type="setSound">Audio/Karin/Karin_skill5_1.wav</e>
 			<e type="setAttackBox">ab_hit</e>
 			<e type="setDelay">10</e>
 			<f>Karin_Skill05_04</f>
 			<e type="setAttackBox">ab_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<e type="setDelay">10</e>
 			<f>Karin_Skill05_05</f>
 			<f>Karin_Skill05_06</f>
-			<e type="setSound">Audio/Karin/Karin_skill5_2.ogg</e>
+			<e type="setSound">Audio/Karin/Karin_skill5_2.wav</e>
 			<e type="setAttackBox">b_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o.wav</e>
 			<f>Karin_Skill05_07</f>
 			<f>Karin_Skill05_08</f>
 			<f>Karin_Skill05_09</f>
 			<f>Karin_Skill05_10</f>
 			<f>Karin_Skill05_11</f>
 			<e type="setAttackBox">b_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<e type="setDelay">10</e>
 			<f>Karin_Skill05_12</f>
 			<f>Karin_Skill05_13</f>
 			<e type="setAttackBox">b_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<e type="setDelay">10</e>
 			<f>Karin_Skill05_14</f>
-			<e type="setSound">Audio/Karin/Karin_skill5_3.ogg</e>
+			<e type="setSound">Audio/Karin/Karin_skill5_3.wav</e>
 			<f>Karin_Skill05_15</f>
 			<e type="setDelay">10</e>
 			<f>Karin_Skill05_16</f>

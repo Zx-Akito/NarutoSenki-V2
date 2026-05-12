@@ -3,7 +3,7 @@
 --
 function CreditsLayer_BackToStartMenu()
     audio.stopMusic(true)
-    audio.playSound('Audio/Menu/cancel.ogg')
+    audio.playSound('Audio/Menu/cancel.wav')
     local menuScene = CCScene:create()
     local menuLayer = StartMenu:create()
 

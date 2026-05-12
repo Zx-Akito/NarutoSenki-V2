@@ -98,10 +98,10 @@
 		</data>
 		<frame>
 			<f>Saso_Skill02_01</f>
-			<e type="setSound">Audio/Kankuro/kankuro_skill5_1.ogg</e>
+			<e type="setSound">Audio/Kankuro/kankuro_skill5_1.wav</e>
 			<f>Saso_Skill02_02</f>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setSound">Audio/Effect/goukakyu.ogg</e>
+			<e type="setSound">Audio/Effect/goukakyu.wav</e>
 			<e type="setDelay">10</e>
 			<f>Saso_Skill02_03</f>
 			<e type="setAttackBox">o_hit</e>

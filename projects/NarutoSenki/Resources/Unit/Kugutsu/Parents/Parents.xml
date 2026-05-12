@@ -88,18 +88,18 @@
 			<e type="setMove">32</e>
 			<f>Parents_Skill01_002</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Parents_Skill01_003</f>
 			<f>Parents_Skill01_004</f>
 			<f>Parents_Skill01_005</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Parents_Skill01_006</f>
 			<f>Parents_Skill01_001</f>
 			<e type="setMove">32</e>
 			<f>Parents_Skill01_002</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Parents_Skill01_003</f>
 		</frame>
 	</action>
@@ -192,7 +192,7 @@
 			<f>Parents_Skill11_002</f>
 			<f>Parents_Skill11_003</f>
 			<e type="setAttackBox">ct_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage.wav</e>
 			<f>Parents_Skill11_004</f>
 			<e type="setDelay">190</e>
 			<e type="setActionResume">20</e>

@@ -61,19 +61,19 @@
 			<f>Suijin_Move_02</f>
 			<f>Suijin_Move_03</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Suijin_Move_04</f>
 			<f>Suijin_Move_05</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Suijin_Move_06</f>
 			<f>Suijin_Move_07</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Suijin_Move_04</f>
 			<f>Suijin_Move_05</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Suijin_Move_06</f>
 			<f>Suijin_Move_07</f>
 			<e type="setDetonation">0</e>

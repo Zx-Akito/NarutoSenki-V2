@@ -86,7 +86,7 @@
 		<frame>
 			<f>MaskRaiton_Move_001</f>
 			<f>MaskRaiton_Move_002</f>
-			<e type="setSound">Audio/Effect/thunder_effect.ogg</e>
+			<e type="setSound">Audio/Effect/thunder_effect.wav</e>
 			<f>MaskRaiton_Move_003</f>
 			<e type="setAttackBox">a_hit</e>
 			<f>MaskRaiton_Move_004</f>

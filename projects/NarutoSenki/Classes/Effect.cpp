@@ -55,7 +55,7 @@ bool Effect::init(const string &name, CharacterBase *attacker)
 		{"Hupo", [&]() { runAnim("Hupo_", 6, 10, false); }},
 		{"hp_restore", [&]() { auto seq = newSequence(createEffectAnimation(name + "_", 4, 5, false), CallFunc::create(std::bind(&CharacterBase::disableEffect, at))); runAction(seq); }},
 		{"speedUp", [&]() { auto seq = newSequence(createEffectAnimation(name + "_", 4, 5, false), CallFunc::create(std::bind(&CharacterBase::disableEffect, at))); runAction(seq); }},
-		{"smk", [&]() { runAnim("smk_", 4, 10, false); setAnchorPoint(Vec2(0.5f, 0)); setPosition(at->getPosition()); if (UserDefault::sharedUserDefault()->getBoolForKey("isVoice")) SimpleAudioEngine::sharedEngine()->playEffect("Audio/Effect/poof.ogg"); }},
+		{"smk", [&]() { runAnim("smk_", 4, 10, false); setAnchorPoint(Vec2(0.5f, 0)); setPosition(at->getPosition()); if (UserDefault::sharedUserDefault()->getBoolForKey("isVoice")) SimpleAudioEngine::sharedEngine()->playEffect("Audio/Effect/poof.wav"); }},
 		{"tishen", [&]() { runAnim("tishen_", 6, 10, false); setAnchorPoint(Vec2(0.5f, 0)); setPosition(at->getPosition()); }},
 		{"stun", [&]() { runAnim("stun_", 4, 5, false); setAnchorPoint(Vec2(0.5f, 0)); setPosition(Vec2(at->getPositionX(), at->getPositionY() + at->getContentSize().height - 2)); }},
 		{"DarkFlame", [&]() { runAnim("DarkFlame_Effect_", 4, 10, true); setAnchorPoint(Vec2(0.5f, 0)); setPosition(at->getPosition()); runAction(newSequence(DelayTime::create(2.8f), CallFunc::create(std::bind(&Effect::removeEffect, this)))); }},

@@ -90,7 +90,7 @@
 			<e type="setDelay">10</e>
 			<f>Akamaru_Skill01_003</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage2.wav</e>
 			<e type="setDelay">10</e>
 			<f>Akamaru_Skill01_004</f>
 			<e type="setChargeB">96</e>
@@ -98,7 +98,7 @@
 			<e type="setDelay">10</e>
 			<f>Akamaru_Skill01_005</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setDSound">Audio/Effect/blade_damage2.wav</e>
 			<e type="setDelay">10</e>
 		</frame>
 	</action>

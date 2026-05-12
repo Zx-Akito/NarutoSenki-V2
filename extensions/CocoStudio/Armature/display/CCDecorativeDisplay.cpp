@@ -43,12 +43,20 @@ CCDecorativeDisplay::CCDecorativeDisplay()
     , m_pDisplayData(NULL)
 
 {
+#if ENABLE_PHYSICS_BOX2D_DETECT || ENABLE_PHYSICS_CHIPMUNK_DETECT || ENABLE_PHYSICS_SAVE_CALCULATED_VERTEX
+    m_pColliderDetector = NULL;
+#endif
 }
+
 
 CCDecorativeDisplay::~CCDecorativeDisplay(void)
 {
     CC_SAFE_RELEASE_NULL(m_pDisplayData);
     CC_SAFE_RELEASE_NULL(m_pDisplay);
+
+#if ENABLE_PHYSICS_BOX2D_DETECT || ENABLE_PHYSICS_CHIPMUNK_DETECT || ENABLE_PHYSICS_SAVE_CALCULATED_VERTEX
+    CC_SAFE_RELEASE_NULL(m_pColliderDetector);
+#endif
 }
 
 bool CCDecorativeDisplay::init()

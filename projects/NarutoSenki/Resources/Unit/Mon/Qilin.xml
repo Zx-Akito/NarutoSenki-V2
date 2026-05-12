@@ -65,7 +65,7 @@
 			<f>Qilin_Move_005</f>
 			<e type="setAttackBox">bc_hit</e>
 			<f>Qilin_Move_006</f>
-			<e type="setSound">Audio/Sasuke/sasuke_skill4_1.ogg</e>
+			<e type="setSound">Audio/Sasuke/sasuke_skill4_1.wav</e>
 			<f>Qilin_Move_007</f>
 			<e type="setAttackBox">bf_hit</e>
 			<f>Qilin_Move_008</f>

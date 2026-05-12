@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Kankuro_Hurt_01</f>
 			<f>Kankuro_Hurt_02</f>
-			<e type="setSound">Audio/Kankuro/kankuro_hurt.ogg</e>
+			<e type="setSound">Audio/Kankuro/kankuro_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -69,7 +69,7 @@
 		<frame>
 			<f>Kankuro_KnockDown_01</f>
 			<f>Kankuro_KnockDown_02</f>
-			<e type="setSound">Audio/Kankuro/kankuro_dead.ogg</e>
+			<e type="setSound">Audio/Kankuro/kankuro_dead.wav</e>
 		</frame>
 	</action>
 
@@ -86,20 +86,20 @@
 			<f>Kankuro_NAttack_02</f>
 			<f>Kankuro_NAttack_03</f>
 			<f>Kankuro_NAttack_04</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Kankuro_NAttack_05</f>
 			<e type="setMove">8</e>
 			<f>Kankuro_NAttack_06</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Kankuro_NAttack_07</f>
 			<f>Kankuro_NAttack_08</f>
 			<f>Kankuro_NAttack_09</f>
 			<e type="setMove">16</e>
 			<f>Kankuro_NAttack_10</f>
-			<e type="setSound">Audio/Kankuro/kankuro_combo.ogg</e>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Kankuro/kankuro_combo.wav</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<e type="setAttackBox">l_hit</e>
 		</frame>
 	</action>
@@ -115,7 +115,7 @@
 		</data>
 		<frame>
 			<f>Kankuro_Skill01_01</f>
-			<e type="setSound">Audio/Kankuro/kankuro_skill1.ogg</e>
+			<e type="setSound">Audio/Kankuro/kankuro_skill1.wav</e>
 			<f>Kankuro_Skill01_03</f>
 			<f>Kankuro_Skill01_04</f>
 			<f>Kankuro_Skill01_05</f>
@@ -135,7 +135,7 @@
 		</data>
 		<frame>
 			<e type="setMonAttack">2</e>
-			<e type="setSound">Audio/Kankuro/kankuro_skill2.ogg</e>
+			<e type="setSound">Audio/Kankuro/kankuro_skill2.wav</e>
 			<f>Kankuro_Skill02_01</f>
 			<f>Kankuro_Skill02_02</f>
 			<f>Kankuro_Skill02_03</f>
@@ -153,7 +153,7 @@
 			<p type="combatPoint">2060</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Kankuro/kankuro_skill3.ogg</e>
+			<e type="setSound">Audio/Kankuro/kankuro_skill3.wav</e>
 			<f>Kankuro_Skill03_01</f>
 			<e type="setMon">Kuroari</e>
 			<f>Kankuro_Skill03_02</f>
@@ -172,9 +172,9 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Kankuro_Skill04_01</f>
-			<e type="setSound">Audio/Kankuro/kankuro_skill4.ogg</e>
+			<e type="setSound">Audio/Kankuro/kankuro_skill4.wav</e>
 			<e type="setDelay">20</e>
 			<f>Kankuro_Skill04_02</f>
 			<f>Kankuro_Skill04_03</f>
@@ -194,7 +194,7 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Kankuro_Skill05_01</f>
 			<e type="setCommand">setInvincible</e>
 			<e type="setDelay">10</e>

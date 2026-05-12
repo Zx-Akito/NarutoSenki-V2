@@ -61,15 +61,15 @@
 			<f>Tenmu_Move_02</f>
 			<f>Tenmu_Move_03</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Tenmu_Move_04</f>
 			<f>Tenmu_Move_05</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Tenmu_Move_06</f>
 			<f>Tenmu_Move_07</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<e type="setDetonation">0</e>
 		</frame>
 	</action>

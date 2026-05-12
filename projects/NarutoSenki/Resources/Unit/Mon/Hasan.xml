@@ -56,15 +56,15 @@
 			<p type="cd">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Neji/Neji_skill5_5.ogg</e>
+			<e type="setSound">Audio/Neji/Neji_skill5_5.wav</e>
 			<f>Hasan_Move_01</f>
 			<e type="setAttackBox">bf_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<e type="setDelay">10</e>
 			<f>Hasan_Move_02</f>
 			<f>Hasan_Move_03</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<e type="setDetonation">0</e>
 		</frame>
 	</action>

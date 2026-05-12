@@ -46,7 +46,7 @@ public:
 
 	void ccTouchEnded(Touch *touch, Event *event)
 	{
-		SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.ogg");
+		SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.wav");
 		_gameModeLayer->selectMode(mode);
 	}
 

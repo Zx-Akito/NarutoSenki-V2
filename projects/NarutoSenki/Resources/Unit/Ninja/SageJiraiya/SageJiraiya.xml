@@ -34,7 +34,7 @@
 			<f>SageJiraiya_Hurt_01</f>
 			<f>SageJiraiya_Hurt_02</f>
 			<e type="setDelay">10</e>
-			<e type="setSound">Audio/Jiraiya/jiraiya_hurt.ogg</e>
+			<e type="setSound">Audio/Jiraiya/jiraiya_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -73,7 +73,7 @@
 			<f>Jiraiya_KnockDown_01</f>
 			<f>Jiraiya_KnockDown_02</f>
 			<f>SageJiraiya_KnockDown_03</f>
-			<e type="setSound">Audio/Jiraiya/jiraiya_dead.ogg</e>
+			<e type="setSound">Audio/Jiraiya/jiraiya_dead.wav</e>
 
 		</frame>
 	</action>
@@ -91,13 +91,13 @@
 			<f>SageJiraiya_NAttack_02</f>
 			<e type="setDelay">10</e>
 			<f>SageJiraiya_NAttack_03</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>SageJiraiya_NAttack_04</f>
 			<f>SageJiraiya_NAttack_05</f>
 			<e type="setMove">8</e>
 			<f>SageJiraiya_NAttack_06</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>SageJiraiya_NAttack_07</f>
 			<e type="setDelay">10</e>
@@ -106,8 +106,8 @@
 			<e type="setMove">16</e>
 			<f>SageJiraiya_NAttack_11</f>
 			<f>SageJiraiya_NAttack_12</f>
-			<e type="setSound">Audio/SageJiraiya/SageJiraiya_combo.ogg</e>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/SageJiraiya/SageJiraiya_combo.wav</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<e type="setAttackBox">l_hit</e>
 			<e type="setDelay">10</e>
 		</frame>
@@ -124,7 +124,7 @@
 		</data>
 		<frame>
 			<f>SageJiraiya_Skill01_01</f>
-			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill1.ogg</e>
+			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill1.wav</e>
 			<f>SageJiraiya_Skill01_02</f>
 			<f>SageJiraiya_Skill01_04</f>
 			<f>SageJiraiya_Skill01_06</f>
@@ -150,7 +150,7 @@
 		</data>
 		<frame>
 			<f>SageJiraiya_Skill02_001</f>
-			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill2.ogg</e>
+			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill2.wav</e>
 			<f>SageJiraiya_Skill02_002</f>
 			<e type="setDelay">10</e>
 			<f>SageJiraiya_Skill02_003</f>
@@ -169,7 +169,7 @@
 			<p type="combatPoint">3220</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill3.ogg</e>
+			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill3.wav</e>
 			<f>SageJiraiya_Skill03_02</f>
 			<e type="setDelay">10</e>
 			<f>SageJiraiya_Skill03_03</f>
@@ -181,12 +181,12 @@
 			<f>SageJiraiya_Skill03_05</f>
 			<f>SageJiraiya_Skill03_06</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill3_1.ogg</e>
+			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill3_1.wav</e>
 			<f>SageJiraiya_Skill03_07</f>
 			<f>SageJiraiya_Skill03_08</f>
 			<e type="setAttackBox">c_hit</e>
 			<f>SageJiraiya_Skill03_09</f>
-			<e type="setSound">Audio/Effect/goukakyu.ogg</e>
+			<e type="setSound">Audio/Effect/goukakyu.wav</e>
 			<f>SageJiraiya_Skill03_10</f>
 			<e type="setAttackBox">c_hit</e>
 			<f>SageJiraiya_Skill03_11</f>
@@ -208,39 +208,39 @@
 			<p type="combatPoint">3960</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>SageJiraiya_Skill04_01</f>
-			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill4.ogg</e>
+			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill4.wav</e>
 			<f>SageJiraiya_Skill04_02</f>
 			<e type="setCharge">280</e>
 			<e type="setDelay">10</e>
 			<f>SageJiraiya_Skill04_03</f>
 			<e type="setAttackBox">f_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o2.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o2.wav</e>
 			<e type="setDelay">10</e>
-			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill4_1.ogg</e>
+			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill4_1.wav</e>
 			<f>SageJiraiya_Skill04_04</f>
 			<f>SageJiraiya_Skill04_05</f>
 			<e type="setDelay">10</e>
 			<f>SageJiraiya_Skill04_06</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_rasen.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_rasen.wav</e>
 			<f>SageJiraiya_Skill04_07</f>
 			<f>SageJiraiya_Skill04_08</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_rasen.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_rasen.wav</e>
 			<f>SageJiraiya_Skill04_09</f>
 			<f>SageJiraiya_Skill04_10</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_rasen.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_rasen.wav</e>
 			<f>SageJiraiya_Skill04_11</f>
 			<f>SageJiraiya_Skill04_12</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_rasen.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_rasen.wav</e>
 			<f>SageJiraiya_Skill04_13</f>
 			<f>SageJiraiya_Skill04_14</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_rasen.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_rasen.wav</e>
 			<f>SageJiraiya_Skill04_15</f>
 			<f>SageJiraiya_Skill04_16</f>
 			<e type="setDelay">10</e>
@@ -257,17 +257,17 @@
 			<p type="combatPoint">4560</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>SageJiraiya_Skill05_01</f>
 			<e type="setDelay">10</e>
 			<e type="setOugis">10</e>
 			<f>SageJiraiya_Skill05_02</f>
 			<e type="setCommand">setInvincible</e>
-			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill5.ogg</e>
+			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill5.wav</e>
 			<e type="setDelay">60</e>
 			<f>SageJiraiya_Skill05_03</f>
 			<f>SageJiraiya_Skill05_04</f>
-			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill5_1.ogg</e>
+			<e type="setSound">Audio/SageJiraiya/SageJiraiya_skill5_1.wav</e>
 			<f>SageJiraiya_Skill05_05</f>
 			<f>SageJiraiya_Skill05_06</f>
 			<e type="setAttackBox">c_hit</e>

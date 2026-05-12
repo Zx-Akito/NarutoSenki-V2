@@ -58,11 +58,11 @@
 		<frame>
 			<f>Tuji2_Move_001</f>
 			<e type="setAttackBox">b_hit</e>
-			<e type="setDSound">Audio/Effect/stick_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/stick_damage.wav</e>
 			<e type="setDelay">10</e>
 			<f>Tuji2_Move_002</f>
 			<e type="setAttackBox">b_hit</e>
-			<e type="setDSound">Audio/Effect/stick_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/stick_damage.wav</e>
 			<e type="setDelay">10</e>
 			<f>Tuji2_Move_003</f>
 			<e type="setAttackBox">b_hit</e>

@@ -44,7 +44,7 @@
 	<action name="Dead">
 		<frame>
 			<f>FutonSRK_Dead_01</f>
-			<e type="setSound">Audio/Effect/futon_effect.ogg</e>
+			<e type="setSound">Audio/Effect/futon_effect.wav</e>
 			<f>FutonSRK_Dead_02</f>
 			<e type="setAttackBox">ab_hit</e>
 			<f>FutonSRK_Dead_03</f>

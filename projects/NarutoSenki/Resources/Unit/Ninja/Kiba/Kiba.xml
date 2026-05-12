@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Kiba_Hurt_01</f>
 			<f>Kiba_Hurt_02</f>
-			<e type="setSound">Audio/Kiba/Kiba_hurt.ogg</e>
+			<e type="setSound">Audio/Kiba/Kiba_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -71,7 +71,7 @@
 			<f>Kiba_KnockDown_001</f>
 			<f>Kiba_KnockDown_002</f>
 			<f>Kiba_KnockDown_003</f>
-			<e type="setSound">Audio/Kiba/Kiba_dead.ogg</e>
+			<e type="setSound">Audio/Kiba/Kiba_dead.wav</e>
 		</frame>
 	</action>
 
@@ -103,7 +103,7 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Kiba/Kiba_skill1.ogg</e>
+			<e type="setSound">Audio/Kiba/Kiba_skill1.wav</e>
 			<e type="setSkillEffect">smk</e>
 			<e type="setClone">0</e>
 			<e type="setBuff">17</e>
@@ -120,7 +120,7 @@
 			<p type="combatPoint">1840</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Kiba/Kiba_skill2.ogg</e>
+			<e type="setSound">Audio/Kiba/Kiba_skill2.wav</e>
 			<e type="setMonAttack">1</e>
 
 		</frame>
@@ -135,7 +135,7 @@
 			<p type="combatPoint">4600</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Kiba/Kiba_skill3.ogg</e>
+			<e type="setSound">Audio/Kiba/Kiba_skill3.wav</e>
 			<e type="setBuff">18</e>
 		</frame>
 	</action>
@@ -149,48 +149,48 @@
 			<p type="combatPoint">3240</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Kiba_Skill04_001</f>
 			<f>Kiba_Skill04_002</f>
 			<e type="setCommand">findTarget</e>
 			<e type="setCommand">setTransport</e>
 			<f>Kiba_Skill04_003</f>
 			<f>Kiba_Skill04_004</f>
-			<e type="setSound">Audio/Kiba/Kiba_skill4_1.ogg</e>
+			<e type="setSound">Audio/Kiba/Kiba_skill4_1.wav</e>
 			<e type="setAttackBox">c_hit</e>
 			<f>Kiba_Skill04_005</f>
 			<f>Kiba_Skill04_006</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Kiba_Skill04_007</f>
 			<f>Kiba_Skill04_004</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Kiba_Skill04_005</f>
 			<f>Kiba_Skill04_006</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Kiba_Skill04_007</f>
 			<f>Kiba_Skill04_009</f>
-			<e type="setSound">Audio/Kiba/Kiba_skill4_2.ogg</e>
+			<e type="setSound">Audio/Kiba/Kiba_skill4_2.wav</e>
 			<e type="setJump">true</e>
 			<e type="setAttackBox">f_hit</e>
 			<f>Kiba_Skill04_010</f>
 			<f>Kiba_Skill04_011</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Kiba_Skill04_012</f>
 			<f>Kiba_Skill04_013</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Kiba_Skill04_010</f>
 			<f>Kiba_Skill04_011</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Kiba_Skill04_012</f>
 			<f>Kiba_Skill04_013</f>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setSound">Audio/Effect/blade_damage2.ogg</e>
+			<e type="setSound">Audio/Effect/blade_damage2.wav</e>
 			<f>Kiba_Skill04_014</f>
 			<f>Kiba_Skill04_015</f>
 		</frame>
@@ -205,11 +205,11 @@
 			<p type="combatPoint">8640</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Kiba_Skill06_001</f>
 			<e type="setOugis">10</e>
 			<f>Kiba_Skill06_002</f>
-			<e type="setSound">Audio/Effect/poof.ogg</e>
+			<e type="setSound">Audio/Effect/poof.wav</e>
 			<e type="setCommand">setInvincible</e>
 			<f>Kiba_Skill05_001</f>
 			<f>Kiba_Skill05_002</f>
@@ -225,32 +225,32 @@
 			<f>Kiba_Skill05_010</f>
 			<e type="setAttackBox">o_hit</e>
 			<f>Kiba_Skill05_011</f>
-			<e type="setSound">Audio/Kiba/Kiba_skill5.ogg</e>
+			<e type="setSound">Audio/Kiba/Kiba_skill5.wav</e>
 			<f>Kiba_Skill05_012</f>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setSound">Audio/Effect/damage_l.wav</e>
 			<f>Kiba_Skill05_013</f>
 			<e type="setChargeB">320</e>
 			<f>Kiba_Skill05_008</f>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setSound">Audio/Effect/damage_l.wav</e>
 			<f>Kiba_Skill05_009</f>
 			<f>Kiba_Skill05_010</f>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setSound">Audio/Effect/damage_l.wav</e>
 			<f>Kiba_Skill05_011</f>
 			<f>Kiba_Skill05_012</f>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setSound">Audio/Effect/damage_l.wav</e>
 			<f>Kiba_Skill05_013</f>
 			<e type="setChargeB">320</e>
 			<f>Kiba_Skill05_008</f>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setSound">Audio/Effect/damage_l.wav</e>
 			<f>Kiba_Skill05_009</f>
 			<f>Kiba_Skill05_010</f>
 			<e type="setAttackBox">o_hit</e>
-			<e type="setSound">Audio/Effect/damage_l.ogg</e>
+			<e type="setSound">Audio/Effect/damage_l.wav</e>
 			<f>Kiba_Skill05_011</f>
 			<f>Kiba_Skill05_012</f>
 			<e type="setAttackBox">o_hit</e>
@@ -280,15 +280,15 @@
 			<f>Kiba_Skill11_001</f>
 			<f>Kiba_Skill11_002</f>
 			<e type="setAttackBox">n_hit</e>
-			<e type="setSound">Audio/Effect/blade.ogg</e>
+			<e type="setSound">Audio/Effect/blade.wav</e>
 			<f>Kiba_Skill11_003</f>
 			<f>Kiba_Skill11_004</f>
 			<e type="setAttackBox">n_hit</e>
 			<f>Kiba_Skill11_005</f>
-			<e type="setSound">Audio/Kiba/Kiba_skill11.ogg</e>
+			<e type="setSound">Audio/Kiba/Kiba_skill11.wav</e>
 			<e type="setMove">8</e>
 			<f>Kiba_Skill11_006</f>
-			<e type="setSound">Audio/Effect/blade.ogg</e>
+			<e type="setSound">Audio/Effect/blade.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<e type="setDelay">10</e>
 		</frame>
@@ -339,22 +339,22 @@
 			<f>Kiba_NAttack_002</f>
 			<f>Kiba_NAttack_003</f>
 			<e type="setAttackBox">n_hit</e>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<f>Kiba_NAttack_004</f>
 			<f>Kiba_NAttack_005</f>
 			<f>Kiba_NAttack_006</f>
 			<e type="setMove">8</e>
 			<f>Kiba_NAttack_007</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<e type="setDelay">10</e>
 			<f>Kiba_NAttack_008</f>
-			<e type="setSound">Audio/Kiba/Kiba_combo.ogg</e>
+			<e type="setSound">Audio/Kiba/Kiba_combo.wav</e>
 			<f>Kiba_NAttack_009</f>
 			<e type="setMove">16</e>
 			<f>Kiba_NAttack_010</f>
 			<e type="setAttackBox">l_hit</e>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<e type="setDelay">10</e>
 			<f>Kiba_NAttack_011</f>
 		</frame>

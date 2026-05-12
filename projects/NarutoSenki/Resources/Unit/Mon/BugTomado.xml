@@ -57,7 +57,7 @@
 		</data>
 		<frame>
 			<f>BugTomado_Move_001</f>
-			<e type="setSound">Audio/Shino/Shino_skill2_1.ogg</e>
+			<e type="setSound">Audio/Shino/Shino_skill2_1.wav</e>
 			<f>BugTomado_Move_002</f>
 			<e type="setAttackBox">o_hit</e>
 			<f>BugTomado_Move_003</f>

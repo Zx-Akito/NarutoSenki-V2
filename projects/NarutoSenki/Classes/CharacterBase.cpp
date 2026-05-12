@@ -11,6 +11,8 @@
 #include "MyUtils/CCShake.h"
 #include "Systems/CommandSystem.hpp"
 #include "Utils/Debug/UnitDebug.hpp"
+#include "Data/Fonts.h"
+#include "label_nodes/CCLabelBMFont.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
@@ -46,6 +48,9 @@ namespace
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 extern "C" const char *GetNetworkEnemyHeroName();
 extern "C" bool GetNetworkOpponentIsBot();
+extern "C" const char *GetNetworkYourNickname();
+extern "C" const char *GetNetworkEnemyNickname();
+extern "C" int GetNetworkForcedTeam();
 #endif
 
 /** Online opponent is spawned as Role::Com locally; reuse player tower-blocking so they cannot walk through towers on the watcher client. */
@@ -97,6 +102,26 @@ static bool isNetworkWsEnemyHeroMirror(CharacterBase *self)
 	return false;
 #endif
 }
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+/** Main enemy hero in online 1v1 (mirrored human or AI bot), same unit id as `GetNetworkEnemyHeroName()`. */
+static bool isNetworkEnemyBattleHero(CharacterBase *self)
+{
+	if (!self || !self->isCom())
+		return false;
+	GameLayer *layer = getGameLayer();
+	if (!layer || GetNetworkForcedTeam() < 0)
+		return false;
+	const char *enemyHero = GetNetworkEnemyHeroName();
+	if (!enemyHero || enemyHero[0] == '\0')
+		return false;
+	if (self->getName() != enemyHero)
+		return false;
+	if (self->getGroup() == layer->playerGroup)
+		return false;
+	return true;
+}
+#endif
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 static bool gameLayerOnlineBattleActive()
@@ -390,6 +415,7 @@ CharacterBase::CharacterBase()
 	_dehealBuffValue = 0;
 	_powerUPBuffValue = 0;
 	_hpBar = nullptr;
+	_networkNicknameLabel = nullptr;
 
 	_defense = 0;
 	_exp = 0;
@@ -554,6 +580,14 @@ void CharacterBase::update(float dt)
 		_shadow->setPosition(Vec2(getPositionX(), _originY ? _originY : getPositionY()));
 	}
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (_networkNicknameLabel && _hpBar)
+	{
+		_networkNicknameLabel->setVisible(_hpBar->isVisible());
+		syncNetworkNicknameLabelLayout();
+	}
+#endif
+
 	if (!_isControlled && _state != State::DEAD)
 	{
 		if (isPlayerOrCom())
@@ -691,6 +725,48 @@ void CharacterBase::updateHpBarPosition(float dt)
 		_hpBar->setPositionX(getContentSize().width / 2 - _hpBar->getHPBottom()->getContentSize().width / 2);
 		_hpBar->setPositionY(getHeight());
 	}
+}
+
+void CharacterBase::tryCreateNetworkBattleNicknameLabel()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (_networkNicknameLabel || !_hpBar)
+		return;
+	if (GetNetworkForcedTeam() < 0)
+		return;
+
+	const char *nickC = nullptr;
+	if (isPlayer())
+		nickC = GetNetworkYourNickname();
+	else if (isNetworkEnemyBattleHero(this))
+		nickC = GetNetworkEnemyNickname();
+	else
+		return;
+
+	if (!nickC || nickC[0] == '\0')
+		return;
+
+	auto *lbl = CCLabelBMFont::create(nickC, Fonts::Default);
+	lbl->setScale(0.24f);
+	lbl->setAnchorPoint(Vec2(0.5f, 0.f));
+	addChild(lbl, 15);
+	_networkNicknameLabel = lbl;
+	syncNetworkNicknameLabelLayout();
+#endif
+}
+
+void CharacterBase::syncNetworkNicknameLabelLayout()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	if (!_networkNicknameLabel || !_hpBar)
+		return;
+	const float cx = getContentSize().width * 0.5f;
+	const CCRect barBox = _hpBar->boundingBox();
+	const float topY = barBox.getMaxY();
+	const float nickPad = 7.f;
+	_networkNicknameLabel->setAnchorPoint(Vec2(0.5f, 0.f));
+	_networkNicknameLabel->setPosition(Vec2(cx, topY + nickPad));
+#endif
 }
 
 void CharacterBase::acceptAttack(Ref *object)
@@ -2070,7 +2146,7 @@ void CharacterBase::useGear(GearType type)
 
 				_isVisable = false;
 
-				setSound("Audio/Effect/suzou_effect.ogg");
+				setSound("Audio/Effect/suzou_effect.wav");
 				schedule(schedule_selector(CharacterBase::disableGear1), 3.0f);
 			}
 		}
@@ -2111,7 +2187,7 @@ void CharacterBase::useGear(GearType type)
 
 				setSkillEffect("tishen");
 				scheduleOnce(schedule_selector(CharacterBase::disableGear2), 1.0f);
-				setSound("Audio/Effect/poof2.ogg");
+				setSound("Audio/Effect/poof2.wav");
 
 				if (isPlayer() || getGroup() == getGameLayer()->currentPlayer->getGroup())
 					setOpacity(150);
@@ -3696,7 +3772,7 @@ void CharacterBase::setMonPer(float dt)
 	else if (getName() == HeroEnum::Sai)
 	{
 		monster->setID("Mouse", Role::Mon, _group);
-		setSound("Audio/Sai/ink_mouse.ogg");
+		setSound("Audio/Sai/ink_mouse.wav");
 	}
 
 	monster->setMaster(this);
@@ -4849,6 +4925,12 @@ void CharacterBase::dead()
 			if (_shadow)
 				_shadow->setVisible(true);
 		}
+	}
+
+	if (_networkNicknameLabel)
+	{
+		_networkNicknameLabel->removeFromParent();
+		_networkNicknameLabel = nullptr;
 	}
 
 	if (_hpBar)

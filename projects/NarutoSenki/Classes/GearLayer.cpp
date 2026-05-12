@@ -1,6 +1,7 @@
 #include "GearLayer.h"
 #include "GameLayer.h"
 #include "HudLayer.h"
+#include "Utils/Cocos2dxHelper.hpp"
 #include "Core/Hero.hpp"
 
 /*----------------------
@@ -78,7 +79,7 @@ void GearButton::click()
 {
 	if (_delegate->currentGear != _gearType && UserDefault::sharedUserDefault()->getBoolForKey("isVoice"))
 	{
-		SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/select.ogg");
+		SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/select.wav");
 	}
 
 	if (!_isBuyed)
@@ -382,7 +383,7 @@ void GearLayer::onGearBuy(Ref *sender)
 {
 	if (UserDefault::sharedUserDefault()->getBoolForKey("isVoice"))
 	{
-		SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.ogg");
+		SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.wav");
 	}
 
 	if (getGameLayer()->currentPlayer->setGear(currentGear))
@@ -413,7 +414,7 @@ void GearLayer::updatePlayerGear()
 		addChild(currentGear_layer, 800);
 	}
 
-	coinLabel->setString(to_cstr(getGameLayer()->currentPlayer->getCoin()));
+	coinLabel->setString(formatCoinForDisplay(static_cast<int>(getGameLayer()->currentPlayer->getCoin())).c_str());
 	updateGearList();
 }
 

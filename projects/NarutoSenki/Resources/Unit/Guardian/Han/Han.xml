@@ -35,7 +35,7 @@
 			<e type="setMove">32</e>
 			<f>Han_Hurt_01</f>
 			<f>Han_Hurt_02</f>
-			<e type="setSound">Audio/Han/Han_hurt.ogg</e>
+			<e type="setSound">Audio/Han/Han_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -83,12 +83,12 @@
 		</data>
 		<frame>
 			<f>Han_NAttack_001</f>
-			<e type="setSound">Audio/Han/Han_combo.ogg</e>
+			<e type="setSound">Audio/Han/Han_combo.wav</e>
 			<f>Han_NAttack_002</f>
 			<e type="setDelay">10</e>
 			<f>Han_NAttack_003</f>
 			<f>Han_NAttack_004</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">l_hit</e>
 			<e type="setDelay">10</e>
 		</frame>
@@ -103,7 +103,7 @@
 			<p type="cd">1</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<e type="setCommand">setInvincible</e>
 			<f>Han_Skill01_001</f>
 			<e type="setOugis">10</e>
@@ -134,7 +134,7 @@
 		</data>
 		<frame>
 			<f>Han_Skill02_001</f>
-			<e type="setSound">Audio/Han/Han_combo2.ogg</e>
+			<e type="setSound">Audio/Han/Han_combo2.wav</e>
 			<e type="setJump">true</e>
 			<f>Han_Skill02_002</f>
 			<e type="setAttackBox">f_hit</e>
@@ -213,7 +213,7 @@
 		</data>
 		<frame>
 			<f>Han_Skill11_001</f>
-			<e type="setSound">Audio/Han/Han_combo2.ogg</e>
+			<e type="setSound">Audio/Han/Han_combo2.wav</e>
 			<e type="setDelay">20</e>
 			<f>Han_Skill11_002</f>
 			<e type="setMove">8</e>

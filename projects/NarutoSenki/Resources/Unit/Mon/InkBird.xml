@@ -61,24 +61,24 @@
 			<f>InkBird_Move_03</f>
 			<f>InkBird_Move_04</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setSound">Audio/Sai/sai_skill4_2.ogg</e>
+			<e type="setSound">Audio/Sai/sai_skill4_2.wav</e>
 			<f>InkBird_Move_05</f>
-			<e type="setDSound">Audio/Effect/stick_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/stick_damage.wav</e>
 			<f>InkBird_Move_06</f>
 			<e type="setAttackBox">ac_hit</e>
 			<f>InkBird_Move_04</f>
-			<e type="setDSound">Audio/Effect/stick_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/stick_damage.wav</e>
 			<f>InkBird_Move_05</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setSound">Audio/Sai/sai_skill4_2.ogg</e>
+			<e type="setSound">Audio/Sai/sai_skill4_2.wav</e>
 			<f>InkBird_Move_06</f>
-			<e type="setDSound">Audio/Effect/stick_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/stick_damage.wav</e>
 			<f>InkBird_Move_04</f>
 			<e type="setAttackBox">ac_hit</e>
 			<f>InkBird_Move_05</f>
-			<e type="setDSound">Audio/Effect/stick_damage.ogg</e>
+			<e type="setDSound">Audio/Effect/stick_damage.wav</e>
 			<f>InkBird_Move_06</f>
-			<e type="setSound">Audio/Sai/sai_skill4_2.ogg</e>
+			<e type="setSound">Audio/Sai/sai_skill4_2.wav</e>
 			<e type="setAttackBox">ac_hit</e>
 			<f>InkBird_Move_12</f>
 			<f>InkBird_Move_13</f>

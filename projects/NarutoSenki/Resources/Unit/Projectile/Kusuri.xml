@@ -62,7 +62,7 @@
 			<f>Kusuri_Move_004</f>
 			<f>Kusuri_Move_005</f>
 			<e type="setAttackBox">b_hit</e>
-			<e type="setDSound">Audio/Effect/damage_h.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_h.wav</e>
 			<e type="setDetonation">0</e>
 		</frame>
 	</action>

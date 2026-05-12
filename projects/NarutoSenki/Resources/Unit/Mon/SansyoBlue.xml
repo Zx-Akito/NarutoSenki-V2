@@ -60,7 +60,7 @@
 			<f>SansyoBlue_Move_002</f>
 			<f>SansyoBlue_Move_003</f>
 			<f>SansyoBlue_Move_004</f>
-			<e type="setSound">Audio/Orochimaru/Orochimaru_skill5_1.ogg</e>
+			<e type="setSound">Audio/Orochimaru/Orochimaru_skill5_1.wav</e>
 			<f>SansyoBlue_Move_005</f>
 			<e type="setAttackBox">b_hit</e>
 			<f>SansyoBlue_Move_006</f>

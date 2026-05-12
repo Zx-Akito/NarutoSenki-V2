@@ -67,7 +67,7 @@
 			<f>JibakuEX_Move_005</f>
 			<e type="setAttackBox">ab_hit</e>
 			<f>JibakuEX_Move_006</f>
-			<e type="setSound">Audio/Effect/bom.ogg</e>
+			<e type="setSound">Audio/Effect/bom.wav</e>
 			<e type="setAttackBox">ab_hit</e>
 			<f>JibakuEX_Move_007</f>
 			<e type="setAttackBox">ab_hit</e>

@@ -27,7 +27,7 @@ void SelectLayer::onGameStart()
 	setKeypadEnabled(false);
 
 	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic(true);
-	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.ogg");
+	SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/confirm.wav");
 
 	Scene *loadScene = Scene::create();
 	LoadLayer *loadLayer = LoadLayer::create();

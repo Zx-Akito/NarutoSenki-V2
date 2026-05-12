@@ -1,6 +1,7 @@
 #include "Core/Hero.hpp"
 #include "GameLayer.h"
 #include "HudLayer.h"
+#include "Utils/Cocos2dxHelper.hpp"
 #include "MyUtils/CCShake.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
@@ -367,7 +368,7 @@ void HudLayer::initHeroInterface()
 	gameClock->setPosition(Vec2(mScaleX * 25, 0));
 	addChild(gameClock, 5000);
 
-	coinLabel = CCLabelBMFont::create(currentPlayer->getCoin_Value().asString().c_str(), Fonts::Arial);
+	coinLabel = CCLabelBMFont::create(formatCoinForDisplay(static_cast<int>(currentPlayer->getCoin())).c_str(), Fonts::Arial);
 	coinLabel->setAnchorPoint(Vec2(0, 0));
 	coinLabel->setPosition(Vec2(121, winHeight - 61));
 
@@ -777,26 +778,31 @@ void HudLayer::setTowerState(int charId)
 
 void HudLayer::setCoin(const char *value)
 {
-	auto cl = coinLabel->getString();
-	int tempCoin = to_int(cl) + to_int(value);
-	coinLabel->setString(to_cstr(tempCoin));
+	auto *player = getGameLayer()->currentPlayer;
+	if (!coinLabel || !player)
+	{
+		return;
+	}
+	const int next = static_cast<int>(player->getCoin()) + to_int(value);
+	coinLabel->setString(formatCoinForDisplay(next).c_str());
 }
 
 bool HudLayer::offCoin(const char *value)
 {
-	auto cl = coinLabel->getString();
-	int tempCoin = to_int(cl);
-	if (tempCoin - to_int(value) >= 0)
-	{
-		tempCoin -= to_int(value);
-		coinLabel->setString(to_cstr(tempCoin));
-		getGameLayer()->currentPlayer->minusCoin(to_uint(value));
-		return true;
-	}
-	else
+	auto *player = getGameLayer()->currentPlayer;
+	if (!coinLabel || !player)
 	{
 		return false;
 	}
+	const int sub = to_int(value);
+	const int tempCoin = static_cast<int>(player->getCoin());
+	if (tempCoin - sub >= 0)
+	{
+		player->minusCoin(static_cast<uint32_t>(sub));
+		coinLabel->setString(formatCoinForDisplay(static_cast<int>(player->getCoin())).c_str());
+		return true;
+	}
+	return false;
 }
 
 void HudLayer::setReport(const string &slayer, const string &dead, uint32_t killNum)
@@ -1058,25 +1064,25 @@ Sprite *HudLayer::createSPCReport(uint32_t killNum, int num)
 		{
 			reportSPCSprite = Sprite::createWithSpriteFrameName("DoubleKill_rpf.png");
 			if (isBrocast)
-				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill2_1.ogg");
+				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill2_1.wav");
 		}
 		else if (killNum < 20)
 		{
 			reportSPCSprite = Sprite::createWithSpriteFrameName("KillingSpree_rpf.png");
 			if (isBrocast)
-				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill2_2.ogg");
+				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill2_2.wav");
 		}
 		else if (killNum < 30)
 		{
 			reportSPCSprite = Sprite::createWithSpriteFrameName("Unstoppable_rpf.png");
 			if (isBrocast)
-				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill2_3.ogg");
+				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill2_3.wav");
 		}
 		else
 		{
 			reportSPCSprite = Sprite::createWithSpriteFrameName("Godlike_rpf.png");
 			if (isBrocast)
-				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill2_4.ogg");
+				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill2_4.wav");
 		}
 	}
 	else if (num == 2)
@@ -1085,32 +1091,32 @@ Sprite *HudLayer::createSPCReport(uint32_t killNum, int num)
 		{
 			reportSPCSprite = Sprite::createWithSpriteFrameName("TripeKill_rpf.png");
 			if (isBrocast)
-				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill3_1.ogg");
+				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill3_1.wav");
 		}
 		else if (killNum < 20)
 		{
 			reportSPCSprite = Sprite::createWithSpriteFrameName("Domination_rpf.png");
 			if (isBrocast)
-				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill3_2.ogg");
+				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill3_2.wav");
 		}
 		else if (killNum < 30)
 		{
 			reportSPCSprite = Sprite::createWithSpriteFrameName("Rampage_rpf.png");
 			if (isBrocast)
-				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill3_3.ogg");
+				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill3_3.wav");
 		}
 		else if (killNum >= 30)
 		{
 			reportSPCSprite = Sprite::createWithSpriteFrameName("Holyshit_rpf.png");
 			if (isBrocast)
-				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill3_4.ogg");
+				SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill3_4.wav");
 		}
 	}
 	else
 	{
 		reportSPCSprite = Sprite::createWithSpriteFrameName("MonsterKill_rpf.png");
 		if (isBrocast)
-			SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill4.ogg");
+			SimpleAudioEngine::sharedEngine()->playEffect("Audio/Menu/kill4.wav");
 	}
 
 	return reportSPCSprite;

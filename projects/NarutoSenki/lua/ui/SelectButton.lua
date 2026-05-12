@@ -103,13 +103,13 @@ function SelectButton:click()
 
             if save.isVoice() then
                 audio.stopAllSounds()
-                audio.playSound(fmt('Audio/Intro/%s.ogg', self._charName))
+                audio.playSound(fmt('Audio/Intro/%s.wav', self._charName))
             end
             audio.playSound(ns.menu.SELECT_SOUND)
         elseif self._clickTime == 1 then
             log('Selected character ' .. self._charName)
 
-            audio.playSound('Audio/Menu/confirm2.ogg')
+            audio.playSound('Audio/Menu/confirm2.wav')
             self._isAviable = false
             self:spriteToGrey()
             self:getParent():reorderChild(self, 500)

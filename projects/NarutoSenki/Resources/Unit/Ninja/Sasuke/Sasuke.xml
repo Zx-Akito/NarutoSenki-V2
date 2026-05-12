@@ -35,7 +35,7 @@
 			<e type="setMove">32</e>
 			<f>Sasuke_Hurt_01</f>
 			<f>Sasuke_Hurt_02</f>
-			<e type="setSound">Audio/Sasuke/sasuke_hurt.ogg</e>
+			<e type="setSound">Audio/Sasuke/sasuke_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -73,7 +73,7 @@
 			<f>Sasuke_KnockDown_01</f>
 			<f>Sasuke_KnockDown_02</f>
 			<f>Sasuke_KnockDown_03</f>
-			<e type="setSound">Audio/Sasuke/sasuke_dead.ogg</e>
+			<e type="setSound">Audio/Sasuke/sasuke_dead.wav</e>
 		</frame>
 	</action>
 
@@ -90,7 +90,7 @@
 			<f>Sasuke_NAttack_02</f>
 			<e type="setDelay">10</e>
 			<e type="setAttackBox">n_hit</e>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<f>Sasuke_NAttack_03</f>
 			<f>Sasuke_NAttack_04</f>
 			<e type="setMove">8</e>
@@ -98,16 +98,16 @@
 			<f>Sasuke_NAttack_05</f>
 			<e type="setDelay">10</e>
 			<e type="setAttackBox">n_hit</e>
-			<e type="setSound">Audio/Effect/kong.ogg</e>
+			<e type="setSound">Audio/Effect/kong.wav</e>
 			<f>Sasuke_NAttack_06</f>
 			<f>Sasuke_NAttack_07</f>
 			<f>Sasuke_NAttack_08</f>
-			<e type="setSound">Audio/Sasuke/sasuke_combo.ogg</e>
+			<e type="setSound">Audio/Sasuke/sasuke_combo.wav</e>
 			<e type="setMove">16</e>
 			<f>Sasuke_NAttack_09</f>
 			<f>Sasuke_NAttack_10</f>
 			<e type="setAttackBox">bl_hit</e>
-			<e type="setSound">Audio/Effect/kong.ogg</e>
+			<e type="setSound">Audio/Effect/kong.wav</e>
 			<f>Sasuke_NAttack_11</f>
 			<e type="setDelay">20</e>
 		</frame>
@@ -123,10 +123,10 @@
 			<p type="combatPoint">1320</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Sasuke/sasuke_skill1.ogg</e>
+			<e type="setSound">Audio/Sasuke/sasuke_skill1.wav</e>
 			<f>Sasuke_Skill01_01</f>
 			<f>Sasuke_Skill01_02</f>
-			<e type="setSound">Audio/Sasuke/sasuke_skill1_1.ogg</e>
+			<e type="setSound">Audio/Sasuke/sasuke_skill1_1.wav</e>
 			<e type="setChargeB">196</e>
 			<f>Sasuke_Skill01_03</f>
 			<e type="setAttackBox">bc_hit</e>
@@ -148,9 +148,9 @@
 		</data>
 		<frame>
 			<f>Sasuke_Skill02_01</f>
-			<e type="setSound">Audio/Sasuke/sasuke_skill2.ogg</e>
+			<e type="setSound">Audio/Sasuke/sasuke_skill2.wav</e>
 			<f>Sasuke_Skill02_02</f>
-			<e type="setSound">Audio/Sasuke/sasuke_skill2_2.ogg</e>
+			<e type="setSound">Audio/Sasuke/sasuke_skill2_2.wav</e>
 			<f>Sasuke_Skill02_03</f>
 			<f>Sasuke_Skill02_04</f>
 			<e type="setAttackBox">bc_hit</e>
@@ -172,12 +172,12 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Sasuke/sasuke_skill3.ogg</e>
+			<e type="setSound">Audio/Sasuke/sasuke_skill3.wav</e>
 			<f>Sasuke_Skill03_001</f>
 			<f>Sasuke_Skill03_002</f>
 			<e type="setSkillEffect">sharingan2</e>
 			<f>Sasuke_Skill03_003</f>
-			<e type="setSound">Audio/Effect/srg2.ogg</e>
+			<e type="setSound">Audio/Effect/srg2.wav</e>
 			<f>Sasuke_Skill03_004</f>
 			<f>Sasuke_Skill03_005</f>
 			<e type="setDelay">20</e>
@@ -195,9 +195,9 @@
 			<p type="combatPoint">3040</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Sasuke_Skill04_08</f>
-			<e type="setSound">Audio/Sasuke/sasuke_skill4.ogg</e>
+			<e type="setSound">Audio/Sasuke/sasuke_skill4.wav</e>
 			<e type="setMon">Qilin</e>
 			<e type="setDelay">40</e>
 			<f>Sasuke_Skill04_09</f>
@@ -216,7 +216,7 @@
 			<p type="combatPoint">5000</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<e type="setCommand">setInvincible</e>
 			<f>Sasuke_Skill05_01</f>
 			<e type="setDelay">10</e>
@@ -253,7 +253,7 @@
 			<f>Sasuke_Skill08_01</f>
 			<e type="setAttackBox">bc_hit</e>
 			<f>Sasuke_Skill08_02</f>
-			<e type="setSound">Audio/Sasuke/sasuke_skill10.ogg</e>
+			<e type="setSound">Audio/Sasuke/sasuke_skill10.wav</e>
 			<f>Sasuke_Skill08_03</f>
 			<e type="setAttackBox">bc_hit</e>
 			<f>Sasuke_Skill08_04</f>
@@ -330,7 +330,7 @@
 		</data>
 		<frame>
 			<f>Sasuke_Skill12_001</f>
-			<e type="setSound">Audio/Sasuke/sasuke_skill11.ogg</e>
+			<e type="setSound">Audio/Sasuke/sasuke_skill11.wav</e>
 			<e type="setDelay">10</e>
 			<f>Sasuke_Skill12_002</f>
 			<f>Sasuke_Skill12_003</f>

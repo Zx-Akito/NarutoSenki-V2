@@ -33,7 +33,7 @@
 			<e type="setMove">32</e>
 			<f>Hinata_Hurt_01</f>
 			<f>Hinata_Hurt_02</f>
-			<e type="setSound">Audio/Hinata/hinata_hurt.ogg</e>
+			<e type="setSound">Audio/Hinata/hinata_hurt.wav</e>
 		</frame>
 	</action>
 
@@ -72,7 +72,7 @@
 			<f>Hinata_KnockDown_01</f>
 			<f>Hinata_KnockDown_02</f>
 			<f>Hinata_KnockDown_03</f>
-			<e type="setSound">Audio/Hinata/hinata_dead.ogg</e>
+			<e type="setSound">Audio/Hinata/hinata_dead.wav</e>
 		</frame>
 	</action>
 
@@ -88,23 +88,23 @@
 			<f>Hinata_NAttack_01</f>
 			<f>Hinata_NAttack_02</f>
 			<f>Hinata_NAttack_03</f>
-			<e type="setSound">Audio/Effect/combo1.ogg</e>
+			<e type="setSound">Audio/Effect/combo1.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Hinata_NAttack_04</f>
 			<f>Hinata_NAttack_05</f>
 			<f>Hinata_NAttack_06</f>
 			<f>Hinata_NAttack_07</f>
-			<e type="setSound">Audio/Effect/combo2.ogg</e>
+			<e type="setSound">Audio/Effect/combo2.wav</e>
 			<e type="setAttackBox">n_hit</e>
 			<f>Hinata_NAttack_08</f>
 			<f>Hinata_NAttack_09</f>
 			<f>Hinata_NAttack_10</f>
 			<f>Hinata_NAttack_11</f>
 			<f>Hinata_NAttack_12</f>
-			<e type="setSound">Audio/Hinata/hinata_combo.ogg</e>
+			<e type="setSound">Audio/Hinata/hinata_combo.wav</e>
 			<e type="setMove">16</e>
 			<f>Hinata_NAttack_13</f>
-			<e type="setSound">Audio/Effect/combo3.ogg</e>
+			<e type="setSound">Audio/Effect/combo3.wav</e>
 			<e type="setAttackBox">l_hit</e>
 			<f>Hinata_NAttack_14</f>
 		</frame>
@@ -120,12 +120,12 @@
 			<p type="combatPoint">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Hinata/hinata_skill01.ogg</e>
+			<e type="setSound">Audio/Hinata/hinata_skill01.wav</e>
 			<f>Hinata_Skill01_001</f>
 			<f>Hinata_Skill01_002</f>
 			<f>Hinata_Skill01_003</f>
 			<f>Hinata_Skill01_004</f>
-			<e type="setSound">Audio/Effect/baiyan.ogg</e>
+			<e type="setSound">Audio/Effect/baiyan.wav</e>
 			<f>Hinata_Skill01_005</f>
 			<f>Hinata_Skill01_006</f>
 			<e type="setBuff">200</e>
@@ -143,7 +143,7 @@
 		</data>
 		<frame>
 			<f>Hinata_Skill02_02</f>
-			<e type="setSound">Audio/Hinata/hinata_skill02_1.ogg</e>
+			<e type="setSound">Audio/Hinata/hinata_skill02_1.wav</e>
 			<f>Hinata_Skill02_03</f>
 			<e type="setMove">16</e>
 			<f>Hinata_Skill02_04</f>
@@ -153,7 +153,7 @@
 			<f>Hinata_Skill02_07</f>
 			<e type="setChargeB">128</e>
 			<f>Hinata_Skill02_08</f>
-			<e type="setSound">Audio/Hinata/hinata_skill02_2.ogg</e>
+			<e type="setSound">Audio/Hinata/hinata_skill02_2.wav</e>
 			<e type="setAttackBox">f_hit</e>
 			<f>Hinata_Skill02_09</f>
 		</frame>
@@ -169,7 +169,7 @@
 			<p type="combatPoint">3240</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Hinata/hinata_skill03.ogg</e>
+			<e type="setSound">Audio/Hinata/hinata_skill03.wav</e>
 			<f>Hinata_Skill03_02</f>
 			<f>Hinata_Skill03_03</f>
 			<e type="setSkillEffect">Bagua</e>
@@ -177,44 +177,44 @@
 			<f>Hinata_Skill03_04</f>
 			<e type="setMove">16</e>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Hinata_Skill03_05</f>
 			<f>Hinata_Skill03_06</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Hinata_Skill03_07</f>
 			<e type="setMove">8</e>
 			<f>Hinata_Skill03_08</f>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Hinata_Skill03_09</f>
 			<f>Hinata_Skill03_10</f>
 			<e type="setMove">8</e>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Hinata_Skill03_11</f>
 			<f>Hinata_Skill03_12</f>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Hinata_Skill03_04</f>
 			<e type="setMove">8</e>
 			<f>Hinata_Skill03_05</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Hinata_Skill03_06</f>
 			<f>Hinata_Skill03_07</f>
 			<e type="setMove">8</e>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Hinata_Skill03_08</f>
 			<f>Hinata_Skill03_09</f>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Hinata_Skill03_10</f>
 			<e type="setMove">8</e>
 			<f>Hinata_Skill03_11</f>
 			<e type="setAttackBox">s_hit</e>
-			<e type="setDSound">Audio/Effect/damage_c.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_c.wav</e>
 			<f>Hinata_Skill03_13</f>
 			<f>Hinata_Skill03_14</f>
 		</frame>
@@ -230,7 +230,7 @@
 			<p type="combatPoint">3300</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Hinata_Skill04_01</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">f_hit</e>
@@ -239,7 +239,7 @@
 			<e type="setShadow">10</e>
 			<e type="setDelay">10</e>
 			<f>Hinata_Skill04_03</f>
-			<e type="setSound">Audio/Hinata/hinata_skill04.ogg</e>
+			<e type="setSound">Audio/Hinata/hinata_skill04.wav</e>
 			<e type="setCommand">setInvincible</e>
 			<f>Hinata_Skill04_04</f>
 			<e type="stopJump">60</e>
@@ -264,19 +264,19 @@
 			<p type="combatPoint">9120</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/ougis.ogg</e>
+			<e type="setSound">Audio/Effect/ougis.wav</e>
 			<f>Hinata_Skill10_01</f>
 			<e type="setCommand">setInvincible</e>
 			<e type="setOugis">10</e>
 			<f>Hinata_Skill10_02</f>
 			<e type="setSkillEffect">Bagua</e>
 			<f>Hinata_Skill05_001</f>
-			<e type="setSound">Audio/Hinata/hinata_skill5_2.ogg</e>
+			<e type="setSound">Audio/Hinata/hinata_skill5_2.wav</e>
 			<f>Hinata_Skill05_002</f>
 			<e type="setShadow">10</e>
 			<e type="setChargeB">128</e>
 			<e type="setAttackBox">f_hit</e>
-			<e type="setDSound">Audio/Effect/damage_o2.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_o2.wav</e>
 			<f>Hinata_Skill05_003</f>
 			<f>Hinata_Skill05_004</f>
 			<e type="setShadow">10</e>
@@ -285,7 +285,7 @@
 			<f>Hinata_Skill05_006</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">c_hit</e>
-			<e type="setDSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setDSound">Audio/Effect/damage_i.wav</e>
 			<f>Hinata_Skill05_007</f>
 			<f>Hinata_Skill05_008</f>
 			<f>Hinata_Skill05_009</f>
@@ -293,30 +293,30 @@
 			<f>Hinata_Skill05_011</f>
 			<e type="setShadow">10</e>
 			<f>Hinata_Skill05_012</f>
-			<e type="setSound">Audio/Hinata/hinata_skill5_3.ogg</e>
+			<e type="setSound">Audio/Hinata/hinata_skill5_3.wav</e>
 			<e type="setChargeB">32</e>
 			<f>Hinata_Skill05_013</f>
 			<e type="setAttackBox">b_hit</e>
-			<e type="setSound">Audio/Effect/damage_o.ogg</e>
+			<e type="setSound">Audio/Effect/damage_o.wav</e>
 			<f>Hinata_Skill05_014</f>
 			<f>Hinata_Skill05_012</f>
-			<e type="setSound">Audio/Hinata/hinata_skill5_3.ogg</e>
+			<e type="setSound">Audio/Hinata/hinata_skill5_3.wav</e>
 			<e type="setChargeB">32</e>
 			<f>Hinata_Skill05_013</f>
 			<f>Hinata_Skill05_014</f>
 			<e type="setAttackBox">b_hit</e>
-			<e type="setSound">Audio/Effect/damage_o.ogg</e>
+			<e type="setSound">Audio/Effect/damage_o.wav</e>
 			<f>Hinata_Skill05_015</f>
 			<e type="setChargeB">32</e>
 			<f>Hinata_Skill05_016</f>
 			<f>Hinata_Skill05_017</f>
-			<e type="setSound">Audio/Hinata/hinata_skill5_4.ogg</e>
+			<e type="setSound">Audio/Hinata/hinata_skill5_4.wav</e>
 			<f>Hinata_Skill05_018</f>
 			<e type="setAttackBox">f_hit</e>
-			<e type="setSound">Audio/Effect/damage_o2.ogg</e>
+			<e type="setSound">Audio/Effect/damage_o2.wav</e>
 			<f>Hinata_Skill05_019</f>
 			<f>Hinata_Skill05_021</f>
-			<e type="setSound">Audio/Hinata/hinata_skill5_1.ogg</e>
+			<e type="setSound">Audio/Hinata/hinata_skill5_1.wav</e>
 			<f>Hinata_Skill05_022</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">ac_hit</e>
@@ -325,33 +325,33 @@
 			<f>Hinata_Skill05_024</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setSound">Audio/Effect/damage_i.wav</e>
 			<f>Hinata_Skill05_025</f>
 			<f>Hinata_Skill05_026</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setSound">Audio/Effect/damage_i.wav</e>
 			<f>Hinata_Skill05_027</f>
 			<f>Hinata_Skill05_022</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setSound">Audio/Effect/damage_i.wav</e>
 			<e type="setChargeB">48</e>
 			<f>Hinata_Skill05_023</f>
 			<f>Hinata_Skill05_024</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setSound">Audio/Effect/damage_i.wav</e>
 			<f>Hinata_Skill05_025</f>
 			<f>Hinata_Skill05_026</f>
 			<e type="setShadow">10</e>
 			<e type="setAttackBox">ac_hit</e>
-			<e type="setSound">Audio/Effect/damage_i.ogg</e>
+			<e type="setSound">Audio/Effect/damage_i.wav</e>
 			<f>Hinata_Skill05_027</f>
 			<f>Hinata_Skill05_028</f>
 			<f>Hinata_Skill05_029</f>
 			<f>Hinata_Skill05_030</f>
-			<e type="setSound">Audio/Hinata/hinata_skill5_6.ogg</e>
+			<e type="setSound">Audio/Hinata/hinata_skill5_6.wav</e>
 			<f>Hinata_Skill05_031</f>
 			<f>Hinata_Skill05_032</f>
 			<e type="setCommand">reInvincible</e>

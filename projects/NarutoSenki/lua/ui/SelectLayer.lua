@@ -64,7 +64,13 @@ function SelectLayer:init()
 
     local width, height = display.width, display.height
 
-    local bg_src = self.enableCustomSelect and 'red_bg.png' or 'blue_bg.png'
+    -- Training (offline / GameModeLayer): red backdrop. Online match: blue unless custom roster.
+    local bg_src
+    if self.isNetworkMode then
+        bg_src = self.enableCustomSelect and 'red_bg.png' or 'blue_bg.png'
+    else
+        bg_src = 'red_bg.png'
+    end
     local bgSprite = display.newSprite(bg_src, 0, 0)
     bgSprite:setAnchorPoint(0, 0)
     bgSprite:fullScreen()
@@ -122,7 +128,11 @@ function SelectLayer:init()
     menu_bar_t:fullScreen()
     self:addChild(menu_bar_t, 2)
 
-    local select_title = display.newSprite('#hcmode_title.png')
+    -- hcmode_title.png artwork reads as "Network"; use it only for online match
+    -- or custom/hardcore roster. Local training / classic pick uses select_title.png.
+    local titleFrame = (self.isNetworkMode or self.enableCustomSelect) and
+                           'hcmode_title.png' or 'select_title.png'
+    local select_title = display.newSprite('#' .. titleFrame)
     select_title:setAnchorPoint(0, 0)
     select_title:setPosition(2,
                              height - select_title:getContentSize().height - 2)
@@ -174,7 +184,11 @@ function SelectLayer:init()
         --     width / 2 - 36 + (Column - 1) * 27 + Column / 4 * 10,
         --     height - 112 - (72 * (Row - 3 * Page)))
 
-        local select_btn = SelectButton:create(charName .. '_select.png')
+        local selectSkin = charName
+        if charName == 'None' and not self.isNetworkMode then
+            selectSkin = 'None3'
+        end
+        local select_btn = SelectButton:create(selectSkin .. '_select.png')
         select_btn._selectLayer = self
         select_btn._charName = charName
         --           -- LAYOUT --
@@ -678,8 +692,11 @@ function SelectLayer:handleWebSocketEvent(eventName, payload)
         local enemyHero = extractJsonStringField(payload, 'enemyHero')
         local yourTeamCsv = extractJsonStringField(payload, 'yourTeamCsv')
         local enemyTeamCsv = extractJsonStringField(payload, 'enemyTeamCsv')
+        local yourNick = extractJsonStringField(payload, 'yourNickname')
+        local enemyNick = extractJsonStringField(payload, 'enemyNickname')
         wsSetMatchConfig(mapId, team, yourHero or '', enemyHero or '',
-                         yourTeamCsv or '', enemyTeamCsv or '', vsBot)
+                         yourTeamCsv or '', enemyTeamCsv or '', vsBot,
+                         yourNick or '', enemyNick or '')
         -- keep UI state in sync with authoritative server config
         if yourHero and yourHero ~= '' then
             self.selectHero = yourHero
@@ -713,17 +730,10 @@ end
 function backToStartMenu()
     log('back to main menu')
 
-    if _G.__networkMatchId ~= nil and wsIsConnected() then
-        wsSend('{"type":"queue_leave"}')
-        wsDisconnect()
-    end
+    clearStaleNetworkSessionForMenu()
 
     _G.mode = nil
-    _G.__networkSelectLayer = nil
-    _G.__networkMatchId = nil
-    _G.__networkVsBot = nil
-    wsClearMatchConfig()
-    audio.playSound('Audio/Menu/cancel.ogg')
+    audio.playSound('Audio/Menu/cancel.wav')
     local menuScene = CCScene:create()
     local menuLayer = StartMenu:create()
 

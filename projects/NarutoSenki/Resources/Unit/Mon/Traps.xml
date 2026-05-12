@@ -62,7 +62,7 @@
 			<p type="cd">0</p>
 		</data>
 		<frame>
-			<e type="setSound">Audio/Effect/poof.ogg</e>
+			<e type="setSound">Audio/Effect/poof.wav</e>
 			<f>Traps_Attack_002</f>
 			<f>Traps_Attack_003</f>
 			<f>Traps_Attack_004</f>

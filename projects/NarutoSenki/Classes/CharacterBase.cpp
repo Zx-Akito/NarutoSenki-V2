@@ -1385,14 +1385,24 @@ FiniteTimeAction *CharacterBase::createAnimation(CCArray *ationArray, uint8_t fp
 			if (key == "f")
 			{
 				auto frame = getSpriteFrame(keyValue);
-				spriteFrames.pushBack(frame);
+				if (frame != nullptr)
+				{
+					spriteFrames.pushBack(frame);
+				}
+				else if (!keyValue.empty())
+				{
+					CCLOGERROR("createAnimation: missing sprite frame '%s' for character '%s'",
+							   keyValue.c_str(), getName().c_str());
+				}
 			}
 			else
 			{
-				tempAnimation = Animation::createWithSpriteFrames(spriteFrames, 1.0f / fps);
-				tempAction = Animate::create(tempAnimation);
-
-				list.pushBack(tempAction);
+				if (!spriteFrames.empty())
+				{
+					tempAnimation = Animation::createWithSpriteFrames(spriteFrames, 1.0f / fps);
+					tempAction = Animate::create(tempAnimation);
+					list.pushBack(tempAction);
+				}
 				if (key == "setAttackBox")
 				{
 					auto call = CallFunc::create(std::bind(&CharacterBase::setAttackBox, this, keyValue));
@@ -1517,9 +1527,12 @@ FiniteTimeAction *CharacterBase::createAnimation(CCArray *ationArray, uint8_t fp
 				}
 				else if (key == "setShadow")
 				{
-					auto frame = spriteFrames.at(spriteFrames.size() - 1);
-					auto call = CallFunc::create(std::bind(&CharacterBase::setShadow, this, frame));
-					list.pushBack(call);
+					if (!spriteFrames.empty())
+					{
+						auto frame = spriteFrames.back();
+						auto call = CallFunc::create(std::bind(&CharacterBase::setShadow, this, frame));
+						list.pushBack(call);
+					}
 				}
 				else if (key == "setTransform")
 				{
@@ -1556,6 +1569,14 @@ FiniteTimeAction *CharacterBase::createAnimation(CCArray *ationArray, uint8_t fp
 
 	if (isLoop)
 	{
+		if (list.empty())
+		{
+			CCLOGERROR("createAnimation: empty loop for character '%s' (check XML vs loaded plists)",
+					   getName().c_str());
+			Vector<FiniteTimeAction *> fallback;
+			fallback.pushBack(DelayTime::create(0.1f));
+			return RepeatForever::create(Sequence::create(fallback));
+		}
 		seq = RepeatForever::create(Sequence::create(list));
 	}
 	else
@@ -1565,7 +1586,12 @@ FiniteTimeAction *CharacterBase::createAnimation(CCArray *ationArray, uint8_t fp
 			auto call = CallFunc::create(std::bind(&CharacterBase::idle, this));
 			list.pushBack(call);
 		}
-
+		if (list.empty())
+		{
+			CCLOGERROR("createAnimation: empty sequence for character '%s' (check XML vs loaded plists)",
+					   getName().c_str());
+			return DelayTime::create(0.01f);
+		}
 		seq = Sequence::create(list);
 	}
 
